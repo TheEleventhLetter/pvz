@@ -27,15 +27,19 @@ public class PeaShooter {
     }
 
     private void setUpPeaShootingTimeline(int X, int Y, Pane root){
-        KeyFrame kf1 = new KeyFrame(Duration.millis(500), (ActionEvent e) -> this.generatePea(X, Y, root));
-        KeyFrame kf2 = new KeyFrame(Duration.millis(20), (ActionEvent e) -> this.alwaysCheckHandler(root));
+        KeyFrame kf1 = new KeyFrame(Duration.millis(200), (ActionEvent e) -> this.generatePea(X, Y, root));
+        KeyFrame kf2 = new KeyFrame(Duration.millis(20), (ActionEvent e) -> this.deletePeasOutOfBounds(root));
+        KeyFrame kf3 = new KeyFrame(Duration.millis(10), (ActionEvent e) -> this.movePeas());
 
         Timeline timeline1 = new Timeline(kf1);
         Timeline timeline2 = new Timeline(kf2);
+        Timeline timeline3 = new Timeline(kf3);
         timeline1.setCycleCount(Animation.INDEFINITE);
         timeline2.setCycleCount(Animation.INDEFINITE);
+        timeline3.setCycleCount(Animation.INDEFINITE);
         timeline1.play();
         timeline2.play();
+        timeline3.play();
     }
 
     private void generatePea(int X, int Y, Pane root){
@@ -43,13 +47,9 @@ public class PeaShooter {
         this.listOfPeas.add(pea);
 
     }
-    private void alwaysCheckHandler(Pane root){
-        this.movePeas();
-        this.deletePeasOutOfBounds(root);
-    }
     private void movePeas(){
         for (PeaProjectile currentPea : this.listOfPeas){
-            currentPea.move(5);
+            currentPea.move(2);
         }
     }
     private void deletePeasOutOfBounds(Pane root) {

@@ -52,7 +52,7 @@ public class Lawn {
 
     }
     private void setUpZombieTimeline(Pane root){
-        KeyFrame kf = new KeyFrame(Duration.millis(2000), (ActionEvent e) -> this.generateZombies(root));
+        KeyFrame kf = new KeyFrame(Duration.millis(3000), (ActionEvent e) -> this.generateZombies(root));
         Timeline timeline = new Timeline(kf);
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
