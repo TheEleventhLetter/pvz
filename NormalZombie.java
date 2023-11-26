@@ -11,12 +11,14 @@ import javafx.util.Duration;
 
 public class NormalZombie {
     private Rectangle zombieHitbox;
+    private int zombieHealth;
 
     public NormalZombie(int Y, Pane root){
         this.zombieHitbox = new Rectangle(Constants.SCENE_WIDTH, Y, Constants.ZOMBIE_WIDTH, Constants.LAWN_WIDTH);
         this.zombieHitbox.setFill(Color.GRAY);
         root.getChildren().add(this.zombieHitbox);
         this.setUpWalkingTimeline();
+        this.zombieHealth = 4;
     }
     private void setUpWalkingTimeline(){
         KeyFrame kf = new KeyFrame(Duration.millis(20), (ActionEvent e) -> this.walk());
@@ -26,6 +28,15 @@ public class NormalZombie {
     }
     private void walk(){
         this.zombieHitbox.setX(this.zombieHitbox.getX() - 2);
+    }
+    public int getY(){
+        return (int) this.zombieHitbox.getY();
+    }
+    public int getX(){
+        return (int) this.zombieHitbox.getX();
+    }
+    public void checkHealth(){
+
     }
 }
 

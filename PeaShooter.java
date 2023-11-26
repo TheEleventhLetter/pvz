@@ -27,7 +27,7 @@ public class PeaShooter {
     }
 
     private void setUpPeaShootingTimeline(int X, int Y, Pane root){
-        KeyFrame kf1 = new KeyFrame(Duration.millis(200), (ActionEvent e) -> this.generatePea(X, Y, root));
+        KeyFrame kf1 = new KeyFrame(Duration.millis(1000), (ActionEvent e) -> this.generatePea(X, Y, root));
         KeyFrame kf2 = new KeyFrame(Duration.millis(20), (ActionEvent e) -> this.deletePeasOutOfBounds(root));
         KeyFrame kf3 = new KeyFrame(Duration.millis(10), (ActionEvent e) -> this.movePeas());
 
@@ -64,5 +64,8 @@ public class PeaShooter {
     public void assignArrayRowCol(int row, int col){
         this.myRow = row;
         this.myCol = col;
+    }
+    public LinkedList<PeaProjectile> getPeaList(){
+        return this.listOfPeas;
     }
 }

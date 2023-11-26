@@ -23,5 +23,8 @@ public class PeaProjectile {
         }
         return OutOfBounds;
     }
+    public boolean didCollide(int X, int Y){
+        return this.pea.intersects(X, Y, Constants.ZOMBIE_WIDTH, Constants.LAWN_WIDTH);
+    }
 
 }

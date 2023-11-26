@@ -107,5 +107,23 @@ public class Lawn {
         int randY = ((int)(Math.random() * 5) + 1) * Constants.LAWN_WIDTH;
         return randY;
     }
+    private void checkPeaZombieIntersection(){
+        for (int i = 0; i < Constants.LAWN_ROWS; i++){
+            for (int j = 0; j < Constants.LAWN_COLUMN; j++){
+                if (this.plantBoard[i][j] != null){
+                    LinkedList<PeaProjectile> ListOfPeas = this.plantBoard[i][j].getPeaList();
+                    LinkedList<NormalZombie> ListOfZombies = this.totalZombies.get(i);
+                    for (PeaProjectile currentPea : ListOfPeas){
+                        for (NormalZombie currentZombie : ListOfZombies){
+                            if (currentPea.didCollide(currentZombie.getX(), currentZombie.getY())){
+                                currentZombie.checkHealth();
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+    }
 
 }
