@@ -11,42 +11,15 @@ import javafx.util.Duration;
 
 import java.util.LinkedList;
 
-public class NormalZombie {
-    private Rectangle zombieHitbox;
-    private int zombieHealth;
-
+public class NormalZombie extends Zombie{
     public NormalZombie(int Y, Pane root){
-        this.zombieHitbox = new Rectangle(Constants.SCENE_WIDTH, Y, Constants.ZOMBIE_WIDTH, Constants.LAWN_WIDTH);
-        this.zombieHitbox.setFill(Color.GRAY);
-        root.getChildren().add(this.zombieHitbox);
-        this.setUpWalkingTimeline();
-        this.zombieHealth = 4;
+        super(Y, root);
     }
-    private void setUpWalkingTimeline(){
-        KeyFrame kf = new KeyFrame(Duration.millis(20), (ActionEvent e) -> this.walk());
-        Timeline timeline = new Timeline(kf);
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
-    }
-    private void walk(){
-        this.zombieHitbox.setX(this.zombieHitbox.getX() - 2);
-    }
-    public int getY(){
-        return (int) this.zombieHitbox.getY();
-    }
-    public int getX(){
-        return (int) this.zombieHitbox.getX();
-    }
-    public void checkHealth(Pane root, LinkedList<NormalZombie> ListOfZombies) {
-        this.zombieHealth = this.zombieHealth - 1;
-        if (this.zombieHealth == 0) {
-            this.removeZombie(root);
-            ListOfZombies.remove(this);
-        }
+    //@Override
+    private void setZombieColor(){
+
     }
 
-    private void removeZombie(Pane root) {
-        root.getChildren().remove(this.zombieHitbox);
-    }
 }
+
 
