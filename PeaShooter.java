@@ -61,6 +61,10 @@ public class PeaShooter {
             }
         }
     }
+    public void deletePea(PeaProjectile currentPea, Pane root) {
+        currentPea.removeGraphic(root);
+        this.listOfPeas.remove(currentPea);
+    }
     public void assignArrayRowCol(int row, int col){
         this.myRow = row;
         this.myCol = col;

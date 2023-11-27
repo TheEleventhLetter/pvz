@@ -8,6 +8,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -22,6 +23,13 @@ public class Lawn {
         this.plantBoard = new PeaShooter[Constants.LAWN_ROWS][Constants.LAWN_COLUMN];
         this.setUpLawn(gamepane);
         this.setUpZombieTimeline(gamepane);
+        this.setUpTimeLine(gamepane);
+    }
+    public void setUpTimeLine(Pane root){
+        KeyFrame kf = new KeyFrame(Duration.millis(10), (ActionEvent e) -> this.checkPeaZombieIntersection(root));
+        Timeline timeline = new Timeline(kf);
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
     }
     private void createZombieArrayList(){
         this.totalZombies = new ArrayList<LinkedList<NormalZombie>>(Constants.LAWN_ROWS);
@@ -107,19 +115,27 @@ public class Lawn {
         int randY = ((int)(Math.random() * 5) + 1) * Constants.LAWN_WIDTH;
         return randY;
     }
-    private void checkPeaZombieIntersection(){
-        for (int i = 0; i < Constants.LAWN_ROWS; i++){
-            for (int j = 0; j < Constants.LAWN_COLUMN; j++){
-                if (this.plantBoard[i][j] != null){
+    private void checkPeaZombieIntersection(Pane root){
+        for (int i = 0; i < Constants.LAWN_ROWS; i++) {
+            for (int j = 0; j < Constants.LAWN_COLUMN; j++) {
+                if (this.plantBoard[i][j] != null) {
                     LinkedList<PeaProjectile> ListOfPeas = this.plantBoard[i][j].getPeaList();
                     LinkedList<NormalZombie> ListOfZombies = this.totalZombies.get(i);
-                    for (PeaProjectile currentPea : ListOfPeas){
-                        for (NormalZombie currentZombie : ListOfZombies){
-                            if (currentPea.didCollide(currentZombie.getX(), currentZombie.getY())){
-                                currentZombie.checkHealth();
+                    if (!ListOfPeas.isEmpty()) {
+                        if (!ListOfZombies.isEmpty()) {
+                            for (int k = 0; k < ListOfPeas.size(); k++) {
+                                for (int z = 0; z < ListOfZombies.size(); z++) {
+                                    PeaProjectile currentPea = ListOfPeas.get(k);
+                                    NormalZombie currentZombie = ListOfZombies.get(z);
+                                    if (currentPea.didCollide(currentZombie.getX(), currentZombie.getY())) {
+                                        currentPea.removeGraphic(root);
+                                        ListOfPeas.remove(currentPea);
+                                        currentZombie.checkHealth();
+                                    }
+                                }
+
                             }
                         }
-
                     }
                 }
             }
