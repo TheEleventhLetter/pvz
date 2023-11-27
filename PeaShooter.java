@@ -15,6 +15,7 @@ public class PeaShooter {
     private Rectangle peaShooterHitbox;
     private LinkedList<PeaProjectile> listOfPeas;
     private LinkedList<NormalZombie> myListOfZombies;
+    private int myCost;
 
     public PeaShooter(int X, int Y, Pane root){
         this.peaShooterHitbox = new Rectangle(X, Y, Constants.LAWN_WIDTH, Constants.LAWN_WIDTH);
@@ -68,5 +69,8 @@ public class PeaShooter {
 
     public LinkedList<PeaProjectile> getPeaList(){
         return this.listOfPeas;
+    }
+    public int getMyCost(){
+        return this.myCost;
     }
 }

@@ -16,6 +16,7 @@ public class Lawn {
     private LawnSquare[][] lawnGraphic;
     private PeaShooter[][] plantBoard;
     private ArrayList<LinkedList<NormalZombie>> totalZombies;
+    private int totalSun;
 
     public Lawn(Pane gamepane){
         this.createZombieArrayList();
@@ -24,6 +25,7 @@ public class Lawn {
         this.setUpLawn(gamepane);
         this.setUpZombieTimeline(gamepane);
         this.setUpTimeLine(gamepane);
+        this.totalSun = 500;
     }
     public void setUpTimeLine(Pane root){
         KeyFrame kf = new KeyFrame(Duration.millis(10), (ActionEvent e) -> this.checkPeaZombieIntersection(root));
