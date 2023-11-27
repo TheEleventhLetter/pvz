@@ -93,7 +93,7 @@ public class Lawn {
         PeaShooter newPeaShooter = new PeaShooter(plantX, plantY, gamepane);
         if (this.plantBoard[this.pixelToRow(plantY)][this.pixelToColumn(plantX)] == null) {
             this.plantBoard[this.pixelToRow(plantY)][this.pixelToColumn(plantX)] = newPeaShooter;
-            newPeaShooter.assignArrayRowCol(this.pixelToRow(plantY), this.pixelToColumn(plantX));
+            newPeaShooter.assignCorrespondingListOfZombies(this.totalZombies.get(this.pixelToRow(plantY)));
         }
 
     }
@@ -130,7 +130,10 @@ public class Lawn {
                                     if (currentPea.didCollide(currentZombie.getX(), currentZombie.getY())) {
                                         currentPea.removeGraphic(root);
                                         ListOfPeas.remove(currentPea);
-                                        currentZombie.checkHealth();
+                                        currentZombie.checkHealth(root, ListOfZombies);
+                                        if (ListOfPeas.isEmpty()){
+                                            break;
+                                        }
                                     }
                                 }
 

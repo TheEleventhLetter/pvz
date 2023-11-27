@@ -9,6 +9,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
+import java.util.LinkedList;
+
 public class NormalZombie {
     private Rectangle zombieHitbox;
     private int zombieHealth;
@@ -35,8 +37,16 @@ public class NormalZombie {
     public int getX(){
         return (int) this.zombieHitbox.getX();
     }
-    public void checkHealth(){
+    public void checkHealth(Pane root, LinkedList<NormalZombie> ListOfZombies) {
+        this.zombieHealth = this.zombieHealth - 1;
+        if (this.zombieHealth == 0) {
+            this.removeZombie(root);
+            ListOfZombies.remove(this);
+        }
+    }
 
+    private void removeZombie(Pane root) {
+        root.getChildren().remove(this.zombieHitbox);
     }
 }
 

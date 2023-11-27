@@ -14,8 +14,7 @@ import java.util.LinkedList;
 public class PeaShooter {
     private Rectangle peaShooterHitbox;
     private LinkedList<PeaProjectile> listOfPeas;
-    private int myRow;
-    private int myCol;
+    private LinkedList<NormalZombie> myListOfZombies;
 
     public PeaShooter(int X, int Y, Pane root){
         this.peaShooterHitbox = new Rectangle(X, Y, Constants.LAWN_WIDTH, Constants.LAWN_WIDTH);
@@ -41,10 +40,15 @@ public class PeaShooter {
         timeline2.play();
         timeline3.play();
     }
+    public void assignCorrespondingListOfZombies(LinkedList<NormalZombie> ListOfZombies){
+        this.myListOfZombies = ListOfZombies;
+    }
 
     private void generatePea(int X, int Y, Pane root){
-        PeaProjectile pea = new PeaProjectile(X + Constants.LAWN_WIDTH + Constants.PEA_RADIUS, Y + (Constants.LAWN_WIDTH/2), root);
-        this.listOfPeas.add(pea);
+        if (!this.myListOfZombies.isEmpty()) {
+            PeaProjectile pea = new PeaProjectile(X + Constants.LAWN_WIDTH + Constants.PEA_RADIUS, Y + (Constants.LAWN_WIDTH / 2), root);
+            this.listOfPeas.add(pea);
+        }
 
     }
     private void movePeas(){
@@ -61,14 +65,7 @@ public class PeaShooter {
             }
         }
     }
-    public void deletePea(PeaProjectile currentPea, Pane root) {
-        currentPea.removeGraphic(root);
-        this.listOfPeas.remove(currentPea);
-    }
-    public void assignArrayRowCol(int row, int col){
-        this.myRow = row;
-        this.myCol = col;
-    }
+
     public LinkedList<PeaProjectile> getPeaList(){
         return this.listOfPeas;
     }
