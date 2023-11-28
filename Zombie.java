@@ -19,17 +19,15 @@ public class Zombie {
         this.zombieHitbox = new Rectangle(Constants.SCENE_WIDTH, Y, Constants.ZOMBIE_WIDTH, Constants.LAWN_WIDTH);
         root.getChildren().add(this.zombieHitbox);
         this.setUpWalkingTimeline();
-        this.setZombieColor();
-        this.setZombieHealth();
     }
-    private void setZombieColor(){
-        this.zombieHitbox.setFill(Color.GRAY);
+    public void setZombieColor(Color color){
+        this.zombieHitbox.setFill(color);
     }
-    private void setZombieHealth(){
-        this.zombieHealth = 4;
+    public void setZombieHealth(int health){
+        this.zombieHealth = health;
     }
     private void setUpWalkingTimeline(){
-        KeyFrame kf = new KeyFrame(Duration.millis(20), (ActionEvent e) -> this.walk());
+        KeyFrame kf = new KeyFrame(Duration.millis(40), (ActionEvent e) -> this.walk());
         Timeline timeline = new Timeline(kf);
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
@@ -43,7 +41,7 @@ public class Zombie {
     public int getX(){
         return (int) this.zombieHitbox.getX();
     }
-    public void checkHealth(Pane root, LinkedList<NormalZombie> ListOfZombies) {
+    public void checkHealth(Pane root, LinkedList<Zombie> ListOfZombies) {
         this.zombieHealth = this.zombieHealth - 1;
         if (this.zombieHealth == 0) {
             this.removeZombie(root);

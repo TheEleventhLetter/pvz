@@ -15,8 +15,7 @@ import java.util.LinkedList;
 public class Lawn {
     private LawnSquare[][] lawnGraphic;
     private PeaShooter[][] plantBoard;
-    private ArrayList<LinkedList<NormalZombie>> totalZombies;
-    private int totalSun;
+    private ArrayList<LinkedList<Zombie>> totalZombies;
 
     public Lawn(Pane gamepane){
         this.createZombieArrayList();
@@ -25,7 +24,6 @@ public class Lawn {
         this.setUpLawn(gamepane);
         this.setUpZombieTimeline(gamepane);
         this.setUpTimeLine(gamepane);
-        this.totalSun = 500;
     }
     public void setUpTimeLine(Pane root){
         KeyFrame kf = new KeyFrame(Duration.millis(10), (ActionEvent e) -> this.checkPeaZombieIntersection(root));
@@ -34,9 +32,9 @@ public class Lawn {
         timeline.play();
     }
     private void createZombieArrayList(){
-        this.totalZombies = new ArrayList<LinkedList<NormalZombie>>(Constants.LAWN_ROWS);
+        this.totalZombies = new ArrayList<LinkedList<Zombie>>(Constants.LAWN_ROWS);
         for (int i = 0; i < Constants.LAWN_ROWS; i++){
-            this.totalZombies.add(i, new LinkedList<NormalZombie>());
+            this.totalZombies.add(i, new LinkedList<Zombie>());
         }
     }
 
@@ -110,8 +108,27 @@ public class Lawn {
     }
     private void generateZombies(Pane root){
         int randY = this.randomYpixel();
-        NormalZombie newZombie = new NormalZombie(randY, root);
+        Zombie newZombie = this.randomZombie(randY, root);
         this.totalZombies.get(this.pixelToRow(randY)).add(newZombie);
+    }
+    private Zombie randomZombie(int randY, Pane root){
+        Zombie randomZombie;
+        int randomNum = (int)(Math.random() * 7);
+
+        switch (randomNum){
+            case 0: case 1: case 2: case 3:
+                randomZombie = new NormalZombie(randY, root);
+                break;
+            case 4: case 5:
+                randomZombie = new ConeheadZombie(randY, root);
+                break;
+            case 6:
+                randomZombie = new BucketheadZombie(randY, root);
+                break;
+            default:
+                randomZombie = new NormalZombie(randY, root);
+        }
+        return randomZombie;
     }
     private int randomYpixel(){
         int randY = ((int)(Math.random() * 5) + 1) * Constants.LAWN_WIDTH;
@@ -122,13 +139,13 @@ public class Lawn {
             for (int j = 0; j < Constants.LAWN_COLUMN; j++) {
                 if (this.plantBoard[i][j] != null) {
                     LinkedList<PeaProjectile> ListOfPeas = this.plantBoard[i][j].getPeaList();
-                    LinkedList<NormalZombie> ListOfZombies = this.totalZombies.get(i);
+                    LinkedList<Zombie> ListOfZombies = this.totalZombies.get(i);
                     if (!ListOfPeas.isEmpty()) {
                         if (!ListOfZombies.isEmpty()) {
                             for (int k = 0; k < ListOfPeas.size(); k++) {
                                 for (int z = 0; z < ListOfZombies.size(); z++) {
                                     PeaProjectile currentPea = ListOfPeas.get(k);
-                                    NormalZombie currentZombie = ListOfZombies.get(z);
+                                    Zombie currentZombie = ListOfZombies.get(z);
                                     if (currentPea.didCollide(currentZombie.getX(), currentZombie.getY())) {
                                         currentPea.removeGraphic(root);
                                         ListOfPeas.remove(currentPea);

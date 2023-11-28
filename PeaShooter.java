@@ -14,7 +14,7 @@ import java.util.LinkedList;
 public class PeaShooter {
     private Rectangle peaShooterHitbox;
     private LinkedList<PeaProjectile> listOfPeas;
-    private LinkedList<NormalZombie> myListOfZombies;
+    private LinkedList<Zombie> myListOfZombies;
     private int myCost;
 
     public PeaShooter(int X, int Y, Pane root){
@@ -41,7 +41,7 @@ public class PeaShooter {
         timeline2.play();
         timeline3.play();
     }
-    public void assignCorrespondingListOfZombies(LinkedList<NormalZombie> ListOfZombies){
+    public void assignCorrespondingListOfZombies(LinkedList<Zombie> ListOfZombies){
         this.myListOfZombies = ListOfZombies;
     }
 
