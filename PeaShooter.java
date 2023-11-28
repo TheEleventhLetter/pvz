@@ -15,9 +15,14 @@ public class PeaShooter {
     private Rectangle peaShooterHitbox;
     private LinkedList<PeaProjectile> listOfPeas;
     private LinkedList<Zombie> myListOfZombies;
-    private int myCost;
-
-    public PeaShooter(int X, int Y, Pane root){
+    private int peaShooterHealth;
+    private Lawn myLawn;
+    private Timeline timeline1;
+    private Timeline timeline2;
+    private Timeline timeline3;
+    public PeaShooter(int X, int Y, Lawn lawn, Pane root){
+        this.myLawn = lawn;
+        this.peaShooterHealth = 4000;
         this.peaShooterHitbox = new Rectangle(X, Y, Constants.LAWN_WIDTH, Constants.LAWN_WIDTH);
         this.peaShooterHitbox.setStroke(Color.BLACK);
         this.peaShooterHitbox.setFill(Color.RED);
@@ -31,15 +36,15 @@ public class PeaShooter {
         KeyFrame kf2 = new KeyFrame(Duration.millis(20), (ActionEvent e) -> this.deletePeasOutOfBounds(root));
         KeyFrame kf3 = new KeyFrame(Duration.millis(10), (ActionEvent e) -> this.movePeas());
 
-        Timeline timeline1 = new Timeline(kf1);
-        Timeline timeline2 = new Timeline(kf2);
-        Timeline timeline3 = new Timeline(kf3);
-        timeline1.setCycleCount(Animation.INDEFINITE);
-        timeline2.setCycleCount(Animation.INDEFINITE);
-        timeline3.setCycleCount(Animation.INDEFINITE);
-        timeline1.play();
-        timeline2.play();
-        timeline3.play();
+        this.timeline1 = new Timeline(kf1);
+        this.timeline2 = new Timeline(kf2);
+        this.timeline3 = new Timeline(kf3);
+        this.timeline1.setCycleCount(Animation.INDEFINITE);
+        this.timeline2.setCycleCount(Animation.INDEFINITE);
+        this.timeline3.setCycleCount(Animation.INDEFINITE);
+        this.timeline1.play();
+        this.timeline2.play();
+        this.timeline3.play();
     }
     public void assignCorrespondingListOfZombies(LinkedList<Zombie> ListOfZombies){
         this.myListOfZombies = ListOfZombies;
@@ -66,11 +71,29 @@ public class PeaShooter {
             }
         }
     }
+    public int getX(){
+        return (int) this.peaShooterHitbox.getX();
+    }
+    public int getY(){
+        return (int) this.peaShooterHitbox.getY();
+    }
 
     public LinkedList<PeaProjectile> getPeaList(){
         return this.listOfPeas;
     }
-    public int getMyCost(){
-        return this.myCost;
+    public void checkHealth(Pane root){
+        System.out.println(this.peaShooterHealth);
+        this.peaShooterHealth = this.peaShooterHealth - 10;
+        if (this.peaShooterHealth == 0) {
+            this.removePeaShooter(root);
+        }
     }
+    private void removePeaShooter(Pane root){
+        this.timeline1.stop();
+        this.timeline2.stop();
+        this.timeline3.stop();
+        root.getChildren().remove(this.peaShooterHitbox);
+        this.myLawn.deletePlant(this);
+    }
+
 }

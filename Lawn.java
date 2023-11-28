@@ -26,7 +26,7 @@ public class Lawn {
         this.setUpTimeLine(gamepane);
     }
     public void setUpTimeLine(Pane root){
-        KeyFrame kf = new KeyFrame(Duration.millis(10), (ActionEvent e) -> this.checkPeaZombieIntersection(root));
+        KeyFrame kf = new KeyFrame(Duration.millis(10), (ActionEvent e) -> this.checkIntersection(root));
         Timeline timeline = new Timeline(kf);
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
@@ -36,6 +36,10 @@ public class Lawn {
         for (int i = 0; i < Constants.LAWN_ROWS; i++){
             this.totalZombies.add(i, new LinkedList<Zombie>());
         }
+    }
+    private void checkIntersection(Pane root){
+        this.checkPeaZombieIntersection(root);
+        this.checkZombiePlantIntersection(root);
     }
 
     private void setUpLawn(Pane gamepane) {
@@ -90,12 +94,26 @@ public class Lawn {
     public void addPlant(double MouseX, double MouseY, Pane gamepane) {
         int plantX = this.calculateNearestXPosition(MouseX);
         int plantY = this.calculateNearestYPosition(MouseY);
-        PeaShooter newPeaShooter = new PeaShooter(plantX, plantY, gamepane);
+        PeaShooter newPeaShooter = new PeaShooter(plantX, plantY, this, gamepane);
         if (this.plantBoard[this.pixelToRow(plantY)][this.pixelToColumn(plantX)] == null) {
             this.plantBoard[this.pixelToRow(plantY)][this.pixelToColumn(plantX)] = newPeaShooter;
             newPeaShooter.assignCorrespondingListOfZombies(this.totalZombies.get(this.pixelToRow(plantY)));
+            if (!this.totalZombies.get(this.pixelToRow(plantY)).isEmpty()){
+                for (Zombie currentZombie : this.totalZombies.get(this.pixelToRow(plantY))){
+                    currentZombie.addToCorrespondingListOfPlants(newPeaShooter);
+            }
+            }
         }
 
+    }
+    public void deletePlant(PeaShooter oldPeaShooter){
+        if (!this.totalZombies.get(this.pixelToRow(oldPeaShooter.getY())).isEmpty()) {
+            for (Zombie currentZombie : this.totalZombies.get(this.pixelToRow(oldPeaShooter.getY()))) {
+                currentZombie.removeFromCorrespondingListOfPlants(oldPeaShooter);
+                currentZombie.resumeWalking();
+            }
+        }
+        this.plantBoard[this.pixelToRow(oldPeaShooter.getY())][this.pixelToColumn(oldPeaShooter.getX())] = null;
     }
     public boolean checkValid(double MouseX, double MouseY){
         boolean spotOpen = false;
@@ -110,6 +128,11 @@ public class Lawn {
         int randY = this.randomYpixel();
         Zombie newZombie = this.randomZombie(randY, root);
         this.totalZombies.get(this.pixelToRow(randY)).add(newZombie);
+        for (int i = 0; i < Constants.LAWN_COLUMN; i++){
+            if (this.plantBoard[this.pixelToRow(randY)][i] != null){
+                newZombie.addToCorrespondingListOfPlants(this.plantBoard[this.pixelToRow(randY)][i]);
+            }
+        }
     }
     private Zombie randomZombie(int randY, Pane root){
         Zombie randomZombie;
@@ -156,6 +179,24 @@ public class Lawn {
                                     }
                                 }
 
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    private void checkZombiePlantIntersection(Pane root){
+        for (int i = 0; i < Constants.LAWN_ROWS; i++){
+            LinkedList<Zombie> currentZombieList = totalZombies.get(i);
+            if (!currentZombieList.isEmpty()) {
+                for (Zombie currentZombie : currentZombieList){
+                    if(!currentZombie.getMyListOfPlants().isEmpty()) {
+                        LinkedList<PeaShooter> currentPlantList = currentZombie.getMyListOfPlants();
+                        for (PeaShooter currentPlant : currentPlantList){
+                            if (currentZombie.didCollide(currentPlant.getX(), currentPlant.getY())){
+                                currentZombie.stopWalking();
+                                currentPlant.checkHealth(root);
                             }
                         }
                     }
