@@ -1,5 +1,8 @@
 package indy;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -8,6 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 
 
 public class Game {
@@ -17,10 +21,11 @@ public class Game {
     private Label displayTotalSun;
 
     public Game(Pane gamepane, HBox buttonPane){
+        this.totalSun = 500;
         this.peaShooterSeedSelected = false;
         this.createButtonPane(buttonPane);
         this.createGamePane(gamepane);
-        this.totalSun = 500;
+        this.setUpSunGenerationTimeline(gamepane);
     }
 
     private void createGamePane(Pane gamepane){
@@ -41,6 +46,20 @@ public class Game {
         buttonPane.getChildren().addAll(this.displayTotalSun, peaShooterSeedPacket, quitButton);
 
         buttonPane.setFocusTraversable(false);
+    }
+    private void setUpSunGenerationTimeline(Pane root){
+        KeyFrame kf = new KeyFrame(Duration.seconds(5), (ActionEvent e) -> this.generateSun(root));
+        Timeline timeline = new Timeline(kf);
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
+    private void generateSun(Pane root){
+        int randX = (int)(Math.random() * Constants.SCENE_WIDTH);
+        new Sun(randX, 0, root, this);
+    }
+    public void addToTotalSun(){
+        this.totalSun = this.totalSun + 25;
+        this.displayTotalSun.setText("Total Sun: " + this.totalSun);
     }
     private void peaShooterSeedSelectChecker() {
         if (!this.peaShooterSeedSelected) {

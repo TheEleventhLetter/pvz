@@ -8,4 +8,5 @@ public class Constants {
     public static final int LAWN_COLUMN = 10;
     public static final int PEA_RADIUS = 10;
     public static final int ZOMBIE_WIDTH = 50;
+    public static final int SUN_RADIUS = 20;
 }
