@@ -34,7 +34,7 @@ public class PeaShooter {
     private void setUpPeaShootingTimeline(int X, int Y, Pane root){
         KeyFrame kf1 = new KeyFrame(Duration.millis(1000), (ActionEvent e) -> this.generatePea(X, Y, root));
         KeyFrame kf2 = new KeyFrame(Duration.millis(20), (ActionEvent e) -> this.deletePeasOutOfBounds(root));
-        KeyFrame kf3 = new KeyFrame(Duration.millis(10), (ActionEvent e) -> this.movePeas());
+        KeyFrame kf3 = new KeyFrame(Duration.millis(10), (ActionEvent e) -> this.movePeas(root));
 
         this.timeline1 = new Timeline(kf1);
         this.timeline2 = new Timeline(kf2);
@@ -57,10 +57,11 @@ public class PeaShooter {
         }
 
     }
-    private void movePeas(){
+    private void movePeas(Pane root){
         for (PeaProjectile currentPea : this.listOfPeas){
             currentPea.move(2);
         }
+        this.checkPeaZombieIntersection(root);
     }
     private void deletePeasOutOfBounds(Pane root) {
         if (!this.listOfPeas.isEmpty()) {
@@ -78,11 +79,14 @@ public class PeaShooter {
         return (int) this.peaShooterHitbox.getY();
     }
 
-    public LinkedList<PeaProjectile> getPeaList(){
-        return this.listOfPeas;
-    }
+    /**
+     * public LinkedList<PeaProjectile> getPeaList(){
+     *         return this.listOfPeas;
+     *     }
+     * @return
+     */
+
     public void checkHealth(Pane root){
-        System.out.println(this.peaShooterHealth);
         this.peaShooterHealth = this.peaShooterHealth - 10;
         if (this.peaShooterHealth == 0) {
             this.removePeaShooter(root);
@@ -95,5 +99,29 @@ public class PeaShooter {
         root.getChildren().remove(this.peaShooterHitbox);
         this.myLawn.deletePlant(this);
     }
+    private void checkPeaZombieIntersection(Pane root) {
+        if (!this.listOfPeas.isEmpty()) {
+            if (!this.myListOfZombies.isEmpty()) {
+                for (int k = 0; k < this.listOfPeas.size(); k++) {
+                    for (int z = 0; z < this.myListOfZombies.size(); z++) {
+                        PeaProjectile currentPea = this.listOfPeas.get(k);
+                        Zombie currentZombie = this.myListOfZombies.get(z);
+                        if (currentPea.didCollide(currentZombie.getX(), currentZombie.getY())) {
+                            currentPea.removeGraphic(root);
+                            this.listOfPeas.remove(currentPea);
+                            currentZombie.checkHealth(root, this.myListOfZombies);
+                            if (this.listOfPeas.isEmpty()) {
+                                break;
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
+
+
 
 }

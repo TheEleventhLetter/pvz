@@ -16,9 +16,11 @@ public class Lawn {
     private LawnSquare[][] lawnGraphic;
     private PeaShooter[][] plantBoard;
     private ArrayList<LinkedList<Zombie>> totalZombies;
+    private ArrayList<LinkedList<PeaShooter>> totalPlants;
 
     public Lawn(Pane gamepane){
         this.createZombieArrayList();
+        this.createPlantArrayList();
         this.lawnGraphic = new LawnSquare[Constants.LAWN_ROWS][Constants.LAWN_COLUMN];
         this.plantBoard = new PeaShooter[Constants.LAWN_ROWS][Constants.LAWN_COLUMN];
         this.setUpLawn(gamepane);
@@ -37,8 +39,13 @@ public class Lawn {
             this.totalZombies.add(i, new LinkedList<Zombie>());
         }
     }
+    private void createPlantArrayList(){
+        this.totalPlants = new ArrayList<LinkedList<PeaShooter>>(Constants.LAWN_ROWS);
+        for (int i = 0; i < Constants.LAWN_ROWS; i++){
+            this.totalPlants.add(i, new LinkedList<PeaShooter>());
+        }
+    }
     private void checkIntersection(Pane root){
-        this.checkPeaZombieIntersection(root);
         this.checkZombiePlantIntersection(root);
     }
 
@@ -98,22 +105,28 @@ public class Lawn {
         if (this.plantBoard[this.pixelToRow(plantY)][this.pixelToColumn(plantX)] == null) {
             this.plantBoard[this.pixelToRow(plantY)][this.pixelToColumn(plantX)] = newPeaShooter;
             newPeaShooter.assignCorrespondingListOfZombies(this.totalZombies.get(this.pixelToRow(plantY)));
-            if (!this.totalZombies.get(this.pixelToRow(plantY)).isEmpty()){
-                for (Zombie currentZombie : this.totalZombies.get(this.pixelToRow(plantY))){
-                    currentZombie.addToCorrespondingListOfPlants(newPeaShooter);
+            this.totalPlants.get(this.pixelToRow(plantY)).add(newPeaShooter);
+            if (!this.totalZombies.get(this.pixelToRow(plantY)).isEmpty()) {
+                for (int i = 0; i < this.totalZombies.get(this.pixelToRow(plantY)).size(); i++) {
+                    this.totalZombies.get(this.pixelToRow(plantY)).get(i).assignCorrespondingListOfPlants(this.totalPlants.get(this.pixelToRow(plantY)));
+                }
             }
             }
-        }
 
-    }
-    public void deletePlant(PeaShooter oldPeaShooter){
+        }
+    public void deletePlant(PeaShooter oldPeaShooter) {
         if (!this.totalZombies.get(this.pixelToRow(oldPeaShooter.getY())).isEmpty()) {
             for (Zombie currentZombie : this.totalZombies.get(this.pixelToRow(oldPeaShooter.getY()))) {
-                currentZombie.removeFromCorrespondingListOfPlants(oldPeaShooter);
+                this.totalPlants.get(this.pixelToRow(oldPeaShooter.getY())).remove(oldPeaShooter);
                 currentZombie.resumeWalking();
+                if (!this.totalZombies.get(this.pixelToRow(oldPeaShooter.getY())).isEmpty()) {
+                    for (int i = 0; i < this.totalZombies.get(this.pixelToRow(oldPeaShooter.getY())).size(); i++) {
+                        this.totalZombies.get(this.pixelToRow(oldPeaShooter.getY())).get(i).assignCorrespondingListOfPlants(this.totalPlants.get(this.pixelToRow(oldPeaShooter.getY())));
+                    }
+                }
+                this.plantBoard[this.pixelToRow(oldPeaShooter.getY())][this.pixelToColumn(oldPeaShooter.getX())] = null;
             }
         }
-        this.plantBoard[this.pixelToRow(oldPeaShooter.getY())][this.pixelToColumn(oldPeaShooter.getX())] = null;
     }
     public boolean checkValid(double MouseX, double MouseY){
         boolean spotOpen = false;
@@ -130,7 +143,7 @@ public class Lawn {
         this.totalZombies.get(this.pixelToRow(randY)).add(newZombie);
         for (int i = 0; i < Constants.LAWN_COLUMN; i++){
             if (this.plantBoard[this.pixelToRow(randY)][i] != null){
-                newZombie.addToCorrespondingListOfPlants(this.plantBoard[this.pixelToRow(randY)][i]);
+                newZombie.assignCorrespondingListOfPlants(this.totalPlants.get(this.pixelToRow(randY)));
             }
         }
     }
@@ -157,35 +170,7 @@ public class Lawn {
         int randY = ((int)(Math.random() * 5) + 1) * Constants.LAWN_WIDTH;
         return randY;
     }
-    private void checkPeaZombieIntersection(Pane root){
-        for (int i = 0; i < Constants.LAWN_ROWS; i++) {
-            for (int j = 0; j < Constants.LAWN_COLUMN; j++) {
-                if (this.plantBoard[i][j] != null) {
-                    LinkedList<PeaProjectile> ListOfPeas = this.plantBoard[i][j].getPeaList();
-                    LinkedList<Zombie> ListOfZombies = this.totalZombies.get(i);
-                    if (!ListOfPeas.isEmpty()) {
-                        if (!ListOfZombies.isEmpty()) {
-                            for (int k = 0; k < ListOfPeas.size(); k++) {
-                                for (int z = 0; z < ListOfZombies.size(); z++) {
-                                    PeaProjectile currentPea = ListOfPeas.get(k);
-                                    Zombie currentZombie = ListOfZombies.get(z);
-                                    if (currentPea.didCollide(currentZombie.getX(), currentZombie.getY())) {
-                                        currentPea.removeGraphic(root);
-                                        ListOfPeas.remove(currentPea);
-                                        currentZombie.checkHealth(root, ListOfZombies);
-                                        if (ListOfPeas.isEmpty()){
-                                            break;
-                                        }
-                                    }
-                                }
 
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
     private void checkZombiePlantIntersection(Pane root){
         for (int i = 0; i < Constants.LAWN_ROWS; i++){
             LinkedList<Zombie> currentZombieList = totalZombies.get(i);
