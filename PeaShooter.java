@@ -11,7 +11,7 @@ import javafx.util.Duration;
 
 import java.util.LinkedList;
 
-public class PeaShooter {
+public class PeaShooter implements Plant {
     private Rectangle peaShooterHitbox;
     private LinkedList<PeaProjectile> listOfPeas;
     private LinkedList<Zombie> myListOfZombies;
@@ -21,6 +21,7 @@ public class PeaShooter {
     private Timeline timeline2;
     private Timeline timeline3;
     public PeaShooter(int X, int Y, Lawn lawn, Pane root){
+        System.out.println("Peashooter Created");
         this.myLawn = lawn;
         this.peaShooterHealth = 4000;
         this.peaShooterHitbox = new Rectangle(X, Y, Constants.LAWN_WIDTH, Constants.LAWN_WIDTH);
@@ -42,10 +43,21 @@ public class PeaShooter {
         this.timeline1.setCycleCount(Animation.INDEFINITE);
         this.timeline2.setCycleCount(Animation.INDEFINITE);
         this.timeline3.setCycleCount(Animation.INDEFINITE);
+        this.playTimeline();
+    }
+    @Override
+    public void stopTimeline(){
+        this.timeline1.stop();
+        this.timeline2.stop();
+        this.timeline3.stop();
+    }
+    @Override
+    public void playTimeline(){
         this.timeline1.play();
         this.timeline2.play();
         this.timeline3.play();
     }
+    @Override
     public void assignCorrespondingListOfZombies(LinkedList<Zombie> ListOfZombies){
         this.myListOfZombies = ListOfZombies;
     }
@@ -72,9 +84,11 @@ public class PeaShooter {
             }
         }
     }
+    @Override
     public int getX(){
         return (int) this.peaShooterHitbox.getX();
     }
+    @Override
     public int getY(){
         return (int) this.peaShooterHitbox.getY();
     }
@@ -85,17 +99,16 @@ public class PeaShooter {
      *     }
      * @return
      */
-
+    @Override
     public void checkHealth(Pane root){
         this.peaShooterHealth = this.peaShooterHealth - 10;
         if (this.peaShooterHealth == 0) {
             this.removePeaShooter(root);
         }
     }
+
     private void removePeaShooter(Pane root){
-        this.timeline1.stop();
-        this.timeline2.stop();
-        this.timeline3.stop();
+        this.stopTimeline();
         root.getChildren().remove(this.peaShooterHitbox);
         this.myLawn.deletePlant(this);
     }

@@ -14,7 +14,7 @@ import java.util.LinkedList;
 public class Zombie {
     private Rectangle zombieHitbox;
     private int zombieHealth;
-    private LinkedList<PeaShooter> myListOfPlants;
+    private LinkedList<Plant> myListOfPlants;
     private Timeline timeline1;
     private boolean amWalking;
 
@@ -37,8 +37,8 @@ public class Zombie {
         this.timeline1.setCycleCount(Animation.INDEFINITE);
         this.timeline1.play();
     }
-    public void assignCorrespondingListOfPlants(LinkedList<PeaShooter> listOfPlants){
-        this.myListOfPlants= listOfPlants;
+    public void assignCorrespondingListOfPlants(LinkedList<Plant> listOfPlants){
+        this.myListOfPlants = listOfPlants;
     }
     private void walk(){
         this.zombieHitbox.setX(this.zombieHitbox.getX() - 2);
@@ -56,7 +56,7 @@ public class Zombie {
             ListOfZombies.remove(this);
         }
     }
-    public LinkedList<PeaShooter> getMyListOfPlants(){
+    public LinkedList<Plant> getMyListOfPlants(){
         return this.myListOfPlants;
     }
 

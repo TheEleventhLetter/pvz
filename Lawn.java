@@ -10,19 +10,23 @@ import javafx.util.Duration;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Objects;
 
 public class Lawn {
     private LawnSquare[][] lawnGraphic;
-    private PeaShooter[][] plantBoard;
+    private Plant[][] plantBoard;
+    private HashMap<String, Plant> plantKey;
     private ArrayList<LinkedList<Zombie>> totalZombies;
-    private ArrayList<LinkedList<PeaShooter>> totalPlants;
+    private ArrayList<LinkedList<Plant>> totalPlants;
 
     public Lawn(Pane gamepane){
         this.createZombieArrayList();
         this.createPlantArrayList();
         this.lawnGraphic = new LawnSquare[Constants.LAWN_ROWS][Constants.LAWN_COLUMN];
-        this.plantBoard = new PeaShooter[Constants.LAWN_ROWS][Constants.LAWN_COLUMN];
+        this.plantBoard = new Plant[Constants.LAWN_ROWS][Constants.LAWN_COLUMN];
+        this.plantKey = new HashMap<String, Plant>();
         this.setUpLawn(gamepane);
         this.setUpZombieTimeline(gamepane);
         this.setUpTimeLine(gamepane);
@@ -40,9 +44,9 @@ public class Lawn {
         }
     }
     private void createPlantArrayList(){
-        this.totalPlants = new ArrayList<LinkedList<PeaShooter>>(Constants.LAWN_ROWS);
+        this.totalPlants = new ArrayList<LinkedList<Plant>>(Constants.LAWN_ROWS);
         for (int i = 0; i < Constants.LAWN_ROWS; i++){
-            this.totalPlants.add(i, new LinkedList<PeaShooter>());
+            this.totalPlants.add(i, new LinkedList<Plant>());
         }
     }
     private void checkIntersection(Pane root){
@@ -98,33 +102,48 @@ public class Lawn {
         return column;
     }
 
-    public void addPlant(double MouseX, double MouseY, Pane gamepane) {
+    public void addPlant(double MouseX, double MouseY, Pane gamepane, Game myGame, int plantNumber) {
+        
         int plantX = this.calculateNearestXPosition(MouseX);
         int plantY = this.calculateNearestYPosition(MouseY);
-        PeaShooter newPeaShooter = new PeaShooter(plantX, plantY, this, gamepane);
+        Plant newPlant = this.evaluateNumber(plantX, plantY, gamepane, plantNumber, myGame);
         if (this.plantBoard[this.pixelToRow(plantY)][this.pixelToColumn(plantX)] == null) {
-            this.plantBoard[this.pixelToRow(plantY)][this.pixelToColumn(plantX)] = newPeaShooter;
-            newPeaShooter.assignCorrespondingListOfZombies(this.totalZombies.get(this.pixelToRow(plantY)));
-            this.totalPlants.get(this.pixelToRow(plantY)).add(newPeaShooter);
+            this.plantBoard[this.pixelToRow(plantY)][this.pixelToColumn(plantX)] = newPlant;
+            newPlant.assignCorrespondingListOfZombies(this.totalZombies.get(this.pixelToRow(plantY)));
+            this.totalPlants.get(this.pixelToRow(plantY)).add(newPlant);
             if (!this.totalZombies.get(this.pixelToRow(plantY)).isEmpty()) {
                 for (int i = 0; i < this.totalZombies.get(this.pixelToRow(plantY)).size(); i++) {
                     this.totalZombies.get(this.pixelToRow(plantY)).get(i).assignCorrespondingListOfPlants(this.totalPlants.get(this.pixelToRow(plantY)));
                 }
             }
-            }
-
         }
-    public void deletePlant(PeaShooter oldPeaShooter) {
-        if (!this.totalZombies.get(this.pixelToRow(oldPeaShooter.getY())).isEmpty()) {
-            for (Zombie currentZombie : this.totalZombies.get(this.pixelToRow(oldPeaShooter.getY()))) {
-                this.totalPlants.get(this.pixelToRow(oldPeaShooter.getY())).remove(oldPeaShooter);
+
+    }
+    private Plant evaluateNumber(int X, int Y, Pane root, int number, Game myGame){
+        int Pnum = number;
+        Plant newPlant = null;
+        switch (Pnum){
+            case 1:
+                newPlant = new PeaShooter(X, Y, this, root);
+                break;
+            case 2:
+                newPlant = new SunFlower(X, Y, this, root, myGame);
+            default:
+                break;
+        }
+        return newPlant;
+    }
+    public void deletePlant(Plant oldPlant) {
+        if (!this.totalZombies.get(this.pixelToRow(oldPlant.getY())).isEmpty()) {
+            for (Zombie currentZombie : this.totalZombies.get(this.pixelToRow(oldPlant.getY()))) {
+                this.totalPlants.get(this.pixelToRow(oldPlant.getY())).remove(oldPlant);
                 currentZombie.resumeWalking();
-                if (!this.totalZombies.get(this.pixelToRow(oldPeaShooter.getY())).isEmpty()) {
-                    for (int i = 0; i < this.totalZombies.get(this.pixelToRow(oldPeaShooter.getY())).size(); i++) {
-                        this.totalZombies.get(this.pixelToRow(oldPeaShooter.getY())).get(i).assignCorrespondingListOfPlants(this.totalPlants.get(this.pixelToRow(oldPeaShooter.getY())));
+                if (!this.totalZombies.get(this.pixelToRow(oldPlant.getY())).isEmpty()) {
+                    for (int i = 0; i < this.totalZombies.get(this.pixelToRow(oldPlant.getY())).size(); i++) {
+                        this.totalZombies.get(this.pixelToRow(oldPlant.getY())).get(i).assignCorrespondingListOfPlants(this.totalPlants.get(this.pixelToRow(oldPlant.getY())));
                     }
                 }
-                this.plantBoard[this.pixelToRow(oldPeaShooter.getY())][this.pixelToColumn(oldPeaShooter.getX())] = null;
+                this.plantBoard[this.pixelToRow(oldPlant.getY())][this.pixelToColumn(oldPlant.getX())] = null;
             }
         }
     }
@@ -177,8 +196,8 @@ public class Lawn {
             if (!currentZombieList.isEmpty()) {
                 for (Zombie currentZombie : currentZombieList){
                     if(!currentZombie.getMyListOfPlants().isEmpty()) {
-                        LinkedList<PeaShooter> currentPlantList = currentZombie.getMyListOfPlants();
-                        for (PeaShooter currentPlant : currentPlantList){
+                        LinkedList<Plant> currentPlantList = currentZombie.getMyListOfPlants();
+                        for (Plant currentPlant : currentPlantList){
                             if (currentZombie.didCollide(currentPlant.getX(), currentPlant.getY())){
                                 currentZombie.stopWalking();
                                 currentPlant.checkHealth(root);

@@ -9,4 +9,6 @@ public class Constants {
     public static final int PEA_RADIUS = 10;
     public static final int ZOMBIE_WIDTH = 50;
     public static final int SUN_RADIUS = 20;
+    public static final int PEASHOOTER_COST = 100;
+    public static final int SUNFLOWER_COST = 50;
 }
