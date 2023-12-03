@@ -23,7 +23,7 @@ public class Game {
     private SeedPacket[] seedPackets;
 
     public Game(Pane gamepane, HBox buttonPane){
-        this.seedPackets = new SeedPacket[5];
+        this.seedPackets = new SeedPacket[4];
         this.totalSun = 500;
         this.somePacketSelected = false;
         this.createButtonPane(buttonPane);
@@ -33,9 +33,8 @@ public class Game {
     private void setUpSeedPackets(Pane buttonPane, Game myGame){
         this.seedPackets[0] = new PeaShooterSeedPacket(buttonPane, myGame);
         this.seedPackets[1] = new SunFlowerSeedPacket(buttonPane, myGame);
-        this.seedPackets[2] = new PeaShooterSeedPacket(buttonPane, myGame);
-        this.seedPackets[3] = new PeaShooterSeedPacket(buttonPane, myGame);
-        this.seedPackets[4] = new PeaShooterSeedPacket(buttonPane, myGame);
+        this.seedPackets[2] = new CherryBombSeedPacket(buttonPane, myGame);
+        this.seedPackets[3] = new WalnutSeedPacket(buttonPane, myGame);
     }
 
     private void createGamePane(Pane gamepane){
@@ -72,13 +71,13 @@ public class Game {
     public void addToTotalSun(){
         this.totalSun = this.totalSun + 25;
         this.displayTotalSun.setText("Total Sun: " + this.totalSun);
-        for (int i = 0; i < 5; i++){
+        for (int i = 0; i < 4; i++){
             this.seedPackets[i].updateSun();
         }
     }
 
     public boolean preventDoubleChoicePacket(){
-        for (int i = 0; i < 5; i++){
+        for (int i = 0; i < 4; i++){
             if (this.seedPackets[i].isSeedSelected()){
                 this.somePacketSelected = true;
             }
@@ -86,7 +85,7 @@ public class Game {
         return this.somePacketSelected;
     }
     private void findChosenSeedPacket(){
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             if (this.seedPackets[i].isSeedSelected()) {
                 this.chosenPacket = this.seedPackets[i];
             }
@@ -107,17 +106,9 @@ public class Game {
                         this.somePacketSelected = false;
                         this.displayTotalSun.setText("Total Sun: " + this.totalSun);
                     }
-                    /**
-                     * } else if (this.sunFlowerSeedSelected) {
-                     *                     if (this.lawn.checkValid(MouseX, MouseY)){
-                     *                         this.lawn.addPlant(MouseX, MouseY, gamepane);
-                     *                         this.sunFlowerSeedSelected = false;
-                     *                         this.totalSun = this.totalSun - 50;
-                     *                         this.displayTotalSun.setText("Total Sun; " + this.totalSun);
-                     */
-                    }
                 }
-
             }
+
+        }
     }
 }

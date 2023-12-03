@@ -17,7 +17,6 @@ import java.util.Objects;
 public class Lawn {
     private LawnSquare[][] lawnGraphic;
     private Plant[][] plantBoard;
-    private HashMap<String, Plant> plantKey;
     private ArrayList<LinkedList<Zombie>> totalZombies;
     private ArrayList<LinkedList<Plant>> totalPlants;
 
@@ -26,7 +25,6 @@ public class Lawn {
         this.createPlantArrayList();
         this.lawnGraphic = new LawnSquare[Constants.LAWN_ROWS][Constants.LAWN_COLUMN];
         this.plantBoard = new Plant[Constants.LAWN_ROWS][Constants.LAWN_COLUMN];
-        this.plantKey = new HashMap<String, Plant>();
         this.setUpLawn(gamepane);
         this.setUpZombieTimeline(gamepane);
         this.setUpTimeLine(gamepane);
@@ -109,7 +107,7 @@ public class Lawn {
         Plant newPlant = this.evaluateNumber(plantX, plantY, gamepane, plantNumber, myGame);
         if (this.plantBoard[this.pixelToRow(plantY)][this.pixelToColumn(plantX)] == null) {
             this.plantBoard[this.pixelToRow(plantY)][this.pixelToColumn(plantX)] = newPlant;
-            newPlant.assignCorrespondingListOfZombies(this.totalZombies.get(this.pixelToRow(plantY)));
+            newPlant.assignCorrespondingListOfZombies(this.totalZombies);
             this.totalPlants.get(this.pixelToRow(plantY)).add(newPlant);
             if (!this.totalZombies.get(this.pixelToRow(plantY)).isEmpty()) {
                 for (int i = 0; i < this.totalZombies.get(this.pixelToRow(plantY)).size(); i++) {
@@ -128,22 +126,26 @@ public class Lawn {
                 break;
             case 2:
                 newPlant = new SunFlower(X, Y, this, root, myGame);
+                break;
+            case 3:
+                newPlant = new CherryBomb(X, Y, this, root);
+                break;
+            case 4:
+                newPlant = new Walnut(X, Y, this, root);
             default:
                 break;
         }
         return newPlant;
     }
     public void deletePlant(Plant oldPlant) {
+        this.totalPlants.get(this.pixelToRow(oldPlant.getY())).remove(oldPlant);
+        this.plantBoard[this.pixelToRow(oldPlant.getY())][this.pixelToColumn(oldPlant.getX())] = null;
         if (!this.totalZombies.get(this.pixelToRow(oldPlant.getY())).isEmpty()) {
             for (Zombie currentZombie : this.totalZombies.get(this.pixelToRow(oldPlant.getY()))) {
-                this.totalPlants.get(this.pixelToRow(oldPlant.getY())).remove(oldPlant);
                 currentZombie.resumeWalking();
-                if (!this.totalZombies.get(this.pixelToRow(oldPlant.getY())).isEmpty()) {
-                    for (int i = 0; i < this.totalZombies.get(this.pixelToRow(oldPlant.getY())).size(); i++) {
-                        this.totalZombies.get(this.pixelToRow(oldPlant.getY())).get(i).assignCorrespondingListOfPlants(this.totalPlants.get(this.pixelToRow(oldPlant.getY())));
-                    }
+                for (int i = 0; i < this.totalZombies.get(this.pixelToRow(oldPlant.getY())).size(); i++) {
+                    this.totalZombies.get(this.pixelToRow(oldPlant.getY())).get(i).assignCorrespondingListOfPlants(this.totalPlants.get(this.pixelToRow(oldPlant.getY())));
                 }
-                this.plantBoard[this.pixelToRow(oldPlant.getY())][this.pixelToColumn(oldPlant.getX())] = null;
             }
         }
     }
@@ -198,7 +200,7 @@ public class Lawn {
                     if(!currentZombie.getMyListOfPlants().isEmpty()) {
                         LinkedList<Plant> currentPlantList = currentZombie.getMyListOfPlants();
                         for (Plant currentPlant : currentPlantList){
-                            if (currentZombie.didCollide(currentPlant.getX(), currentPlant.getY())){
+                            if (currentZombie.didCollide(currentPlant.getX(), currentPlant.getY(), Constants.LAWN_WIDTH, Constants.LAWN_WIDTH)){
                                 currentZombie.stopWalking();
                                 currentPlant.checkHealth(root);
                             }

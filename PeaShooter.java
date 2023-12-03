@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class PeaShooter implements Plant {
@@ -21,12 +22,11 @@ public class PeaShooter implements Plant {
     private Timeline timeline2;
     private Timeline timeline3;
     public PeaShooter(int X, int Y, Lawn lawn, Pane root){
-        System.out.println("Peashooter Created");
         this.myLawn = lawn;
         this.peaShooterHealth = 4000;
         this.peaShooterHitbox = new Rectangle(X, Y, Constants.LAWN_WIDTH, Constants.LAWN_WIDTH);
         this.peaShooterHitbox.setStroke(Color.BLACK);
-        this.peaShooterHitbox.setFill(Color.RED);
+        this.peaShooterHitbox.setFill(Color.DARKGREEN);
         root.getChildren().add(this.peaShooterHitbox);
         this.listOfPeas = new LinkedList<>();
         this.setUpPeaShootingTimeline(X, Y, root);
@@ -58,8 +58,8 @@ public class PeaShooter implements Plant {
         this.timeline3.play();
     }
     @Override
-    public void assignCorrespondingListOfZombies(LinkedList<Zombie> ListOfZombies){
-        this.myListOfZombies = ListOfZombies;
+    public void assignCorrespondingListOfZombies(ArrayList<LinkedList<Zombie>> ListOfZombies){
+        this.myListOfZombies = ListOfZombies.get(this.myLawn.pixelToRow((int) this.peaShooterHitbox.getY()));
     }
 
     private void generatePea(int X, int Y, Pane root){
@@ -122,7 +122,7 @@ public class PeaShooter implements Plant {
                         if (currentPea.didCollide(currentZombie.getX(), currentZombie.getY())) {
                             currentPea.removeGraphic(root);
                             this.listOfPeas.remove(currentPea);
-                            currentZombie.checkHealth(root, this.myListOfZombies);
+                            currentZombie.checkHealth(root, this.myListOfZombies, 1);
                             if (this.listOfPeas.isEmpty()) {
                                 break;
                             }

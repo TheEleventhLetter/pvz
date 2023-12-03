@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -19,7 +20,6 @@ public class SunFlower implements Plant{
     private Lawn myLawn;
     private Timeline timeline1;
     public SunFlower(int X, int Y, Lawn lawn, Pane root, Game myGame){
-        System.out.println("SunFlower Created");
         this.myLawn = lawn;
         this.sunFlowerHealth = 2000;
         this.sunFlowerHitbox = new Rectangle(X, Y, Constants.LAWN_WIDTH, Constants.LAWN_WIDTH);
@@ -29,7 +29,7 @@ public class SunFlower implements Plant{
         this.setUpSunFlowerTimeline(X, Y, root, myGame);
     }
     private void setUpSunFlowerTimeline(int X, int Y, Pane root, Game myGame){
-        KeyFrame kf1 = new KeyFrame(Duration.millis(5000), (ActionEvent e) -> this.generateSun(X, Y, root, myGame));
+        KeyFrame kf1 = new KeyFrame(Duration.millis(8000), (ActionEvent e) -> this.generateSun(X, Y, root, myGame));
 
         this.timeline1 = new Timeline(kf1);
         this.timeline1.setCycleCount(Animation.INDEFINITE);
@@ -41,8 +41,8 @@ public class SunFlower implements Plant{
         new Sun(randX, randY, root, myGame);
     }
     @Override
-    public void assignCorrespondingListOfZombies(LinkedList<Zombie> ListOfZombies){
-        this.myListOfZombies = ListOfZombies;
+    public void assignCorrespondingListOfZombies(ArrayList<LinkedList<Zombie>> ListOfZombies){
+        this.myListOfZombies = ListOfZombies.get(this.myLawn.pixelToRow((int) this.sunFlowerHitbox.getY()));
     }
     @Override
     public void playTimeline(){

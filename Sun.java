@@ -24,7 +24,7 @@ public class Sun {
     }
     private void setUpDroppingTimeline(){
         int randY = ThreadLocalRandom.current().nextInt(Constants.LAWN_WIDTH * 2, Constants.SCENE_HEIGHT - Constants.SUN_RADIUS);
-        KeyFrame kf = new KeyFrame(Duration.millis(30), (ActionEvent e) -> this.drop(randY));
+        KeyFrame kf = new KeyFrame(Duration.millis(100), (ActionEvent e) -> this.drop(randY));
         this.timeline = new Timeline(kf);
         this.timeline.setCycleCount(Animation.INDEFINITE);
         this.timeline.play();

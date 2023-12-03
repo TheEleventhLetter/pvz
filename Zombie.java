@@ -32,7 +32,7 @@ public class Zombie {
         this.zombieHealth = health;
     }
     private void setUpWalkingTimeline(Pane root){
-        KeyFrame kf1 = new KeyFrame(Duration.millis(40), (ActionEvent e) -> this.walk());
+        KeyFrame kf1 = new KeyFrame(Duration.millis(30), (ActionEvent e) -> this.walk());
         this.timeline1 = new Timeline(kf1);
         this.timeline1.setCycleCount(Animation.INDEFINITE);
         this.timeline1.play();
@@ -41,7 +41,7 @@ public class Zombie {
         this.myListOfPlants = listOfPlants;
     }
     private void walk(){
-        this.zombieHitbox.setX(this.zombieHitbox.getX() - 2);
+        this.zombieHitbox.setX(this.zombieHitbox.getX() - 1);
     }
     public int getY(){
         return (int) this.zombieHitbox.getY();
@@ -49,13 +49,14 @@ public class Zombie {
     public int getX(){
         return (int) this.zombieHitbox.getX();
     }
-    public void checkHealth(Pane root, LinkedList<Zombie> ListOfZombies) {
-        this.zombieHealth = this.zombieHealth - 1;
-        if (this.zombieHealth == 0) {
+    public void checkHealth(Pane root, LinkedList<Zombie> ListOfZombies, int damage) {
+        this.zombieHealth = this.zombieHealth - damage;
+        if (this.zombieHealth <= 0) {
             this.removeZombie(root);
             ListOfZombies.remove(this);
         }
     }
+
     public LinkedList<Plant> getMyListOfPlants(){
         return this.myListOfPlants;
     }
@@ -63,8 +64,8 @@ public class Zombie {
     private void removeZombie(Pane root) {
         root.getChildren().remove(this.zombieHitbox);
     }
-    public boolean didCollide(int X, int Y){
-        return this.zombieHitbox.intersects(X, Y, Constants.LAWN_WIDTH, Constants.LAWN_WIDTH);
+    public boolean didCollide(int X, int Y, int Width, int Height){
+        return this.zombieHitbox.intersects(X, Y, Width, Height);
     }
     public void stopWalking(){
         this.timeline1.stop();
