@@ -8,13 +8,15 @@ public class CatTailSeedPacket implements SeedPacket{
     private boolean catTailSeedSelected;
     private int TotalSun;
     private Game myGame;
+    private Button catTailSeedPacket;
     public CatTailSeedPacket(Pane root, Game mygame){
         this.myGame = mygame;
         this.TotalSun = this.myGame.getTotalSun();
         this.catTailSeedSelected = false;
-        Button catTailSeedPacket = new Button("CatTail");
-        root.getChildren().add(catTailSeedPacket);
-        catTailSeedPacket.setOnAction((ActionEvent e) -> this.catTailSeedSelectChecker(this.TotalSun));
+        this.catTailSeedPacket = new Button("CatTail");
+        this.catTailSeedPacket.setStyle("-fx-background-color: #e3b44f");
+        root.getChildren().add(this.catTailSeedPacket);
+        this.catTailSeedPacket.setOnAction((ActionEvent e) -> this.catTailSeedSelectChecker(this.TotalSun));
     }
     private void catTailSeedSelectChecker(int totalSun) {
         if (!this.catTailSeedSelected) {
@@ -25,6 +27,15 @@ public class CatTailSeedPacket implements SeedPacket{
             } else {
                 this.catTailSeedSelected = false;
             }
+        }
+        this.seedColorChecker();
+    }
+    @Override
+    public void seedColorChecker(){
+        if (this.catTailSeedSelected){
+            this.catTailSeedPacket.setStyle("-fx-background-color: #00ff00");
+        } else {
+            this.catTailSeedPacket.setStyle("-fx-background-color: #e3b44f");
         }
     }
     @Override

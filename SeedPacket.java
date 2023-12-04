@@ -6,5 +6,5 @@ public interface SeedPacket {
     public int myCost();
     public void reset();
     public void updateSun();
-
+    public void seedColorChecker();
 }

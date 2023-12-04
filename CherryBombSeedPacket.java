@@ -8,13 +8,15 @@ public class CherryBombSeedPacket implements SeedPacket{
     private boolean cherryBombSeedSelected;
     private int TotalSun;
     private Game myGame;
+    private Button cherryBombSeedPacket;
     public CherryBombSeedPacket(Pane root, Game mygame){
         this.myGame = mygame;
         this.TotalSun = this.myGame.getTotalSun();
         this.cherryBombSeedSelected = false;
-        Button cherryBombSeedPacket = new Button("CherryBomb");
-        root.getChildren().add(cherryBombSeedPacket);
-        cherryBombSeedPacket.setOnAction((ActionEvent e) -> this.cherryBombSeedSelectChecker(this.TotalSun));
+        this.cherryBombSeedPacket = new Button("CherryBomb");
+        this.cherryBombSeedPacket.setStyle("-fx-background-color: #e3b44f");
+        root.getChildren().add(this.cherryBombSeedPacket);
+        this.cherryBombSeedPacket.setOnAction((ActionEvent e) -> this.cherryBombSeedSelectChecker(this.TotalSun));
     }
     private void cherryBombSeedSelectChecker(int totalSun) {
         if (!this.cherryBombSeedSelected) {
@@ -25,6 +27,15 @@ public class CherryBombSeedPacket implements SeedPacket{
             } else {
                 this.cherryBombSeedSelected = false;
             }
+        }
+        this.seedColorChecker();
+    }
+    @Override
+    public void seedColorChecker(){
+        if (this.cherryBombSeedSelected){
+            this.cherryBombSeedPacket.setStyle("-fx-background-color: #00ff00");
+        } else {
+            this.cherryBombSeedPacket.setStyle("-fx-background-color: #e3b44f");
         }
     }
     @Override

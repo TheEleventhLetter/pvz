@@ -8,13 +8,15 @@ public class SunFlowerSeedPacket implements SeedPacket{
     private boolean sunFlowerSeedSelected;
     private int TotalSun;
     private Game myGame;
+    private Button sunFlowerSeedPacket;
     public SunFlowerSeedPacket(Pane root, Game mygame){
         this.myGame = mygame;
         this.TotalSun = this.myGame.getTotalSun();
         this.sunFlowerSeedSelected = false;
-        Button peaShooterSeedPacket = new Button("SunFlower");
-        root.getChildren().add(peaShooterSeedPacket);
-        peaShooterSeedPacket.setOnAction((ActionEvent e) -> this.sunFlowerSeedSelectChecker(this.TotalSun));
+        this.sunFlowerSeedPacket = new Button("SunFlower");
+        this.sunFlowerSeedPacket.setStyle("-fx-background-color: #e3b44f");
+        root.getChildren().add(this.sunFlowerSeedPacket);
+        this.sunFlowerSeedPacket.setOnAction((ActionEvent e) -> this.sunFlowerSeedSelectChecker(this.TotalSun));
     }
     private void sunFlowerSeedSelectChecker(int totalSun){
         if (!this.sunFlowerSeedSelected) {
@@ -25,6 +27,15 @@ public class SunFlowerSeedPacket implements SeedPacket{
             } else {
                 this.sunFlowerSeedSelected = false;
             }
+        }
+        this.seedColorChecker();
+    }
+    @Override
+    public void seedColorChecker(){
+        if (this.sunFlowerSeedSelected){
+            this.sunFlowerSeedPacket.setStyle("-fx-background-color: #00ff00");
+        } else {
+            this.sunFlowerSeedPacket.setStyle("-fx-background-color: #e3b44f");
         }
     }
     @Override

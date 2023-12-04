@@ -97,12 +97,15 @@ public class PeaShooter implements Plant {
     public void checkHealth(Pane root){
         this.peaShooterHealth = this.peaShooterHealth - 10;
         if (this.peaShooterHealth == 0) {
-            this.removePeaShooter(root);
+            this.removePlant(root);
         }
     }
-
-    private void removePeaShooter(Pane root){
+    @Override
+    public void removePlant(Pane root){
         this.stopTimeline();
+        for (int i = 0; i < this.listOfPeas.size(); i++) {
+            this.listOfPeas.get(i).removeGraphic(root);
+        }
         root.getChildren().remove(this.peaShooterHitbox);
         this.myLawn.deletePlant(this);
     }

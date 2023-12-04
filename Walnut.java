@@ -49,10 +49,11 @@ public class Walnut implements Plant{
     public void checkHealth(Pane root){
         this.walnutHealth = this.walnutHealth - 10;
         if (this.walnutHealth == 0) {
-            this.removeWalnut(root);
+            this.removePlant(root);
         }
     }
-    private void removeWalnut(Pane root){
+    @Override
+    public void removePlant(Pane root){
         this.stopTimeline();
         root.getChildren().remove(this.walnutHitbox);
         this.myLawn.deletePlant(this);

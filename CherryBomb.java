@@ -69,10 +69,11 @@ public class CherryBomb implements Plant{
         this.explodingCountDown--;
         if (this.explodingCountDown == 0){
             this.explode(root);
-            this.removeCherryBomb(root);
+            this.removePlant(root);
         }
     }
-    private void removeCherryBomb(Pane root) {
+    @Override
+    public void removePlant(Pane root) {
         this.stopTimeline();
         root.getChildren().remove(this.cherryBombHitbox);
         this.myLawn.deletePlant(this);

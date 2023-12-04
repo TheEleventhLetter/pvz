@@ -18,7 +18,7 @@ public class ThornProjectile {
 
     public void home(int destinationX, int destinationY) {
         int maxMagnitude = 2;
-        double angleDis = Math.toRadians(0.4);
+        double angleDis = Math.toRadians(0.5);
         double mustMoveX = 0;
         double mustMoveY = 0;
         double angle = this.findAngle(destinationX, destinationY);
@@ -46,6 +46,29 @@ public class ThornProjectile {
         double angle = 0;
         double displacementX;
         double displacementY;
+        if (destinationX > this.thorn.getCenterX()){
+            displacementX = destinationX - this.thorn.getCenterX();
+            displacementY = (destinationY + ((double) Constants.LAWN_WIDTH / 2)) - this.thorn.getCenterY();
+            angle = Math.atan(displacementY/displacementX);
+            /**
+             * if (this.lastAngle == 0){
+             *                 angle = Math.atan(displacementY / displacementX);
+             *             } else if (this.lastAngle > 0){
+             *                 angle = Math.toRadians(180) - Math.atan(displacementY / displacementX);
+             *             } else if (this.lastAngle < 0) {
+             *                 angle = -(Math.toRadians(180) - Math.atan(displacementY / displacementX));
+             *             }
+             */
+        } else if (destinationX < this.thorn.getCenterX()){
+            displacementX = this.thorn.getCenterX() - destinationX;
+            displacementY = (destinationY + ((double) Constants.LAWN_WIDTH / 2)) - this.thorn.getCenterY();
+            if (this.lastAngle > 0) {
+                angle = Math.toRadians(180) - Math.atan(displacementY / displacementX);
+            } else if (this.lastAngle < 0) {
+                angle = -(Math.toRadians(180) - Math.atan(displacementY / displacementX));
+            }
+        }
+        /**
         if (destinationX > this.thorn.getCenterX() && destinationY > this.thorn.getCenterY()) {
             displacementX = destinationX - this.thorn.getCenterX();
             displacementY = (destinationY + ((double) Constants.LAWN_WIDTH / 2)) - this.thorn.getCenterY();
@@ -63,6 +86,8 @@ public class ThornProjectile {
             displacementY = this.thorn.getCenterY() - (destinationY + ((double) Constants.LAWN_WIDTH / 2));
             angle = Math.toRadians(360) - Math.atan(displacementY / displacementX);
         }
+         */
+
         return angle;
     }
     public void move(){

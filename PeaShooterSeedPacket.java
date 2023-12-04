@@ -8,24 +8,35 @@ public class PeaShooterSeedPacket implements SeedPacket {
     private boolean peaShooterSeedSelected;
     private int TotalSun;
     private Game myGame;
+    private Button peaShooterSeedPacket;
     public PeaShooterSeedPacket(Pane root, Game mygame){
         this.myGame = mygame;
         this.TotalSun = this.myGame.getTotalSun();
         this.peaShooterSeedSelected = false;
-        Button peaShooterSeedPacket = new Button("PeaShooter");
-        root.getChildren().add(peaShooterSeedPacket);
-        peaShooterSeedPacket.setOnAction((ActionEvent e) -> this.peaShooterSeedSelectChecker(this.TotalSun));
+        this.peaShooterSeedPacket = new Button("PeaShooter");
+        this.peaShooterSeedPacket.setStyle("-fx-background-color: #e3b44f");
+        root.getChildren().add(this.peaShooterSeedPacket);
+        this.peaShooterSeedPacket.setOnAction((ActionEvent e) -> this.peaShooterSeedSelectChecker(this.TotalSun));
     }
     private void peaShooterSeedSelectChecker(int totalSun) {
-            if (!this.peaShooterSeedSelected) {
-                if (!this.myGame.preventDoubleChoicePacket()) {
-                    if (totalSun >= 100) {
-                        this.peaShooterSeedSelected = true;
-                    }
-                } else {
-                    this.peaShooterSeedSelected = false;
+        if (!this.peaShooterSeedSelected) {
+            if (!this.myGame.preventDoubleChoicePacket()) {
+                if (totalSun >= 100) {
+                    this.peaShooterSeedSelected = true;
                 }
+            } else {
+                this.peaShooterSeedSelected = false;
             }
+        }
+        this.seedColorChecker();
+    }
+    @Override
+    public void seedColorChecker(){
+        if (this.peaShooterSeedSelected){
+            this.peaShooterSeedPacket.setStyle("-fx-background-color: #00ff00");
+        } else {
+            this.peaShooterSeedPacket.setStyle("-fx-background-color: #e3b44f");
+        }
     }
     @Override
     public boolean isSeedSelected(){

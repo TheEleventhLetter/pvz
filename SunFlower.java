@@ -64,10 +64,11 @@ public class SunFlower implements Plant{
     public void checkHealth(Pane root){
         this.sunFlowerHealth = this.sunFlowerHealth - 10;
         if (this.sunFlowerHealth == 0) {
-            this.removeSunFlower(root);
+            this.removePlant(root);
         }
     }
-    private void removeSunFlower(Pane root){
+    @Override
+    public void removePlant(Pane root){
         this.stopTimeline();
         root.getChildren().remove(this.sunFlowerHitbox);
         this.myLawn.deletePlant(this);

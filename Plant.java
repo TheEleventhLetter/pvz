@@ -12,5 +12,6 @@ public interface Plant {
     public int getX();
     public int getY();
     public void checkHealth(Pane root);
+    public void removePlant(Pane root);
 
 }

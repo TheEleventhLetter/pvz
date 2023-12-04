@@ -132,12 +132,15 @@ public class CatTail implements Plant{
     public void checkHealth(Pane root){
         this.catTailHealth = this.catTailHealth - 10;
         if (this.catTailHealth == 0) {
-            this.removePeaShooter(root);
+            this.removePlant(root);
         }
     }
-
-    private void removePeaShooter(Pane root){
+    @Override
+    public void removePlant(Pane root){
         this.stopTimeline();
+        for (int i = 0; i < this.listOfThorns.size(); i++) {
+            this.listOfThorns.get(i).removeGraphic(root);
+        }
         root.getChildren().remove(this.catTailHitbox);
         this.myLawn.deletePlant(this);
     }
@@ -146,7 +149,7 @@ public class CatTail implements Plant{
             if (this.zombiePresent()) {
                 for (int k = 0; k < this.listOfThorns.size(); k++) {
                     for (int y = 0; y < Constants.LAWN_ROWS; y++) {
-                        for (int z = 0; z < this.totalZombies.get(y).size(); z++){
+                        for (int z = 0; z < this.totalZombies.get(y).size(); z++) {
                             ThornProjectile currentThorn = this.listOfThorns.get(k);
                             Zombie currentZombie = this.totalZombies.get(y).get(z);
                             if (currentThorn.didCollide(currentZombie.getX(), currentZombie.getY())) {
@@ -158,9 +161,7 @@ public class CatTail implements Plant{
                                 }
                             }
                         }
-
                     }
-
                 }
             }
         }

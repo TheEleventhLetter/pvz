@@ -155,7 +155,7 @@ public class Lawn {
             }
         }
     }
-    public boolean checkValid(double MouseX, double MouseY){
+    public boolean checkPlacementValid(double MouseX, double MouseY){
         boolean spotOpen = false;
         int plantX = this.calculateNearestXPosition(MouseX);
         int plantY = this.calculateNearestYPosition(MouseY);
@@ -163,6 +163,20 @@ public class Lawn {
             spotOpen = true;
         }
         return spotOpen;
+    }
+    public boolean checkDeletionValid(double MouseX, double MouseY){
+        boolean spotFull = false;
+        int plantX = this.calculateNearestXPosition(MouseX);
+        int plantY = this.calculateNearestYPosition(MouseY);
+        if (this.plantBoard[this.pixelToRow(plantY)][this.pixelToColumn(plantX)] != null) {
+            spotFull = true;
+        }
+        return spotFull;
+    }
+    public Plant getPlant(double MouseX, double MouseY){
+        int plantX = this.calculateNearestXPosition(MouseX);
+        int plantY = this.calculateNearestYPosition(MouseY);
+        return this.plantBoard[this.pixelToRow(plantY)][this.pixelToColumn(plantX)];
     }
     private void generateZombies(Pane root){
         int randY = this.randomYpixel();

@@ -17,6 +17,7 @@ import javafx.util.Duration;
 public class Game {
     private Lawn lawn;
     private boolean somePacketSelected;
+    private boolean readyToRemove;
     private SeedPacket chosenPacket;
     private int totalSun;
     private Label displayTotalSun;
@@ -29,6 +30,7 @@ public class Game {
         this.seedPackets = new SeedPacket[5];
         this.totalSun = 500;
         this.somePacketSelected = false;
+        this.readyToRemove = false;
         this.createButtonPane(buttonPane);
         this.createGamePane(gamepane);
         this.setUpSunGenerationTimeline(gamepane);
@@ -55,11 +57,16 @@ public class Game {
         buttonPane.setStyle("-fx-background-color: #705301");
         Button quitButton = new Button("Quit");
         quitButton.setOnAction((ActionEvent e) -> System.exit(0));
+        Button removeButton = new Button("Remove Plant");
+        removeButton.setOnAction((ActionEvent e) -> removeTrueFalse());
+        Button pauseButton = new Button("Pause");
+
         this.displayTotalSun = new Label("Total Sun: " + this.totalSun);
         this.displayTotalSun.setTextFill(Color.WHITE);
         this.displayTotalSun.setFont(new Font(20));
+        buttonPane.getChildren().add(this.displayTotalSun);
         this.setUpSeedPackets(buttonPane, this);
-        buttonPane.getChildren().addAll(this.displayTotalSun, quitButton);
+        buttonPane.getChildren().addAll(removeButton, quitButton);
 
         buttonPane.setFocusTraversable(false);
     }
@@ -96,12 +103,21 @@ public class Game {
     }
 
     public boolean preventDoubleChoicePacket(){
-        for (int i = 0; i < 5; i++){
-            if (this.seedPackets[i].isSeedSelected()){
-                this.somePacketSelected = true;
+        if (!this.readyToRemove) {
+            for (int i = 0; i < 5; i++) {
+                if (this.seedPackets[i].isSeedSelected()) {
+                    this.somePacketSelected = true;
+                }
             }
         }
         return this.somePacketSelected;
+    }
+    private void removeTrueFalse() {
+        if (!this.readyToRemove) {
+            this.readyToRemove = true;
+        } else {
+            this.readyToRemove = false;
+        }
     }
     private void findChosenSeedPacket(){
         for (int i = 0; i < 5; i++) {
@@ -119,17 +135,23 @@ public class Game {
                 this.findChosenSeedPacket();
                 if (this.chosenPacket != null) {
                     if (this.chosenPacket.isSeedSelected()) {
-                        if (this.lawn.checkValid(MouseX, MouseY)) {
+                        if (this.lawn.checkPlacementValid(MouseX, MouseY)) {
                             this.lawn.addPlant(MouseX, MouseY, gamepane, this, this.chosenPacket.getPlantNumber());
                             this.totalSun = this.totalSun - this.chosenPacket.myCost();
                             this.chosenPacket.reset();
+                            this.chosenPacket.seedColorChecker();
                             this.somePacketSelected = false;
                             this.displayTotalSun.setText("Total Sun: " + this.totalSun);
                         }
                     }
                 }
+                if (this.readyToRemove) {
+                    if (this.lawn.checkDeletionValid(MouseX, MouseY)) {
+                        this.lawn.getPlant(MouseX, MouseY).removePlant(gamepane);
+                        this.readyToRemove = false;
+                    }
+                }
             }
-
         }
     }
     private void checkGameOver(Pane root){
