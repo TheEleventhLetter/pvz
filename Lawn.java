@@ -19,6 +19,8 @@ public class Lawn {
     private Plant[][] plantBoard;
     private ArrayList<LinkedList<Zombie>> totalZombies;
     private ArrayList<LinkedList<Plant>> totalPlants;
+    private Timeline timeline1;
+    private Timeline timeline2;
 
     public Lawn(Pane gamepane){
         this.createZombieArrayList();
@@ -31,9 +33,9 @@ public class Lawn {
     }
     public void setUpTimeLine(Pane root){
         KeyFrame kf = new KeyFrame(Duration.millis(10), (ActionEvent e) -> this.checkIntersection(root));
-        Timeline timeline = new Timeline(kf);
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
+        this.timeline1 = new Timeline(kf);
+        this.timeline1.setCycleCount(Animation.INDEFINITE);
+        this.timeline1.play();
     }
     private void createZombieArrayList(){
         this.totalZombies = new ArrayList<LinkedList<Zombie>>(Constants.LAWN_ROWS);
@@ -73,10 +75,10 @@ public class Lawn {
 
     }
     private void setUpZombieTimeline(Pane root){
-        KeyFrame kf = new KeyFrame(Duration.millis(3000), (ActionEvent e) -> this.generateZombies(root));
-        Timeline timeline = new Timeline(kf);
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
+        KeyFrame kf = new KeyFrame(Duration.millis(5000), (ActionEvent e) -> this.generateZombies(root));
+        this.timeline2 = new Timeline(kf);
+        this.timeline2.setCycleCount(Animation.INDEFINITE);
+        this.timeline2.play();
     }
 
 
@@ -132,6 +134,10 @@ public class Lawn {
                 break;
             case 4:
                 newPlant = new Walnut(X, Y, this, root);
+                break;
+            case 5:
+                newPlant = new CatTail(X, Y, this, root);
+                break;
             default:
                 break;
         }
@@ -209,6 +215,34 @@ public class Lawn {
                 }
             }
         }
+    }
+    public boolean isGameOver() {
+        boolean gameOver = false;
+        for (int i = 0; i < Constants.LAWN_ROWS; i++) {
+            LinkedList<Zombie> currentZombieList = totalZombies.get(i);
+            if (!currentZombieList.isEmpty()) {
+                for (Zombie currentZombie : currentZombieList) {
+                    if (currentZombie.getX() < 0) {
+                        gameOver = true;
+                    }
+                }
+            }
+        }
+        return gameOver;
+    }
+    public void stopTimelines(){
+        this.timeline1.stop();
+        this.timeline2.stop();
+        for (int i = 0; i < Constants.LAWN_ROWS; i++) {
+            for (int j = 0; j < Constants.LAWN_COLUMN; j++) {
+                if (this.plantBoard[i][j] != null) {
+                    this.plantBoard[i][j].stopTimeline();
+                }
+            }
+            for (int k = 0; k < this.totalZombies.get(i).size(); k++){
+                this.totalZombies.get(i).get(k).stopTimeline();
+            }
+            }
     }
 
 }

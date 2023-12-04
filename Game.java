@@ -21,25 +21,33 @@ public class Game {
     private int totalSun;
     private Label displayTotalSun;
     private SeedPacket[] seedPackets;
+    private Timeline timeline1;
+    private Timeline timeline2;
+    private Label gameOverLabel;
 
     public Game(Pane gamepane, HBox buttonPane){
-        this.seedPackets = new SeedPacket[4];
+        this.seedPackets = new SeedPacket[5];
         this.totalSun = 500;
         this.somePacketSelected = false;
         this.createButtonPane(buttonPane);
         this.createGamePane(gamepane);
         this.setUpSunGenerationTimeline(gamepane);
+        this.setUpGameOverTimeline(gamepane);
     }
     private void setUpSeedPackets(Pane buttonPane, Game myGame){
         this.seedPackets[0] = new PeaShooterSeedPacket(buttonPane, myGame);
         this.seedPackets[1] = new SunFlowerSeedPacket(buttonPane, myGame);
         this.seedPackets[2] = new CherryBombSeedPacket(buttonPane, myGame);
         this.seedPackets[3] = new WalnutSeedPacket(buttonPane, myGame);
+        this.seedPackets[4] = new CatTailSeedPacket(buttonPane, myGame);
     }
 
     private void createGamePane(Pane gamepane){
         this.lawn = new Lawn(gamepane);
         gamepane.setOnMouseClicked((MouseEvent e) -> this.handleMouseClick(e, gamepane));
+        this.gameOverLabel = new Label("THE ZOMBIES ATE YOUR BRAINS!!");
+        this.gameOverLabel.setTextFill(Color.DARKSEAGREEN);
+        this.gameOverLabel.setFont(new Font(50));
     }
 
     private void createButtonPane(HBox buttonPane){
@@ -60,9 +68,20 @@ public class Game {
     }
     private void setUpSunGenerationTimeline(Pane root){
         KeyFrame kf = new KeyFrame(Duration.seconds(5), (ActionEvent e) -> this.generateSun(root));
-        Timeline timeline = new Timeline(kf);
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
+        this.timeline1 = new Timeline(kf);
+        this.timeline1.setCycleCount(Animation.INDEFINITE);
+        this.timeline1.play();
+    }
+    private void setUpGameOverTimeline(Pane root){
+        KeyFrame kf = new KeyFrame(Duration.millis(10), (ActionEvent e) -> this.checkGameOver(root));
+        this.timeline2 = new Timeline(kf);
+        this.timeline2.setCycleCount(Animation.INDEFINITE);
+        this.timeline2.play();
+
+    }
+    private void stopTimelines(){
+        this.timeline1.stop();
+        this.timeline2.stop();
     }
     private void generateSun(Pane root){
         int randX = (int)(Math.random() * Constants.SCENE_WIDTH);
@@ -71,13 +90,13 @@ public class Game {
     public void addToTotalSun(){
         this.totalSun = this.totalSun + 25;
         this.displayTotalSun.setText("Total Sun: " + this.totalSun);
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < 5; i++){
             this.seedPackets[i].updateSun();
         }
     }
 
     public boolean preventDoubleChoicePacket(){
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < 5; i++){
             if (this.seedPackets[i].isSeedSelected()){
                 this.somePacketSelected = true;
             }
@@ -85,7 +104,7 @@ public class Game {
         return this.somePacketSelected;
     }
     private void findChosenSeedPacket(){
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             if (this.seedPackets[i].isSeedSelected()) {
                 this.chosenPacket = this.seedPackets[i];
             }
@@ -98,17 +117,26 @@ public class Game {
         if (MouseX > 0 && MouseX < 2 * Constants.SCENE_WIDTH) {
             if (MouseY > Constants.LAWN_WIDTH && MouseY < Constants.SCENE_HEIGHT) {
                 this.findChosenSeedPacket();
-                if (this.chosenPacket.isSeedSelected()) {
-                    if (this.lawn.checkValid(MouseX, MouseY)) {
-                        this.lawn.addPlant(MouseX, MouseY, gamepane, this, this.chosenPacket.getPlantNumber());
-                        this.totalSun = this.totalSun - this.chosenPacket.myCost();
-                        this.chosenPacket.reset();
-                        this.somePacketSelected = false;
-                        this.displayTotalSun.setText("Total Sun: " + this.totalSun);
+                if (this.chosenPacket != null) {
+                    if (this.chosenPacket.isSeedSelected()) {
+                        if (this.lawn.checkValid(MouseX, MouseY)) {
+                            this.lawn.addPlant(MouseX, MouseY, gamepane, this, this.chosenPacket.getPlantNumber());
+                            this.totalSun = this.totalSun - this.chosenPacket.myCost();
+                            this.chosenPacket.reset();
+                            this.somePacketSelected = false;
+                            this.displayTotalSun.setText("Total Sun: " + this.totalSun);
+                        }
                     }
                 }
             }
 
+        }
+    }
+    private void checkGameOver(Pane root){
+        if (this.lawn.isGameOver()){
+            this.stopTimelines();
+            this.lawn.stopTimelines();
+            root.getChildren().add(this.gameOverLabel);
         }
     }
 }

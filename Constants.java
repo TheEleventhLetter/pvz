@@ -13,4 +13,5 @@ public class Constants {
     public static final int SUNFLOWER_COST = 50;
     public static final int CHERRYBOMB_COST = 150;
     public static final int WALNUT_COST = 50;
+    public static final int CATTAIL_COST = 200;
 }

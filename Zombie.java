@@ -76,6 +76,9 @@ public class Zombie {
             this.timeline1.play();
         }
     }
+    public void stopTimeline(){
+        this.timeline1.stop();
+    }
 
 
 }

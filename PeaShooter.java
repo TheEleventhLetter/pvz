@@ -93,12 +93,6 @@ public class PeaShooter implements Plant {
         return (int) this.peaShooterHitbox.getY();
     }
 
-    /**
-     * public LinkedList<PeaProjectile> getPeaList(){
-     *         return this.listOfPeas;
-     *     }
-     * @return
-     */
     @Override
     public void checkHealth(Pane root){
         this.peaShooterHealth = this.peaShooterHealth - 10;

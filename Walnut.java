@@ -24,7 +24,7 @@ public class Walnut implements Plant{
         this.walnutHealth = 10000;
         this.walnutHitbox = new Rectangle(X, Y, Constants.LAWN_WIDTH, Constants.LAWN_WIDTH);
         this.walnutHitbox.setStroke(Color.BLACK);
-        this.walnutHitbox.setFill(Color.BEIGE);
+        this.walnutHitbox.setFill(Color.WHEAT);
         root.getChildren().add(this.walnutHitbox);
     }
     @Override
