@@ -23,9 +23,15 @@ public class CatTail implements Plant{
     private Timeline timeline1;
     private Timeline timeline2;
     private Timeline timeline3;
+    private boolean isSameZombie;
+    private int testNum;
+    private int oldTestNum;
     public CatTail(int X, int Y, Lawn lawn, Pane root){
+        this.testNum = 0;
+        this.oldTestNum = 0;
         this.myLawn = lawn;
         this.catTailHealth = 4000;
+        this.isSameZombie = false;
         this.catTailHitbox = new Rectangle(X, Y, Constants.LAWN_WIDTH, Constants.LAWN_WIDTH);
         this.catTailHitbox.setStroke(Color.BLACK);
         this.catTailHitbox.setFill(Color.PINK);
@@ -65,12 +71,10 @@ public class CatTail implements Plant{
     }
 
     private void generateThorn(int X, int Y, Pane root){
-
         if (this.zombiePresent()) {
-            ThornProjectile thorn = new ThornProjectile(X + Constants.LAWN_WIDTH + Constants.PEA_RADIUS, Y + (Constants.LAWN_WIDTH / 2), root);
+            ThornProjectile thorn = new ThornProjectile(X + Constants.LAWN_WIDTH + Constants.PEA_RADIUS, Y + (Constants.LAWN_WIDTH / 2), root, this);
             this.listOfThorns.add(thorn);
         }
-
     }
     private boolean zombiePresent(){
         boolean zombiePresent = false;
@@ -83,8 +87,10 @@ public class CatTail implements Plant{
     }
 
     private void moveThorns(Pane root){
+
         for (ThornProjectile currentThorn : this.listOfThorns){
             if (this.findClosestZombie() != null){
+                System.out.println(this.findClosestZombie());
                 currentThorn.home(this.findClosestZombie().getX(), this.findClosestZombie().getY());
             } else {
                 currentThorn.move();
@@ -95,19 +101,21 @@ public class CatTail implements Plant{
     }
     private Zombie findClosestZombie(){
         Zombie closestZombie = null;
-        for (int i = 0; i < Constants.LAWN_ROWS; i++){
-            for (int j = 0; j < this.totalZombies.get(i).size(); j++){
+        for (int i = 0; i < Constants.LAWN_ROWS; i++) {
+            for (int j = 0; j < this.totalZombies.get(i).size(); j++) {
                 Zombie currentZombie = this.totalZombies.get(i).get(j);
-                if (closestZombie == null){
+                if (closestZombie == null) {
+                    closestZombie = currentZombie;
+                } else if (currentZombie.getX() < closestZombie.getX()) {
                     closestZombie = currentZombie;
                 }
-                if (currentZombie.getX() < closestZombie.getX()){
-                    closestZombie = currentZombie;
-                }
-
             }
         }
         return closestZombie;
+    }
+
+    public boolean getIsSameZombie(){
+        return this.isSameZombie;
     }
     private void deleteThornsOutOfBounds(Pane root) {
         if (!this.listOfThorns.isEmpty()) {

@@ -8,11 +8,16 @@ public class ThornProjectile {
     private Circle thorn;
     private double secondLastAngle;
     private double lastAngle;
+    private double angle;
     private double angleDisplacement;
-    public ThornProjectile(int X, int Y, Pane root){
+    private boolean sameZombie;
+    private CatTail parent;
+    private Zombie myZombie;
+    public ThornProjectile(int X, int Y, Pane root, CatTail myParent){
         this.lastAngle = 0;
         this.secondLastAngle = 0;
         this.angleDisplacement = 0;
+        this.parent = myParent;
         this.thorn = new Circle(X, Y, Constants.PEA_RADIUS, Color.PINK);
         root.getChildren().add(this.thorn);
     }
@@ -30,26 +35,50 @@ public class ThornProjectile {
 
         return angle;
     }
-    public void homeProto3(int destinationX, int destinationY){
+    public void resetAngle(){
+        System.out.println("SDJKF");
+        this.angle = 0;
+        this.lastAngle = 0;
+    }
+    public void homeProto3(int destinationX, int destinationY) {
         int maxMagnitude = 2;
         double angleDis = Math.toRadians(0.8);
         double mustMoveX = 0;
         double mustMoveY = 0;
-        double angle = this.findAngleProto3(destinationX, destinationY);
-        if (angle > this.lastAngle + angleDis){
+        this.angle = this.findAngleProto3(destinationX, destinationY);
+        if (Math.abs(this.angleDisplacement) > Math.toRadians(6)) {
+            if (this.secondLastAngle > 0) {
+                this.angle = this.secondLastAngle + Math.toRadians(5);
+                this.lastAngle = this.angle;
+            } else if (this.secondLastAngle < 0) {
+                this.angle = this.secondLastAngle - Math.toRadians(5);
+                this.lastAngle = this.angle;
+            }
+        } else if (this.lastAngle > Math.toRadians(180)) {
+            this.angle = Math.toRadians(180) + this.findAngleProto3(destinationX, destinationY);
+            this.lastAngle = this.angle;
+        } else if (this.lastAngle < Math.toRadians(-180)) {
+            this.angle = -Math.toRadians(180) + this.findAngleProto3(destinationX, destinationY);
+            this.lastAngle = this.angle;
+        }
+        this.angleDisplacement = this.lastAngle - this.angle;
+        if (this.angle > this.lastAngle + angleDis){
             mustMoveX = (maxMagnitude * Math.cos(this.lastAngle + angleDis));
             mustMoveY = (maxMagnitude * Math.sin(this.lastAngle + angleDis));
+            this.secondLastAngle = this.lastAngle;
             this.lastAngle = this.lastAngle + angleDis;
         }
-        else if (angle < this.lastAngle - angleDis){
+        else if (this.angle < this.lastAngle - angleDis){
             mustMoveX = (maxMagnitude * Math.cos(this.lastAngle - angleDis));
             mustMoveY = (maxMagnitude * Math.sin(this.lastAngle - angleDis));
+            this.secondLastAngle = this.lastAngle;
             this.lastAngle = this.lastAngle - angleDis;
         }
-        else if (angle < this.lastAngle + angleDis || angle > this.lastAngle - angleDis){
-            mustMoveX = (maxMagnitude * Math.cos(angle));
-            mustMoveY = (maxMagnitude * Math.sin(angle));
-            this.lastAngle = angle;
+        else if (this.angle < this.lastAngle + angleDis || this.angle > this.lastAngle - angleDis){
+            mustMoveX = (maxMagnitude * Math.cos(this.angle));
+            mustMoveY = (maxMagnitude * Math.sin(this.angle));
+            this.secondLastAngle = this.lastAngle;
+            this.lastAngle = this.angle;
         }
         this.thorn.setCenterX(this.thorn.getCenterX() + mustMoveX);
         this.thorn.setCenterY(this.thorn.getCenterY() + mustMoveY);
