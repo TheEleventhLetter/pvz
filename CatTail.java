@@ -10,6 +10,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 
@@ -83,7 +84,7 @@ public class CatTail implements Plant{
 
     private void moveThorns(Pane root){
         for (ThornProjectile currentThorn : this.listOfThorns){
-            if (findClosestZombie() != null){
+            if (this.findClosestZombie() != null){
                 currentThorn.home(this.findClosestZombie().getX(), this.findClosestZombie().getY());
             } else {
                 currentThorn.move();
@@ -147,11 +148,9 @@ public class CatTail implements Plant{
     private void checkThornZombieIntersection(Pane root) {
         if (!this.listOfThorns.isEmpty()) {
             if (this.zombiePresent()) {
-                for (int k = 0; k < this.listOfThorns.size(); k++) {
+                for (ThornProjectile currentThorn : new LinkedList<>(this.listOfThorns)) {
                     for (int y = 0; y < Constants.LAWN_ROWS; y++) {
-                        for (int z = 0; z < this.totalZombies.get(y).size(); z++) {
-                            ThornProjectile currentThorn = this.listOfThorns.get(k);
-                            Zombie currentZombie = this.totalZombies.get(y).get(z);
+                        for (Zombie currentZombie : new LinkedList<>(this.totalZombies.get(y))) {
                             if (currentThorn.didCollide(currentZombie.getX(), currentZombie.getY())) {
                                 currentThorn.removeGraphic(root);
                                 this.listOfThorns.remove(currentThorn);
@@ -167,3 +166,9 @@ public class CatTail implements Plant{
         }
     }
 }
+
+/**
+ * Iterator<ThornProjectile> thorns = this.listOfThorns.iterator();
+ *                 if (thorns.hasNext()) {
+ *                     ThornProjectile currentThorn = thorns.next();
+ */

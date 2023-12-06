@@ -24,9 +24,9 @@ public class WalnutSeedPacket implements SeedPacket{
                 if (totalSun >= 150) {
                     this.walnutSeedSelected = true;
                 }
-            } else {
-                this.walnutSeedSelected = false;
             }
+        } else {
+            this.walnutSeedSelected = false;
         }
         this.seedColorChecker();
     }

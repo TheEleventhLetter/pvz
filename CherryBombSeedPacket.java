@@ -24,9 +24,9 @@ public class CherryBombSeedPacket implements SeedPacket{
                 if (totalSun >= 150) {
                     this.cherryBombSeedSelected = true;
                 }
-            } else {
-                this.cherryBombSeedSelected = false;
             }
+        } else {
+            this.cherryBombSeedSelected = false;
         }
         this.seedColorChecker();
     }

@@ -24,9 +24,9 @@ public class PeaShooterSeedPacket implements SeedPacket {
                 if (totalSun >= 100) {
                     this.peaShooterSeedSelected = true;
                 }
-            } else {
-                this.peaShooterSeedSelected = false;
             }
+        } else {
+            this.peaShooterSeedSelected = false;
         }
         this.seedColorChecker();
     }

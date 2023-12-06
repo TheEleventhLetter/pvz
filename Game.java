@@ -25,12 +25,14 @@ public class Game {
     private Timeline timeline1;
     private Timeline timeline2;
     private Label gameOverLabel;
+    private boolean isPaused;
 
     public Game(Pane gamepane, HBox buttonPane){
         this.seedPackets = new SeedPacket[5];
         this.totalSun = 500;
         this.somePacketSelected = false;
         this.readyToRemove = false;
+        this.isPaused = false;
         this.createButtonPane(buttonPane);
         this.createGamePane(gamepane);
         this.setUpSunGenerationTimeline(gamepane);
@@ -60,7 +62,7 @@ public class Game {
         Button removeButton = new Button("Remove Plant");
         removeButton.setOnAction((ActionEvent e) -> removeTrueFalse());
         Button pauseButton = new Button("Pause");
-
+        pauseButton.setOnAction((ActionEvent e) -> pauseGame());
         this.displayTotalSun = new Label("Total Sun: " + this.totalSun);
         this.displayTotalSun.setTextFill(Color.WHITE);
         this.displayTotalSun.setFont(new Font(20));
@@ -160,5 +162,8 @@ public class Game {
             this.lawn.stopTimelines();
             root.getChildren().add(this.gameOverLabel);
         }
+    }
+    private void pauseGame(){
+
     }
 }

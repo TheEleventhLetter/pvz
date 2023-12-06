@@ -24,10 +24,11 @@ public class CatTailSeedPacket implements SeedPacket{
                 if (totalSun >= 200) {
                     this.catTailSeedSelected = true;
                 }
-            } else {
-                this.catTailSeedSelected = false;
             }
+        } else {
+            this.catTailSeedSelected = false;
         }
+
         this.seedColorChecker();
     }
     @Override
