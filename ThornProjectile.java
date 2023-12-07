@@ -35,10 +35,9 @@ public class ThornProjectile {
 
         return angle;
     }
-    public void resetAngle(){
-        System.out.println("SDJKF");
-        this.angle = 0;
-        this.lastAngle = 0;
+    public void resetAngle(int destinationX, int destinationY){
+        this.angle = this.findAngleProto3(destinationX, destinationY);
+        this.lastAngle = this.findAngleProto3(destinationX, destinationY);
     }
     public void homeProto3(int destinationX, int destinationY) {
         int maxMagnitude = 2;
@@ -46,21 +45,8 @@ public class ThornProjectile {
         double mustMoveX = 0;
         double mustMoveY = 0;
         this.angle = this.findAngleProto3(destinationX, destinationY);
-        if (Math.abs(this.angleDisplacement) > Math.toRadians(6)) {
-            if (this.secondLastAngle > 0) {
-                this.angle = this.secondLastAngle + Math.toRadians(5);
-                this.lastAngle = this.angle;
-            } else if (this.secondLastAngle < 0) {
-                this.angle = this.secondLastAngle - Math.toRadians(5);
-                this.lastAngle = this.angle;
-            }
-        } else if (this.lastAngle > Math.toRadians(180)) {
-            this.angle = Math.toRadians(180) + this.findAngleProto3(destinationX, destinationY);
-            this.lastAngle = this.angle;
-        } else if (this.lastAngle < Math.toRadians(-180)) {
-            this.angle = -Math.toRadians(180) + this.findAngleProto3(destinationX, destinationY);
-            this.lastAngle = this.angle;
-        }
+
+
         this.angleDisplacement = this.lastAngle - this.angle;
         if (this.angle > this.lastAngle + angleDis){
             mustMoveX = (maxMagnitude * Math.cos(this.lastAngle + angleDis));
@@ -171,13 +157,31 @@ public class ThornProjectile {
         double angle = 0;
         double angle1 = this.calcNegativeAngle(destinationX, destinationY);
         double angle2 = this.calcPositiveAngle(destinationX, destinationY);
-        if (Math.abs(angle1) < Math.abs(angle2)){
-            angle = angle1;
-        } else if (Math.abs(angle2) < Math.abs(angle1)){
-            angle = angle2;
-        } else {
-            angle = angle1;
+        if (this.lastAngle < 180 && this.lastAngle > -180){
+            if (Math.abs(angle1) < Math.abs(angle2)){
+                angle = angle1;
+            } else if (Math.abs(angle2) < Math.abs(angle1)){
+                angle = angle2;
+            } else {
+                angle = angle1;
+            }
         }
+        if (Math.abs(this.angleDisplacement) > Math.toRadians(6)) {
+            if (this.secondLastAngle > 0) {
+                this.angle = this.secondLastAngle + Math.toRadians(5);
+                this.lastAngle = this.angle;
+            } else if (this.secondLastAngle < 0) {
+                this.angle = this.secondLastAngle - Math.toRadians(5);
+                this.lastAngle = this.angle;
+            }
+        } else if (this.lastAngle > Math.toRadians(180)) {
+            this.angle = Math.toRadians(180) + this.findAngleProto3(destinationX, destinationY);
+            this.lastAngle = this.angle;
+        } else if (this.lastAngle < Math.toRadians(-180)) {
+            this.angle = -Math.toRadians(180) + this.findAngleProto3(destinationX, destinationY);
+            this.lastAngle = this.angle;
+        }
+
         return angle;
     }
 

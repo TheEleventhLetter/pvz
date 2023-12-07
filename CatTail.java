@@ -24,11 +24,8 @@ public class CatTail implements Plant{
     private Timeline timeline2;
     private Timeline timeline3;
     private boolean isSameZombie;
-    private int testNum;
-    private int oldTestNum;
+    private Zombie lastClosestZombie;
     public CatTail(int X, int Y, Lawn lawn, Pane root){
-        this.testNum = 0;
-        this.oldTestNum = 0;
         this.myLawn = lawn;
         this.catTailHealth = 4000;
         this.isSameZombie = false;
@@ -70,10 +67,12 @@ public class CatTail implements Plant{
         this.totalZombies = ListOfZombies;
     }
 
-    private void generateThorn(int X, int Y, Pane root){
+    private void generateThorn(int X, int Y, Pane root) {
         if (this.zombiePresent()) {
-            ThornProjectile thorn = new ThornProjectile(X + Constants.LAWN_WIDTH + Constants.PEA_RADIUS, Y + (Constants.LAWN_WIDTH / 2), root, this);
-            this.listOfThorns.add(thorn);
+            if (this.listOfThorns.isEmpty()) {
+                ThornProjectile thorn = new ThornProjectile(X + Constants.LAWN_WIDTH + Constants.PEA_RADIUS, Y + (Constants.LAWN_WIDTH / 2), root, this);
+                this.listOfThorns.add(thorn);
+            }
         }
     }
     private boolean zombiePresent(){
@@ -87,16 +86,19 @@ public class CatTail implements Plant{
     }
 
     private void moveThorns(Pane root){
-
         for (ThornProjectile currentThorn : this.listOfThorns){
             if (this.findClosestZombie() != null){
-                System.out.println(this.findClosestZombie());
+                if (this.lastClosestZombie != this.findClosestZombie()){
+                    currentThorn.resetAngle(this.findClosestZombie().getX(), this.findClosestZombie().getY());
+                }
                 currentThorn.home(this.findClosestZombie().getX(), this.findClosestZombie().getY());
+
             } else {
                 currentThorn.move();
             }
 
         }
+        this.lastClosestZombie = this.findClosestZombie();
         this.checkThornZombieIntersection(root);
     }
     private Zombie findClosestZombie(){

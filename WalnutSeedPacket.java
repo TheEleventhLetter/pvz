@@ -21,7 +21,7 @@ public class WalnutSeedPacket implements SeedPacket{
     private void WalnutSeedSelectChecker(int totalSun) {
         if (!this.walnutSeedSelected) {
             if (!this.myGame.preventDoubleChoicePacket()) {
-                if (totalSun >= 150) {
+                if (totalSun >= 50) {
                     this.walnutSeedSelected = true;
                 }
             }

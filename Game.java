@@ -27,14 +27,14 @@ public class Game {
     private Label gameOverLabel;
     private boolean isPaused;
 
-    public Game(Pane gamepane, HBox buttonPane){
+    public Game(Pane gamepane, HBox buttonPane, int level){
         this.seedPackets = new SeedPacket[5];
         this.totalSun = 500;
         this.somePacketSelected = false;
         this.readyToRemove = false;
         this.isPaused = false;
         this.createButtonPane(buttonPane);
-        this.createGamePane(gamepane);
+        this.createGamePane(gamepane, level);
         this.setUpSunGenerationTimeline(gamepane);
         this.setUpGameOverTimeline(gamepane);
     }
@@ -46,8 +46,8 @@ public class Game {
         this.seedPackets[4] = new CatTailSeedPacket(buttonPane, myGame);
     }
 
-    private void createGamePane(Pane gamepane){
-        this.lawn = new Lawn(gamepane);
+    private void createGamePane(Pane gamepane, int level){
+        this.lawn = new Lawn(gamepane, level);
         gamepane.setOnMouseClicked((MouseEvent e) -> this.handleMouseClick(e, gamepane));
         this.gameOverLabel = new Label("THE ZOMBIES ATE YOUR BRAINS!!");
         this.gameOverLabel.setTextFill(Color.DARKSEAGREEN);

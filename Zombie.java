@@ -14,7 +14,6 @@ import java.util.LinkedList;
 public class Zombie {
     private Rectangle zombieHitbox;
     private int zombieHealth;
-    private int zombieInitialHealth;
     private LinkedList<Plant> myListOfPlants;
     private Timeline timeline1;
     private boolean amWalking;
@@ -31,7 +30,6 @@ public class Zombie {
     }
     public void setZombieHealth(int health){
         this.zombieHealth = health;
-        this.zombieInitialHealth = health;
     }
     private void setUpWalkingTimeline(Pane root){
         KeyFrame kf1 = new KeyFrame(Duration.millis(30), (ActionEvent e) -> this.walk());

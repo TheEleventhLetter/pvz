@@ -14,4 +14,8 @@ public class Constants {
     public static final int CHERRYBOMB_COST = 150;
     public static final int WALNUT_COST = 50;
     public static final int CATTAIL_COST = 200;
+    public static final int LEVEL_ONE_RATIO = 8000;
+    public static final int LEVEL_TWO_RATIO = 6000;
+    public static final int LEVEL_THREE_RATIO = 4000;
+    public static final int LEVEL_FOUR_RATIO = 2000;
 }

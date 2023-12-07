@@ -22,13 +22,13 @@ public class Lawn {
     private Timeline timeline1;
     private Timeline timeline2;
 
-    public Lawn(Pane gamepane){
+    public Lawn(Pane gamepane, int level){
         this.createZombieArrayList();
         this.createPlantArrayList();
         this.lawnGraphic = new LawnSquare[Constants.LAWN_ROWS][Constants.LAWN_COLUMN];
         this.plantBoard = new Plant[Constants.LAWN_ROWS][Constants.LAWN_COLUMN];
         this.setUpLawn(gamepane);
-        this.setUpZombieTimeline(gamepane);
+        this.setUpZombieTimeline(gamepane, level);
         this.setUpTimeLine(gamepane);
     }
     public void setUpTimeLine(Pane root){
@@ -74,8 +74,18 @@ public class Lawn {
         }
 
     }
-    private void setUpZombieTimeline(Pane root){
-        KeyFrame kf = new KeyFrame(Duration.millis(5000), (ActionEvent e) -> this.generateZombies(root));
+    private void setUpZombieTimeline(Pane root, int level){
+        int duration = 0;
+        if (level == 1){
+            duration = Constants.LEVEL_ONE_RATIO;
+        } else if (level == 2){
+            duration = Constants.LEVEL_TWO_RATIO;
+        } else if (level == 3){
+            duration = Constants.LEVEL_THREE_RATIO;
+        } else if (level == 4){
+            duration = Constants.LEVEL_FOUR_RATIO;
+        }
+        KeyFrame kf = new KeyFrame(Duration.millis(duration), (ActionEvent e) -> this.generateZombies(root));
         this.timeline2 = new Timeline(kf);
         this.timeline2.setCycleCount(Animation.INDEFINITE);
         this.timeline2.play();

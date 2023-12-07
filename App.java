@@ -16,7 +16,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
-        indy.PaneOrganizer organizer = new PaneOrganizer();
+        GamePaneOrganizer organizer = new GamePaneOrganizer();
         Scene scene = new Scene(organizer.getRoot(), Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT);
         scene.setFill(Color.GRAY);
         stage.setScene(scene);
