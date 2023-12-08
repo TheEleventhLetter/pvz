@@ -19,14 +19,16 @@ public class CatTailSeedPacket implements SeedPacket{
         this.catTailSeedPacket.setOnAction((ActionEvent e) -> this.catTailSeedSelectChecker(this.TotalSun));
     }
     private void catTailSeedSelectChecker(int totalSun) {
-        if (!this.catTailSeedSelected) {
-            if (!this.myGame.preventDoubleChoicePacket()) {
-                if (totalSun >= 200) {
-                    this.catTailSeedSelected = true;
+        if (!this.myGame.getIsPaused()) {
+            if (!this.catTailSeedSelected) {
+                if (!this.myGame.preventDoubleChoicePacket()) {
+                    if (totalSun >= 200) {
+                        this.catTailSeedSelected = true;
+                    }
                 }
+            } else {
+                this.catTailSeedSelected = false;
             }
-        } else {
-            this.catTailSeedSelected = false;
         }
 
         this.seedColorChecker();

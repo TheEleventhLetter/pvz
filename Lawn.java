@@ -268,5 +268,19 @@ public class Lawn {
             }
             }
     }
+    public void startTimelines(){
+        this.timeline1.play();
+        this.timeline2.play();
+        for (int i = 0; i < Constants.LAWN_ROWS; i++) {
+            for (int j = 0; j < Constants.LAWN_COLUMN; j++) {
+                if (this.plantBoard[i][j] != null) {
+                    this.plantBoard[i][j].playTimeline();
+                }
+            }
+            for (int k = 0; k < this.totalZombies.get(i).size(); k++){
+                this.totalZombies.get(i).get(k).playTimeline();
+            }
+        }
+    }
 
 }

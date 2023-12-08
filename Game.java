@@ -25,6 +25,7 @@ public class Game {
     private Timeline timeline1;
     private Timeline timeline2;
     private Label gameOverLabel;
+    private Label pausedLabel;
     private boolean isPaused;
 
     public Game(Pane gamepane, HBox buttonPane, int level){
@@ -52,6 +53,9 @@ public class Game {
         this.gameOverLabel = new Label("THE ZOMBIES ATE YOUR BRAINS!!");
         this.gameOverLabel.setTextFill(Color.DARKSEAGREEN);
         this.gameOverLabel.setFont(new Font(50));
+        this.pausedLabel = new Label("Game Paused");
+        this.pausedLabel.setTextFill(Color.WHITE);
+        this.pausedLabel.setFont(new Font(30));
     }
 
     private void createButtonPane(HBox buttonPane){
@@ -60,15 +64,15 @@ public class Game {
         Button quitButton = new Button("Quit");
         quitButton.setOnAction((ActionEvent e) -> System.exit(0));
         Button removeButton = new Button("Remove Plant");
-        removeButton.setOnAction((ActionEvent e) -> removeTrueFalse());
+        removeButton.setOnAction((ActionEvent e) -> this.removeTrueFalse());
         Button pauseButton = new Button("Pause");
-        pauseButton.setOnAction((ActionEvent e) -> pauseGame());
+        pauseButton.setOnAction((ActionEvent e) -> this.pauseGame(buttonPane));
         this.displayTotalSun = new Label("Total Sun: " + this.totalSun);
         this.displayTotalSun.setTextFill(Color.WHITE);
         this.displayTotalSun.setFont(new Font(20));
         buttonPane.getChildren().add(this.displayTotalSun);
         this.setUpSeedPackets(buttonPane, this);
-        buttonPane.getChildren().addAll(removeButton, quitButton);
+        buttonPane.getChildren().addAll(removeButton, pauseButton, quitButton);
 
         buttonPane.setFocusTraversable(false);
     }
@@ -91,6 +95,13 @@ public class Game {
     private void stopTimelines(){
         this.timeline1.stop();
         this.timeline2.stop();
+    }
+    private void startTimelines(){
+        this.timeline1.play();
+        this.timeline2.play();
+    }
+    public boolean getIsPaused(){
+        return this.isPaused;
     }
     private void generateSun(Pane root){
         int randX = (int)(Math.random() * Constants.SCENE_WIDTH);
@@ -115,10 +126,12 @@ public class Game {
         return this.somePacketSelected;
     }
     private void removeTrueFalse() {
-        if (!this.readyToRemove) {
-            this.readyToRemove = true;
-        } else {
-            this.readyToRemove = false;
+        if (!this.isPaused) {
+            if (!this.readyToRemove) {
+                this.readyToRemove = true;
+            } else {
+                this.readyToRemove = false;
+            }
         }
     }
     private void findChosenSeedPacket(){
@@ -130,27 +143,29 @@ public class Game {
     }
 
     public void handleMouseClick(MouseEvent e, Pane gamepane) {
-        double MouseX = e.getX();
-        double MouseY = e.getY();
-        if (MouseX > 0 && MouseX < 2 * Constants.SCENE_WIDTH) {
-            if (MouseY > Constants.LAWN_WIDTH && MouseY < Constants.SCENE_HEIGHT) {
-                this.findChosenSeedPacket();
-                if (this.chosenPacket != null) {
-                    if (this.chosenPacket.isSeedSelected()) {
-                        if (this.lawn.checkPlacementValid(MouseX, MouseY)) {
-                            this.lawn.addPlant(MouseX, MouseY, gamepane, this, this.chosenPacket.getPlantNumber());
-                            this.totalSun = this.totalSun - this.chosenPacket.myCost();
-                            this.chosenPacket.reset();
-                            this.chosenPacket.seedColorChecker();
-                            this.somePacketSelected = false;
-                            this.displayTotalSun.setText("Total Sun: " + this.totalSun);
+        if (!this.isPaused) {
+            double MouseX = e.getX();
+            double MouseY = e.getY();
+            if (MouseX > 0 && MouseX < 2 * Constants.SCENE_WIDTH) {
+                if (MouseY > Constants.LAWN_WIDTH && MouseY < Constants.SCENE_HEIGHT) {
+                    this.findChosenSeedPacket();
+                    if (this.chosenPacket != null) {
+                        if (this.chosenPacket.isSeedSelected()) {
+                            if (this.lawn.checkPlacementValid(MouseX, MouseY)) {
+                                this.lawn.addPlant(MouseX, MouseY, gamepane, this, this.chosenPacket.getPlantNumber());
+                                this.totalSun = this.totalSun - this.chosenPacket.myCost();
+                                this.chosenPacket.reset();
+                                this.chosenPacket.seedColorChecker();
+                                this.somePacketSelected = false;
+                                this.displayTotalSun.setText("Total Sun: " + this.totalSun);
+                            }
                         }
                     }
-                }
-                if (this.readyToRemove) {
-                    if (this.lawn.checkDeletionValid(MouseX, MouseY)) {
-                        this.lawn.getPlant(MouseX, MouseY).removePlant(gamepane);
-                        this.readyToRemove = false;
+                    if (this.readyToRemove) {
+                        if (this.lawn.checkDeletionValid(MouseX, MouseY)) {
+                            this.lawn.getPlant(MouseX, MouseY).removePlant(gamepane);
+                            this.readyToRemove = false;
+                        }
                     }
                 }
             }
@@ -163,7 +178,17 @@ public class Game {
             root.getChildren().add(this.gameOverLabel);
         }
     }
-    private void pauseGame(){
-
+    private void pauseGame(HBox root){
+        if (!this.isPaused){
+            this.stopTimelines();
+            this.lawn.stopTimelines();
+            root.getChildren().add(this.pausedLabel);
+            this.isPaused = true;
+        } else {
+            this.startTimelines();
+            this.lawn.startTimelines();
+            root.getChildren().remove(this.pausedLabel);
+            this.isPaused = false;
+        }
     }
 }

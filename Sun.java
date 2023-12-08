@@ -34,8 +34,10 @@ public class Sun {
         this.checkStop(randY);
     }
     private void addSunCost(Pane root, Game myGame){
-        myGame.addToTotalSun();
-        root.getChildren().remove(this.sun);
+        if (!myGame.getIsPaused()) {
+            myGame.addToTotalSun();
+            root.getChildren().remove(this.sun);
+        }
     }
     private void checkStop(int randY){
         if (this.sun.getCenterY() > randY){
