@@ -10,9 +10,7 @@ import javafx.util.Duration;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Objects;
 
 public class Lawn {
     private LawnSquare[][] lawnGraphic;
@@ -21,8 +19,11 @@ public class Lawn {
     private ArrayList<LinkedList<Plant>> totalPlants;
     private Timeline timeline1;
     private Timeline timeline2;
+    private int zombieCount;
+    private Game myGame;
 
-    public Lawn(Pane gamepane, int level){
+    public Lawn(Pane gamepane, int level, Game game){
+        this.myGame = game;
         this.createZombieArrayList();
         this.createPlantArrayList();
         this.lawnGraphic = new LawnSquare[Constants.LAWN_ROWS][Constants.LAWN_COLUMN];
@@ -78,12 +79,16 @@ public class Lawn {
         int duration = 0;
         if (level == 1){
             duration = Constants.LEVEL_ONE_RATIO;
+            this.zombieCount = 30;
         } else if (level == 2){
             duration = Constants.LEVEL_TWO_RATIO;
+            this.zombieCount = 40;
         } else if (level == 3){
             duration = Constants.LEVEL_THREE_RATIO;
+            this.zombieCount = 50;
         } else if (level == 4){
             duration = Constants.LEVEL_FOUR_RATIO;
+            this.zombieCount = 60;
         }
         KeyFrame kf = new KeyFrame(Duration.millis(duration), (ActionEvent e) -> this.generateZombies(root));
         this.timeline2 = new Timeline(kf);
@@ -204,16 +209,16 @@ public class Lawn {
 
         switch (randomNum){
             case 0: case 1: case 2: case 3:
-                randomZombie = new NormalZombie(randY, root);
+                randomZombie = new NormalZombie(randY, root, this);
                 break;
             case 4: case 5:
-                randomZombie = new ConeheadZombie(randY, root);
+                randomZombie = new ConeheadZombie(randY, root, this);
                 break;
             case 6:
-                randomZombie = new BucketheadZombie(randY, root);
+                randomZombie = new BucketheadZombie(randY, root, this);
                 break;
             default:
-                randomZombie = new NormalZombie(randY, root);
+                randomZombie = new NormalZombie(randY, root, this);
         }
         return randomZombie;
     }
@@ -239,6 +244,17 @@ public class Lawn {
                 }
             }
         }
+    }
+    public void addCount(Pane gamePane){
+        if (this.zombieCount > 0) {
+            this.zombieCount = this.zombieCount - 1;
+        } else if (this.zombieCount == 0) {
+            this.myGame.gameWon(gamePane);
+        }
+        this.myGame.updateZombieCountDisplay();
+    }
+    public int getZombieCount(){
+        return this.zombieCount;
     }
     public boolean isGameOver() {
         boolean gameOver = false;

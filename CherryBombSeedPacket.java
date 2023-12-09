@@ -19,15 +19,17 @@ public class CherryBombSeedPacket implements SeedPacket{
         this.cherryBombSeedPacket.setOnAction((ActionEvent e) -> this.cherryBombSeedSelectChecker(this.TotalSun));
     }
     private void cherryBombSeedSelectChecker(int totalSun) {
-        if (!this.myGame.getIsPaused()) {
-            if (!this.cherryBombSeedSelected) {
-                if (!this.myGame.preventDoubleChoicePacket()) {
-                    if (totalSun >= 150) {
-                        this.cherryBombSeedSelected = true;
+        if (this.myGame.getIsPlaying()) {
+            if (!this.myGame.getIsPaused()) {
+                if (!this.cherryBombSeedSelected) {
+                    if (!this.myGame.preventDoubleChoicePacket()) {
+                        if (totalSun >= 150) {
+                            this.cherryBombSeedSelected = true;
+                        }
                     }
+                } else {
+                    this.cherryBombSeedSelected = false;
                 }
-            } else {
-                this.cherryBombSeedSelected = false;
             }
         }
         this.seedColorChecker();

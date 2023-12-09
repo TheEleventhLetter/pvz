@@ -19,15 +19,17 @@ public class WalnutSeedPacket implements SeedPacket{
         this.walnutSeedPacket.setOnAction((ActionEvent e) -> this.WalnutSeedSelectChecker(this.TotalSun));
     }
     private void WalnutSeedSelectChecker(int totalSun) {
-        if (!this.myGame.getIsPaused()) {
-            if (!this.walnutSeedSelected) {
-                if (!this.myGame.preventDoubleChoicePacket()) {
-                    if (totalSun >= 50) {
-                        this.walnutSeedSelected = true;
+        if (this.myGame.getIsPlaying()) {
+            if (!this.myGame.getIsPaused()) {
+                if (!this.walnutSeedSelected) {
+                    if (!this.myGame.preventDoubleChoicePacket()) {
+                        if (totalSun >= 50) {
+                            this.walnutSeedSelected = true;
+                        }
                     }
+                } else {
+                    this.walnutSeedSelected = false;
                 }
-            } else {
-                this.walnutSeedSelected = false;
             }
         }
         this.seedColorChecker();

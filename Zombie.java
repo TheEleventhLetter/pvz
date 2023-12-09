@@ -17,8 +17,10 @@ public class Zombie {
     private LinkedList<Plant> myListOfPlants;
     private Timeline timeline1;
     private boolean amWalking;
+    private Lawn myLawn;
 
-    public Zombie(int Y, Pane root){
+    public Zombie(int Y, Pane root, Lawn lawn){
+        this.myLawn = lawn;
         this.amWalking = true;
         this.zombieHitbox = new Rectangle(Constants.SCENE_WIDTH, Y, Constants.ZOMBIE_WIDTH, Constants.LAWN_WIDTH);
         root.getChildren().add(this.zombieHitbox);
@@ -54,6 +56,7 @@ public class Zombie {
         if (this.zombieHealth <= 0) {
             this.removeZombie(root);
             ListOfZombies.remove(this);
+            this.myLawn.addCount(root);
         }
     }
 

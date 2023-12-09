@@ -10,7 +10,8 @@ public class ThornProjectile {
     private double lastAngle;
     private double angle;
     private double angleDisplacement;
-    private boolean sameZombie;
+    private boolean lastAngleSet;
+
     private CatTail parent;
     private Zombie myZombie;
     public ThornProjectile(int X, int Y, Pane root, CatTail myParent){
@@ -41,10 +42,11 @@ public class ThornProjectile {
     }
     public void homeProto3(int destinationX, int destinationY) {
         int maxMagnitude = 2;
-        double angleDis = Math.toRadians(0.8);
+        double angleDis = Math.toRadians(1);
         double mustMoveX = 0;
         double mustMoveY = 0;
         this.angle = this.findAngleProto3(destinationX, destinationY);
+        System.out.println(Math.toDegrees(this.angle));
 
 
         this.angleDisplacement = this.lastAngle - this.angle;
@@ -157,7 +159,8 @@ public class ThornProjectile {
         double angle = 0;
         double angle1 = this.calcNegativeAngle(destinationX, destinationY);
         double angle2 = this.calcPositiveAngle(destinationX, destinationY);
-        if (this.lastAngle < 180 && this.lastAngle > -180){
+
+        if (this.lastAngle < Math.toRadians(180) && this.lastAngle > Math.toRadians(-180)){
             if (Math.abs(angle1) < Math.abs(angle2)){
                 angle = angle1;
             } else if (Math.abs(angle2) < Math.abs(angle1)){
@@ -166,6 +169,7 @@ public class ThornProjectile {
                 angle = angle1;
             }
         }
+
         if (Math.abs(this.angleDisplacement) > Math.toRadians(6)) {
             if (this.secondLastAngle > 0) {
                 this.angle = this.secondLastAngle + Math.toRadians(5);
@@ -174,12 +178,14 @@ public class ThornProjectile {
                 this.angle = this.secondLastAngle - Math.toRadians(5);
                 this.lastAngle = this.angle;
             }
+
+
         } else if (this.lastAngle > Math.toRadians(180)) {
-            this.angle = Math.toRadians(180) + this.findAngleProto3(destinationX, destinationY);
-            this.lastAngle = this.angle;
+            angle = Math.toRadians(180) + this.findAngleProto3(destinationX, destinationY);
+            this.lastAngle = angle;
         } else if (this.lastAngle < Math.toRadians(-180)) {
-            this.angle = -Math.toRadians(180) + this.findAngleProto3(destinationX, destinationY);
-            this.lastAngle = this.angle;
+            angle = -Math.toRadians(180) + this.findAngleProto3(destinationX, destinationY);
+            this.lastAngle = angle;
         }
 
         return angle;

@@ -6,8 +6,8 @@ import javafx.scene.paint.Color;
 
 
 public class NormalZombie extends Zombie{
-    public NormalZombie(int Y, Pane root){
-        super(Y, root);
+    public NormalZombie(int Y, Pane root, Lawn lawn){
+        super(Y, root, lawn);
         super.setZombieColor(Color.GRAY);
         super.setZombieHealth(4);
     }

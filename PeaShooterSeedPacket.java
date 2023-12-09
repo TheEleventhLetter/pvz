@@ -19,15 +19,17 @@ public class PeaShooterSeedPacket implements SeedPacket {
         this.peaShooterSeedPacket.setOnAction((ActionEvent e) -> this.peaShooterSeedSelectChecker(this.TotalSun));
     }
     private void peaShooterSeedSelectChecker(int totalSun) {
-        if (!this.myGame.getIsPaused()) {
-            if (!this.peaShooterSeedSelected) {
-                if (!this.myGame.preventDoubleChoicePacket()) {
-                    if (totalSun >= 100) {
-                        this.peaShooterSeedSelected = true;
+        if (this.myGame.getIsPlaying()) {
+            if (!this.myGame.getIsPaused()) {
+                if (!this.peaShooterSeedSelected) {
+                    if (!this.myGame.preventDoubleChoicePacket()) {
+                        if (totalSun >= 100) {
+                            this.peaShooterSeedSelected = true;
+                        }
                     }
+                } else {
+                    this.peaShooterSeedSelected = false;
                 }
-            } else {
-                this.peaShooterSeedSelected = false;
             }
         }
         this.seedColorChecker();

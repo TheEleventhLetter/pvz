@@ -19,15 +19,17 @@ public class SunFlowerSeedPacket implements SeedPacket{
         this.sunFlowerSeedPacket.setOnAction((ActionEvent e) -> this.sunFlowerSeedSelectChecker(this.TotalSun));
     }
     private void sunFlowerSeedSelectChecker(int totalSun) {
-        if (!this.myGame.getIsPaused()) {
-            if (!this.sunFlowerSeedSelected) {
-                if (!this.myGame.preventDoubleChoicePacket()) {
-                    if (totalSun >= 100) {
-                        this.sunFlowerSeedSelected = true;
+        if (this.myGame.getIsPlaying()) {
+            if (!this.myGame.getIsPaused()) {
+                if (!this.sunFlowerSeedSelected) {
+                    if (!this.myGame.preventDoubleChoicePacket()) {
+                        if (totalSun >= 100) {
+                            this.sunFlowerSeedSelected = true;
+                        }
                     }
+                } else {
+                    this.sunFlowerSeedSelected = false;
                 }
-            } else {
-                this.sunFlowerSeedSelected = false;
             }
         }
         this.seedColorChecker();
