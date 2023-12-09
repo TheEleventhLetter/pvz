@@ -248,7 +248,8 @@ public class Lawn {
     public void addCount(Pane gamePane){
         if (this.zombieCount > 0) {
             this.zombieCount = this.zombieCount - 1;
-        } else if (this.zombieCount == 0) {
+        }
+        if (this.zombieCount == 0) {
             this.myGame.gameWon(gamePane);
         }
         this.myGame.updateZombieCountDisplay();

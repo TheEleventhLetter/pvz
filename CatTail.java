@@ -69,10 +69,8 @@ public class CatTail implements Plant{
 
     private void generateThorn(int X, int Y, Pane root) {
         if (this.zombiePresent()) {
-            if (this.listOfThorns.isEmpty()) {
-                ThornProjectile thorn = new ThornProjectile(X + Constants.LAWN_WIDTH + Constants.PEA_RADIUS, Y + (Constants.LAWN_WIDTH / 2), root, this);
-                this.listOfThorns.add(thorn);
-            }
+            ThornProjectile thorn = new ThornProjectile(X + Constants.LAWN_WIDTH + Constants.PEA_RADIUS, Y + (Constants.LAWN_WIDTH / 2), root);
+            this.listOfThorns.add(thorn);
         }
     }
     private boolean zombiePresent(){
@@ -92,7 +90,6 @@ public class CatTail implements Plant{
                     currentThorn.resetAngle(this.findClosestZombie().getX(), this.findClosestZombie().getY());
                 }
                 currentThorn.home(this.findClosestZombie().getX(), this.findClosestZombie().getY());
-
             } else {
                 currentThorn.move();
             }

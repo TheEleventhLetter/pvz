@@ -6,19 +6,15 @@ import javafx.scene.shape.Circle;
 
 public class ThornProjectile {
     private Circle thorn;
-    private double secondLastAngle;
     private double lastAngle;
+    private double lastCalculatedAngle;
     private double angle;
     private double angleDisplacement;
-    private boolean lastAngleSet;
-
-    private CatTail parent;
-    private Zombie myZombie;
-    public ThornProjectile(int X, int Y, Pane root, CatTail myParent){
+    private double angleChange;
+    public ThornProjectile(int X, int Y, Pane root){
         this.lastAngle = 0;
-        this.secondLastAngle = 0;
         this.angleDisplacement = 0;
-        this.parent = myParent;
+        this.lastCalculatedAngle = 0;
         this.thorn = new Circle(X, Y, Constants.PEA_RADIUS, Color.PINK);
         root.getChildren().add(this.thorn);
     }
@@ -30,227 +26,88 @@ public class ThornProjectile {
         this.homeProto3(destinationX, destinationY);
     }
 
-    private double findAngle(int destinationX, int destinationY) {
-        double angle = 0;
-        double angle2 = this.calcPositiveAngle(destinationX, destinationY);
-
-        return angle;
-    }
     public void resetAngle(int destinationX, int destinationY){
-        this.angle = this.findAngleProto3(destinationX, destinationY);
-        this.lastAngle = this.findAngleProto3(destinationX, destinationY);
+        this.angle = this.findRelative(this.angle);
+        //this.lastAngle = this.findRelative(this.lastAngle);
+    }
+    private double findRelative(double angle){
+        double newAngle = 0;
+        if (angle < Math.toRadians(180) && angle > Math.toRadians(-180)){
+            newAngle = angle;
+        } else if (angle > Math.toRadians(180)){
+            newAngle = -Math.toRadians(360) + angle;
+        } else if (angle < Math.toRadians(-180)){
+            newAngle = Math.toRadians(360) + angle;
+        }
+        return newAngle;
     }
     public void homeProto3(int destinationX, int destinationY) {
         int maxMagnitude = 2;
-        double angleDis = Math.toRadians(1);
+        this.angleChange = Math.toRadians(2);
         double mustMoveX = 0;
         double mustMoveY = 0;
         this.angle = this.findAngleProto3(destinationX, destinationY);
-        System.out.println(Math.toDegrees(this.angle));
+        System.out.println(Math.toDegrees(this.angleDisplacement));
 
 
-        this.angleDisplacement = this.lastAngle - this.angle;
-        if (this.angle > this.lastAngle + angleDis){
-            mustMoveX = (maxMagnitude * Math.cos(this.lastAngle + angleDis));
-            mustMoveY = (maxMagnitude * Math.sin(this.lastAngle + angleDis));
-            this.secondLastAngle = this.lastAngle;
-            this.lastAngle = this.lastAngle + angleDis;
+        if (this.angle > this.lastAngle + this.angleChange){
+            mustMoveX = (maxMagnitude * Math.cos(this.lastAngle + this.angleChange));
+            mustMoveY = (maxMagnitude * Math.sin(this.lastAngle + this.angleChange));
+            this.lastAngle = this.lastAngle + this.angleChange;
+            this.angleDisplacement = this.angleChange;
         }
-        else if (this.angle < this.lastAngle - angleDis){
-            mustMoveX = (maxMagnitude * Math.cos(this.lastAngle - angleDis));
-            mustMoveY = (maxMagnitude * Math.sin(this.lastAngle - angleDis));
-            this.secondLastAngle = this.lastAngle;
-            this.lastAngle = this.lastAngle - angleDis;
+        else if (this.angle < this.lastAngle - this.angleChange){
+            mustMoveX = (maxMagnitude * Math.cos(this.lastAngle - this.angleChange));
+            mustMoveY = (maxMagnitude * Math.sin(this.lastAngle - this.angleChange));
+            this.lastAngle = this.lastAngle - this.angleChange;
+            this.angleDisplacement = -this.angleChange;
         }
-        else if (this.angle < this.lastAngle + angleDis || this.angle > this.lastAngle - angleDis){
+        else if (this.angle < this.lastAngle + this.angleChange || this.angle > this.lastAngle - this.angleChange){
             mustMoveX = (maxMagnitude * Math.cos(this.angle));
             mustMoveY = (maxMagnitude * Math.sin(this.angle));
-            this.secondLastAngle = this.lastAngle;
+            this.angleDisplacement =  this.angle - this.lastAngle;
             this.lastAngle = this.angle;
         }
         this.thorn.setCenterX(this.thorn.getCenterX() + mustMoveX);
         this.thorn.setCenterY(this.thorn.getCenterY() + mustMoveY);
-    }
-    public void homeProto2(int destinationX, int destinationY){
-        int maxMagnitude = 2;
-        double angleDis = Math.toRadians(0.8);
-        double mustMoveX = 0;
-        double mustMoveY = 0;
-        double angle = this.findAngleProto2(destinationX, destinationY);
-        if (this.isFirstQuadrant(destinationX, destinationY)){
-            if (Math.abs(angle) > Math.abs(this.lastAngle) - angleDis){
-                mustMoveX = (maxMagnitude * Math.cos(this.lastAngle - angleDis));
-                mustMoveY = -(maxMagnitude * Math.sin(this.lastAngle - angleDis));
-                this.lastAngle = this.lastAngle - angleDis;
-            }
-            else if (Math.abs(angle) < Math.abs(this.lastAngle) - angleDis){
-                mustMoveX = (maxMagnitude * Math.cos(angle));
-                mustMoveY = -(maxMagnitude * Math.sin(angle));
-                this.lastAngle = angle;
-            }
-        } else if (this.isSecondQuadrant(destinationX, destinationY)){
-            if (Math.abs(angle) > Math.abs(this.lastAngle) - angleDis){
-                mustMoveX = -(maxMagnitude * Math.cos(this.lastAngle - angleDis));
-                mustMoveY = -(maxMagnitude * Math.sin(this.lastAngle - angleDis));
-                this.lastAngle = this.lastAngle - angleDis;
-            }
-            else if (Math.abs(angle) < Math.abs(this.lastAngle) - angleDis){
-                mustMoveX = -(maxMagnitude * Math.cos(angle));
-                mustMoveY = -(maxMagnitude * Math.sin(angle));
-                this.lastAngle = angle;
-            }
-        } else if (this.isThirdQuadrant(destinationX, destinationY)){
-            if (Math.abs(angle) > Math.abs(this.lastAngle) - angleDis){
-                mustMoveX = -(maxMagnitude * Math.cos(this.lastAngle - angleDis));
-                mustMoveY = (maxMagnitude * Math.sin(this.lastAngle - angleDis));
-                this.lastAngle = this.lastAngle - angleDis;
-            }
-            else if (Math.abs(angle) < Math.abs(this.lastAngle) - angleDis){
-                mustMoveX = -(maxMagnitude * Math.cos(angle));
-                mustMoveY = (maxMagnitude * Math.sin(angle));
-                this.lastAngle = angle;
-            }
-        } else if (this.isFourthQuadrant(destinationX, destinationY)){
-            if (Math.abs(angle) > Math.abs(this.lastAngle) - angleDis){
-                mustMoveX = (maxMagnitude * Math.cos(this.lastAngle - angleDis));
-                mustMoveY = (maxMagnitude * Math.sin(this.lastAngle - angleDis));
-                this.lastAngle = this.lastAngle - angleDis;
-            }
-            else if (Math.abs(angle) < Math.abs(this.lastAngle) - angleDis){
-                mustMoveX = (maxMagnitude * Math.cos(angle));
-                mustMoveY = (maxMagnitude * Math.sin(angle));
-                this.lastAngle = angle;
-            }
-        }
-        this.thorn.setCenterX(this.thorn.getCenterX() + mustMoveX);
-        this.thorn.setCenterY(this.thorn.getCenterY() + mustMoveY);
-
-    }
-    public void homeProto1(int destinationX, int destinationY){
-        int maxMagnitude = 2;
-        double angleDis = Math.toRadians(0.8);
-        double mustMoveX = 0;
-        double mustMoveY = 0;
-        double angle = this.findAngleProto1(destinationX, destinationY);
-        this.angleDisplacement = this.lastAngle - angle;
-        if (angle > this.lastAngle + angleDis){
-            mustMoveX = (maxMagnitude * Math.cos(this.lastAngle + angleDis));
-            mustMoveY = (maxMagnitude * Math.sin(this.lastAngle + angleDis));
-            this.secondLastAngle = this.lastAngle;
-            this.lastAngle = this.lastAngle + angleDis;
-        }
-        else if (angle < this.lastAngle - angleDis){
-            mustMoveX = (maxMagnitude * Math.cos(this.lastAngle - angleDis));
-            mustMoveY = (maxMagnitude * Math.sin(this.lastAngle - angleDis));
-            this.secondLastAngle = this.lastAngle;
-            this.lastAngle = this.lastAngle - angleDis;
-        }
-        else if (angle < this.lastAngle + angleDis || angle > this.lastAngle - angleDis){
-            mustMoveX = (maxMagnitude * Math.cos(angle));
-            mustMoveY = (maxMagnitude * Math.sin(angle));
-            this.secondLastAngle = this.lastAngle;
-            this.lastAngle = angle;
-        }
-        this.thorn.setCenterX(this.thorn.getCenterX() + mustMoveX);
-        this.thorn.setCenterY(this.thorn.getCenterY() + mustMoveY);
-
+        this.lastCalculatedAngle = this.angle;
     }
     private double findAngleProto3(int destinationX, int destinationY){
         double angle = 0;
         double angle1 = this.calcNegativeAngle(destinationX, destinationY);
         double angle2 = this.calcPositiveAngle(destinationX, destinationY);
 
-        if (this.lastAngle < Math.toRadians(180) && this.lastAngle > Math.toRadians(-180)){
-            if (Math.abs(angle1) < Math.abs(angle2)){
+        if (this.lastCalculatedAngle < Math.toRadians(180) - this.angleChange && lastCalculatedAngle > Math.toRadians(-180) + this.angleChange) {
+            if (Math.abs(angle1) < Math.abs(angle2)) {
                 angle = angle1;
-            } else if (Math.abs(angle2) < Math.abs(angle1)){
+            } else if (Math.abs(angle2) < Math.abs(angle1)) {
                 angle = angle2;
             } else {
                 angle = angle1;
             }
         }
-
-        if (Math.abs(this.angleDisplacement) > Math.toRadians(6)) {
-            if (this.secondLastAngle > 0) {
-                this.angle = this.secondLastAngle + Math.toRadians(5);
-                this.lastAngle = this.angle;
-            } else if (this.secondLastAngle < 0) {
-                this.angle = this.secondLastAngle - Math.toRadians(5);
-                this.lastAngle = this.angle;
-            }
-
-
-        } else if (this.lastAngle > Math.toRadians(180)) {
-            angle = Math.toRadians(180) + this.findAngleProto3(destinationX, destinationY);
-            this.lastAngle = angle;
-        } else if (this.lastAngle < Math.toRadians(-180)) {
-            angle = -Math.toRadians(180) + this.findAngleProto3(destinationX, destinationY);
-            this.lastAngle = angle;
-        }
-
-        return angle;
-    }
-
-    private double findAngleProto2(int destinationX, int destinationY){
-        double displacementX;
-        double displacementY;
-        double angle = 0;
-        displacementX = destinationX - this.thorn.getCenterX();
-        displacementY = (destinationY + ((double) Constants.LAWN_WIDTH / 2)) - this.thorn.getCenterY();
-        if (this.isFirstQuadrant(destinationX, destinationY)){
-            angle = Math.atan(-displacementY / displacementX);
-        } else if (this.isSecondQuadrant(destinationX, destinationY)){
-            angle = Math.atan(-displacementY / -displacementX);
-        } else if (this.isThirdQuadrant(destinationX, destinationY)){
-            angle = Math.atan(displacementY / -displacementX);
-        } else if (this.isFourthQuadrant(destinationX, destinationY)){
-            angle = Math.atan(displacementY / displacementX);
-        }
-        return angle;
-    }
-    private double findAngleProto1(int destinationX, int destinationY){
-        double angle = 0;
-        double displacementX;
-        double displacementY;
-        if (destinationX > this.thorn.getCenterX()) {
-            displacementX = destinationX - this.thorn.getCenterX();
-            displacementY = (destinationY + ((double) Constants.LAWN_WIDTH / 2)) - this.thorn.getCenterY();
-            angle = Math.atan(displacementY / displacementX);
-        } else if (destinationX < this.thorn.getCenterX()) {
-            displacementX = this.thorn.getCenterX() - destinationX;
-            displacementY = (destinationY + ((double) Constants.LAWN_WIDTH / 2)) - this.thorn.getCenterY();
-            if (this.lastAngle > 0) {
-                System.out.println(this.lastAngle);
-                angle = Math.toRadians(180) - Math.atan(displacementY / displacementX);
-                if (Math.abs(this.angleDisplacement) > Math.toRadians(10)) {
-                    angle = this.secondLastAngle + 5;
-                } else if (this.lastAngle > 180) {
-                    angle = Math.toRadians(180) + Math.atan(displacementY / displacementX);
-                }
-            } else if (this.lastAngle < 0) {
-                angle = -(Math.toRadians(180) - Math.atan(displacementY / displacementX));
-                if (Math.abs(this.angleDisplacement) > Math.toRadians(10)) {
-                    angle = this.secondLastAngle - 5;
-                } else if (this.lastAngle < -180) {
-                    angle = -(Math.toRadians(180) + Math.atan(displacementY / displacementX));
-                }
+        if (this.lastCalculatedAngle > Math.toRadians(180) - this.angleChange) {
+            if (this.angleDisplacement > 0) {
+                angle = this.calcPositiveAngle(destinationX, destinationY);
+            } else if (this.angleDisplacement < 0){
+                angle = this.calcPositiveAngle(destinationX, destinationY);
             } else {
-                double angle1 = Math.toRadians(180) - Math.atan(displacementY / displacementX);
-                double angle2 = -(Math.toRadians(180) - Math.atan(displacementY / displacementX));
-                if (Math.abs(angle1) < Math.abs(angle2)) {
-                    System.out.println("DOWN");
-                    angle = angle1;
-                } else if (Math.abs(angle2) < Math.abs(angle1)) {
-                    System.out.println("UP");
-                    angle = angle2;
-                } else {
-                    angle = angle1;
-                }
+                angle = this.lastCalculatedAngle;
+            }
+        } else if (this.lastCalculatedAngle < Math.toRadians(-180) + this.angleChange) {
+            if (this.angleDisplacement < 0) {
+                angle = this.calcNegativeAngle(destinationX, destinationY);
+            } else if (this.angleDisplacement > 0){
+                angle = this.calcNegativeAngle(destinationX, destinationY);
+            } else {
+                angle = this.lastCalculatedAngle;
             }
         }
 
         return angle;
     }
+
+
     private double calcPositiveAngle(int destinationX, int destinationY){
         double displacementX;
         double displacementY;
@@ -326,7 +183,10 @@ public class ThornProjectile {
         }
     }
     public void move(){
-        this.thorn.setCenterX(this.thorn.getCenterX() + 2);
+        double mustMoveX = (2 * Math.cos(this.angle));
+        double mustMoveY = (2 * Math.sin(this.angle));
+        this.thorn.setCenterX(this.thorn.getCenterX() + mustMoveX);
+        this.thorn.setCenterY(this.thorn.getCenterY() + mustMoveY);
     }
 
     public boolean checkOutOfBounds(){
