@@ -4,6 +4,8 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -14,7 +16,7 @@ import java.util.LinkedList;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class SunFlower implements Plant{
-    private Rectangle sunFlowerHitbox;
+    private ImageView sunFlowerHitbox;
     private LinkedList<Zombie> myListOfZombies;
     private int sunFlowerHealth;
     private Lawn myLawn;
@@ -22,9 +24,11 @@ public class SunFlower implements Plant{
     public SunFlower(int X, int Y, Lawn lawn, Pane root, Game myGame){
         this.myLawn = lawn;
         this.sunFlowerHealth = Constants.SUNFLOWER_HEALTH;
-        this.sunFlowerHitbox = new Rectangle(X, Y, Constants.LAWN_WIDTH, Constants.LAWN_WIDTH);
-        this.sunFlowerHitbox.setStroke(Color.BLACK);
-        this.sunFlowerHitbox.setFill(Color.LIGHTYELLOW);
+        this.sunFlowerHitbox = new ImageView(new Image("indy/Sunflower_Sprite.png"));
+        this.sunFlowerHitbox.setFitWidth(Constants.LAWN_WIDTH);
+        this.sunFlowerHitbox.setFitHeight(Constants.LAWN_WIDTH);
+        this.sunFlowerHitbox.setX(X);
+        this.sunFlowerHitbox.setY(Y);
         root.getChildren().add(this.sunFlowerHitbox);
         this.setUpSunFlowerTimeline(X, Y, root, myGame);
     }

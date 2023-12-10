@@ -4,6 +4,8 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -14,16 +16,18 @@ import java.util.LinkedList;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Walnut implements Plant{
-    private Rectangle walnutHitbox;
+    private ImageView walnutHitbox;
     private LinkedList<Zombie> myListOfZombies;
     private int walnutHealth;
     private Lawn myLawn;
     public Walnut(int X, int Y, Lawn lawn, Pane root){
         this.myLawn = lawn;
         this.walnutHealth = Constants.WALNUT_HEALTH;
-        this.walnutHitbox = new Rectangle(X, Y, Constants.LAWN_WIDTH, Constants.LAWN_WIDTH);
-        this.walnutHitbox.setStroke(Color.BLACK);
-        this.walnutHitbox.setFill(Color.WHEAT);
+        this.walnutHitbox = new ImageView(new Image("indy/Walnut_Sprite.png"));
+        this.walnutHitbox.setFitWidth(Constants.LAWN_WIDTH);
+        this.walnutHitbox.setFitHeight(Constants.LAWN_WIDTH);
+        this.walnutHitbox.setX(X);
+        this.walnutHitbox.setY(Y);
         root.getChildren().add(this.walnutHitbox);
     }
     @Override

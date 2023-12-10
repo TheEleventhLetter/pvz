@@ -43,7 +43,6 @@ public class ThornProjectile {
         double mustMoveX = 0;
         double mustMoveY = 0;
         this.angle = this.findAngle(destinationX, destinationY);
-        System.out.println(Math.toDegrees(this.angleDisplacement));
 
 
         if (this.angle > this.lastAngle + this.angleChange){

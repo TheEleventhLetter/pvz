@@ -4,6 +4,8 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
@@ -55,24 +57,13 @@ public class Lawn {
     }
 
     private void setUpLawn(Pane gamepane) {
-        for (int i = 0; i < Constants.LAWN_ROWS; i++) {
-            for (int j = 0; j < Constants.LAWN_COLUMN; j++) {
-                if (i % 2 == 0) {
-                    if (j % 2 == 0) {
-                        this.lawnGraphic[i][j] = new LawnSquare(j * Constants.LAWN_WIDTH, (i + 1) * Constants.LAWN_WIDTH, Color.GREEN, gamepane);
-                    } else {
-                        this.lawnGraphic[i][j] = new LawnSquare(j * Constants.LAWN_WIDTH, (i + 1) * Constants.LAWN_WIDTH, Color.LIGHTGREEN, gamepane);
-                    }
-                } else {
-                    if (j % 2 == 0) {
-                        this.lawnGraphic[i][j] = new LawnSquare(j * Constants.LAWN_WIDTH, (i + 1) * Constants.LAWN_WIDTH, Color.LIGHTGREEN, gamepane);
-                    } else {
-                        this.lawnGraphic[i][j] = new LawnSquare(j * Constants.LAWN_WIDTH, (i + 1) * Constants.LAWN_WIDTH, Color.GREEN, gamepane);
-                    }
-                }
-
-            }
-        }
+        ImageView lawnImage = new ImageView(new Image("indy/PVZ_Lawn.png"));
+        gamepane.getChildren().add(lawnImage);
+        lawnImage.setFitHeight(Constants.SCENE_HEIGHT - 115);
+        lawnImage.setPreserveRatio(false);
+        lawnImage.setFitWidth(Constants.SCENE_WIDTH + 350);
+        lawnImage.setX(-205);
+        lawnImage.setY(20);
 
     }
     private void setUpZombieTimeline(Pane root, int level){
@@ -113,7 +104,7 @@ public class Lawn {
     }
 
     public int pixelToColumn(int X){
-        int column = X / Constants.LAWN_WIDTH;
+        int column = X / Constants.LAWN_WIDTH - 1;
         return column;
     }
 
@@ -260,10 +251,10 @@ public class Lawn {
     public boolean isGameOver() {
         boolean gameOver = false;
         for (int i = 0; i < Constants.LAWN_ROWS; i++) {
-            LinkedList<Zombie> currentZombieList = totalZombies.get(i);
+            LinkedList<Zombie> currentZombieList = this.totalZombies.get(i);
             if (!currentZombieList.isEmpty()) {
                 for (Zombie currentZombie : currentZombieList) {
-                    if (currentZombie.getX() < 0) {
+                    if (currentZombie.getX() < Constants.LAWN_WIDTH) {
                         gameOver = true;
                     }
                 }

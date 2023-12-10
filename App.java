@@ -17,7 +17,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         GamePaneOrganizer organizer = new GamePaneOrganizer();
-        Scene scene = new Scene(organizer.getRoot(), Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT);
+        Scene scene = new Scene(organizer.getRoot(), Constants.SCENE_WIDTH + 20, Constants.SCENE_HEIGHT + 30);
         scene.setFill(Color.GRAY);
         stage.setScene(scene);
         stage.setTitle("Plants Vs Zombies");

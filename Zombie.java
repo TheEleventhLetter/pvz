@@ -4,6 +4,8 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -12,7 +14,7 @@ import javafx.util.Duration;
 import java.util.LinkedList;
 
 public class Zombie {
-    private Rectangle zombieHitbox;
+    private ImageView zombieHitbox;
     private int zombieHealth;
     private LinkedList<Plant> myListOfPlants;
     private Timeline timeline1;
@@ -22,19 +24,23 @@ public class Zombie {
     public Zombie(int Y, Pane root, Lawn lawn){
         this.myLawn = lawn;
         this.amWalking = true;
-        this.zombieHitbox = new Rectangle(Constants.SCENE_WIDTH, Y, Constants.ZOMBIE_WIDTH, Constants.LAWN_WIDTH);
+        this.zombieHitbox = new ImageView(new Image("indy/Normal_Zombie.png"));
+        this.zombieHitbox.setFitWidth(Constants.ZOMBIE_WIDTH);
+        this.zombieHitbox.setFitHeight(Constants.LAWN_WIDTH);
+        this.zombieHitbox.setX(Constants.SCENE_WIDTH);
+        this.zombieHitbox.setY(Y);
         root.getChildren().add(this.zombieHitbox);
         this.setUpWalkingTimeline(root);
         this.myListOfPlants = new LinkedList<>();
     }
-    public void setZombieColor(Color color){
-        this.zombieHitbox.setFill(color);
+    public void setZombieColor(String path){
+        this.zombieHitbox.setImage(new Image(path));
     }
     public void setZombieHealth(int health){
         this.zombieHealth = health;
     }
     private void setUpWalkingTimeline(Pane root){
-        KeyFrame kf1 = new KeyFrame(Duration.millis(30), (ActionEvent e) -> this.walk());
+        KeyFrame kf1 = new KeyFrame(Duration.millis(40), (ActionEvent e) -> this.walk());
         this.timeline1 = new Timeline(kf1);
         this.timeline1.setCycleCount(Animation.INDEFINITE);
         this.timeline1.play();

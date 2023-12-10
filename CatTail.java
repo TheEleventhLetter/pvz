@@ -4,6 +4,8 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -15,7 +17,7 @@ import java.util.LinkedList;
 
 
 public class CatTail implements Plant{
-    private Rectangle catTailHitbox;
+    private ImageView catTailHitbox;
     private LinkedList<ThornProjectile> listOfThorns;
     private ArrayList<LinkedList<Zombie>> totalZombies;
     private int catTailHealth;
@@ -29,9 +31,11 @@ public class CatTail implements Plant{
         this.myLawn = lawn;
         this.catTailHealth = Constants.CATTAIL_HEALTH;
         this.isSameZombie = false;
-        this.catTailHitbox = new Rectangle(X, Y, Constants.LAWN_WIDTH, Constants.LAWN_WIDTH);
-        this.catTailHitbox.setStroke(Color.BLACK);
-        this.catTailHitbox.setFill(Color.PINK);
+        this.catTailHitbox = new ImageView(new Image("indy/andy.png"));
+        this.catTailHitbox.setFitWidth(Constants.LAWN_WIDTH);
+        this.catTailHitbox.setFitHeight(Constants.LAWN_WIDTH);
+        this.catTailHitbox.setX(X);
+        this.catTailHitbox.setY(Y);
         root.getChildren().add(this.catTailHitbox);
         this.listOfThorns = new LinkedList<>();
         this.setUpThornShootingTimeline(X, Y, root);

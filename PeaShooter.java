@@ -4,6 +4,8 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -13,7 +15,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class PeaShooter implements Plant {
-    private Rectangle peaShooterHitbox;
+    private ImageView peaShooterHitbox;
     private LinkedList<PeaProjectile> listOfPeas;
     private LinkedList<Zombie> myListOfZombies;
     private int peaShooterHealth;
@@ -24,9 +26,11 @@ public class PeaShooter implements Plant {
     public PeaShooter(int X, int Y, Lawn lawn, Pane root){
         this.myLawn = lawn;
         this.peaShooterHealth = Constants.PEASHOOTER_HEALTH;
-        this.peaShooterHitbox = new Rectangle(X, Y, Constants.LAWN_WIDTH, Constants.LAWN_WIDTH);
-        this.peaShooterHitbox.setStroke(Color.BLACK);
-        this.peaShooterHitbox.setFill(Color.DARKGREEN);
+        this.peaShooterHitbox = new ImageView(new Image("indy/Peashooter_Sprite.png"));
+        this.peaShooterHitbox.setFitWidth(Constants.LAWN_WIDTH);
+        this.peaShooterHitbox.setFitHeight(Constants.LAWN_WIDTH);
+        this.peaShooterHitbox.setX(X);
+        this.peaShooterHitbox.setY(Y);
         root.getChildren().add(this.peaShooterHitbox);
         this.listOfPeas = new LinkedList<>();
         this.setUpPeaShootingTimeline(X, Y, root);

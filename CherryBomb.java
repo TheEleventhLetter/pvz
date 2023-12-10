@@ -4,6 +4,8 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -13,7 +15,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class CherryBomb implements Plant{
-    private Rectangle cherryBombHitbox;
+    private ImageView cherryBombHitbox;
     private Lawn myLawn;
     private Timeline timeline1;
     private int explodingCountDown;
@@ -21,9 +23,11 @@ public class CherryBomb implements Plant{
     public CherryBomb(int X, int Y, Lawn lawn, Pane root){
         this.myLawn = lawn;
         this.explodingCountDown = 2;
-        this.cherryBombHitbox = new Rectangle(X, Y, Constants.LAWN_WIDTH, Constants.LAWN_WIDTH);
-        this.cherryBombHitbox.setStroke(Color.BLACK);
-        this.cherryBombHitbox.setFill(Color.DARKRED);
+        this.cherryBombHitbox = new ImageView(new Image("indy/Cherrybomb_Sprite.png"));
+        this.cherryBombHitbox.setFitWidth(Constants.LAWN_WIDTH);
+        this.cherryBombHitbox.setFitHeight(Constants.LAWN_WIDTH);
+        this.cherryBombHitbox.setX(X);
+        this.cherryBombHitbox.setY(Y);
         root.getChildren().add(this.cherryBombHitbox);
         this.setUpExplodingTimeline(root);
     }

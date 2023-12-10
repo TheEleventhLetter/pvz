@@ -4,6 +4,8 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -13,11 +15,15 @@ import javafx.util.Duration;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Sun {
-    private Circle sun;
+    private ImageView sun;
     private Timeline timeline;
 
     public Sun(int X, int Y, Pane root, Game myGame){
-        this.sun = new Circle(X, Y, Constants.SUN_RADIUS, Color.YELLOW);
+        this.sun = new ImageView(new Image("indy/PVZ_Sun.png"));
+        this.sun.setFitWidth(Constants.SUN_RADIUS * 3);
+        this.sun.setFitHeight(Constants.SUN_RADIUS * 3);
+        this.sun.setX(X - Constants.SUN_RADIUS);
+        this.sun.setY(Y - Constants.SUN_RADIUS);
         root.getChildren().add(this.sun);
         this.setUpDroppingTimeline();
         this.sun.setOnMouseClicked((MouseEvent e) -> this.addSunCost(root, myGame));
@@ -30,7 +36,7 @@ public class Sun {
         this.timeline.play();
     }
     private void drop(int randY){
-        this.sun.setCenterY(this.sun.getCenterY() + 2);
+        this.sun.setY(this.sun.getY() + 2);
         this.checkStop(randY);
     }
     private void addSunCost(Pane root, Game myGame){
@@ -43,7 +49,7 @@ public class Sun {
         }
     }
     private void checkStop(int randY){
-        if (this.sun.getCenterY() > randY){
+        if (this.sun.getY() > randY){
             this.timeline.stop();
         }
     }

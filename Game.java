@@ -70,7 +70,7 @@ public class Game {
     }
 
     private void createButtonPane(HBox buttonPane, Menu myMenu){
-        buttonPane.setPrefSize(Constants.SCENE_WIDTH, Constants.LAWN_WIDTH);
+        buttonPane.setPrefSize(Constants.SCENE_WIDTH, Constants.LAWN_WIDTH + 20);
         buttonPane.setStyle("-fx-background-color: #705301");
         Button quitButton = new Button("Quit");
         quitButton.setOnAction((ActionEvent e) -> System.exit(0));
@@ -175,7 +175,7 @@ public class Game {
             if (!this.isPaused) {
                 double MouseX = e.getX();
                 double MouseY = e.getY();
-                if (MouseX > 0 && MouseX < 2 * Constants.SCENE_WIDTH) {
+                if (MouseX > Constants.LAWN_WIDTH && MouseX < Constants.SCENE_WIDTH) {
                     if (MouseY > Constants.LAWN_WIDTH && MouseY < Constants.SCENE_HEIGHT) {
                         this.findChosenSeedPacket();
                         if (this.chosenPacket != null) {

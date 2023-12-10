@@ -7,7 +7,7 @@ import javafx.scene.shape.Circle;
 public class PeaProjectile {
     private Circle pea;
     public PeaProjectile(int X, int Y, Pane root){
-        this.pea = new Circle(X, Y, Constants.PEA_RADIUS, Color.RED);
+        this.pea = new Circle(X, Y, Constants.PEA_RADIUS, Color.LAWNGREEN);
         root.getChildren().add(this.pea);
     }
     public void removeGraphic(Pane root){

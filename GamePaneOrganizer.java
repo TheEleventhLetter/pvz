@@ -14,7 +14,7 @@ public class GamePaneOrganizer {
 
     public GamePaneOrganizer(){
         this.root = new BorderPane();
-        this.root.setStyle("-fx-background-color: #11d3f5");
+        this.root.setStyle("-fx-background-color: #705301");
         this.gamePane = new Pane();
         this.buttonPane = new HBox();
         this.menuPane = new VBox();
