@@ -79,16 +79,16 @@ public class Lawn {
         int duration = 0;
         if (level == 1){
             duration = Constants.LEVEL_ONE_RATIO;
-            this.zombieCount = 30;
+            this.zombieCount = Constants.LEVEL_ONE_COUNT;
         } else if (level == 2){
             duration = Constants.LEVEL_TWO_RATIO;
-            this.zombieCount = 40;
+            this.zombieCount = Constants.LEVEL_TWO_COUNT;
         } else if (level == 3){
             duration = Constants.LEVEL_THREE_RATIO;
-            this.zombieCount = 50;
+            this.zombieCount = Constants.LEVEL_THREE_COUNT;
         } else if (level == 4){
             duration = Constants.LEVEL_FOUR_RATIO;
-            this.zombieCount = 60;
+            this.zombieCount = Constants.LEVEL_FOUR_COUNT;
         }
         KeyFrame kf = new KeyFrame(Duration.millis(duration), (ActionEvent e) -> this.generateZombies(root));
         this.timeline2 = new Timeline(kf);
@@ -98,12 +98,12 @@ public class Lawn {
 
 
     private int calculateNearestXPosition(double X){
-        int nearestX = (int) (Math.floor(X/100.0)) * 100;
+        int nearestX = (int) (Math.floor(X/Constants.LAWN_WIDTH)) * Constants.LAWN_WIDTH;
         return nearestX;
     }
 
     private int calculateNearestYPosition(double Y){
-        int nearestY = (int) (Math.floor(Y/100.0)) * 100;
+        int nearestY = (int) (Math.floor(Y/Constants.LAWN_WIDTH)) * Constants.LAWN_WIDTH;
         return nearestY;
     }
 
@@ -223,7 +223,7 @@ public class Lawn {
         return randomZombie;
     }
     private int randomYpixel(){
-        int randY = ((int)(Math.random() * 5) + 1) * Constants.LAWN_WIDTH;
+        int randY = ((int)(Math.random() * Constants.LAWN_ROWS) + 1) * Constants.LAWN_WIDTH;
         return randY;
     }
 

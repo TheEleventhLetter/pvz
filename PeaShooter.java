@@ -23,7 +23,7 @@ public class PeaShooter implements Plant {
     private Timeline timeline3;
     public PeaShooter(int X, int Y, Lawn lawn, Pane root){
         this.myLawn = lawn;
-        this.peaShooterHealth = 4000;
+        this.peaShooterHealth = Constants.PEASHOOTER_HEALTH;
         this.peaShooterHitbox = new Rectangle(X, Y, Constants.LAWN_WIDTH, Constants.LAWN_WIDTH);
         this.peaShooterHitbox.setStroke(Color.BLACK);
         this.peaShooterHitbox.setFill(Color.DARKGREEN);

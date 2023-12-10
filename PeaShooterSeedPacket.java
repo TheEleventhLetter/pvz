@@ -23,7 +23,7 @@ public class PeaShooterSeedPacket implements SeedPacket {
             if (!this.myGame.getIsPaused()) {
                 if (!this.peaShooterSeedSelected) {
                     if (!this.myGame.preventDoubleChoicePacket()) {
-                        if (totalSun >= 100) {
+                        if (totalSun >= Constants.PEASHOOTER_COST) {
                             this.peaShooterSeedSelected = true;
                         }
                     }
@@ -48,7 +48,7 @@ public class PeaShooterSeedPacket implements SeedPacket {
     }
     @Override
     public int getPlantNumber(){
-        return 1;
+        return Constants.PEASHOOTER_NUMBER;
     }
     @Override
     public int myCost(){

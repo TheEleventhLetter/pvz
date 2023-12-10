@@ -23,7 +23,7 @@ public class CatTailSeedPacket implements SeedPacket{
             if (!this.myGame.getIsPaused()) {
                 if (!this.catTailSeedSelected) {
                     if (!this.myGame.preventDoubleChoicePacket()) {
-                        if (totalSun >= 200) {
+                        if (totalSun >= Constants.CATTAIL_COST) {
                             this.catTailSeedSelected = true;
                         }
                     }
@@ -49,7 +49,7 @@ public class CatTailSeedPacket implements SeedPacket{
     }
     @Override
     public int getPlantNumber(){
-        return 5;
+        return Constants.CATTAIL_NUMBER;
     }
     @Override
     public int myCost(){

@@ -8,18 +8,19 @@ import javafx.scene.layout.VBox;
 
 public class GamePaneOrganizer {
     private BorderPane root;
+    private Pane gamePane;
+    private HBox buttonPane;
     private VBox menuPane;
 
     public GamePaneOrganizer(){
         this.root = new BorderPane();
         this.root.setStyle("-fx-background-color: #11d3f5");
-        Pane gamePane = new Pane();
-        HBox buttonPane = new HBox();
+        this.gamePane = new Pane();
+        this.buttonPane = new HBox();
         this.menuPane = new VBox();
-        this.root.setCenter(gamePane);
-        this.root.setTop(buttonPane);
-        this.root.setLeft(this.menuPane);
-        new Menu(gamePane, buttonPane, this.menuPane, this);
+        this.root.setCenter(this.gamePane);
+        this.root.setTop(this.buttonPane);
+        this.addMenu();
     }
 
     public Pane getRoot(){
@@ -27,5 +28,9 @@ public class GamePaneOrganizer {
     }
     public void removeMenu(){
         this.root.getChildren().remove(this.menuPane);
+    }
+    public void addMenu(){
+        new Menu(this.gamePane, this.buttonPane, this.menuPane, this);
+        this.root.setLeft(this.menuPane);
     }
 }

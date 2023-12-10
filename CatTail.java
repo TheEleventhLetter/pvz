@@ -27,7 +27,7 @@ public class CatTail implements Plant{
     private Zombie lastClosestZombie;
     public CatTail(int X, int Y, Lawn lawn, Pane root){
         this.myLawn = lawn;
-        this.catTailHealth = 4000;
+        this.catTailHealth = Constants.CATTAIL_HEALTH;
         this.isSameZombie = false;
         this.catTailHitbox = new Rectangle(X, Y, Constants.LAWN_WIDTH, Constants.LAWN_WIDTH);
         this.catTailHitbox.setStroke(Color.BLACK);
@@ -87,7 +87,7 @@ public class CatTail implements Plant{
         for (ThornProjectile currentThorn : this.listOfThorns){
             if (this.findClosestZombie() != null){
                 if (this.lastClosestZombie != this.findClosestZombie()){
-                    currentThorn.resetAngle(this.findClosestZombie().getX(), this.findClosestZombie().getY());
+                    currentThorn.resetAngle();
                 }
                 currentThorn.home(this.findClosestZombie().getX(), this.findClosestZombie().getY());
             } else {

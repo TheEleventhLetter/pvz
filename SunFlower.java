@@ -21,7 +21,7 @@ public class SunFlower implements Plant{
     private Timeline timeline1;
     public SunFlower(int X, int Y, Lawn lawn, Pane root, Game myGame){
         this.myLawn = lawn;
-        this.sunFlowerHealth = 2000;
+        this.sunFlowerHealth = Constants.SUNFLOWER_HEALTH;
         this.sunFlowerHitbox = new Rectangle(X, Y, Constants.LAWN_WIDTH, Constants.LAWN_WIDTH);
         this.sunFlowerHitbox.setStroke(Color.BLACK);
         this.sunFlowerHitbox.setFill(Color.LIGHTYELLOW);
@@ -38,7 +38,8 @@ public class SunFlower implements Plant{
     private void generateSun(int X, int Y, Pane root, Game myGame){
         int randX = ThreadLocalRandom.current().nextInt(X, X + Constants.LAWN_WIDTH);
         int randY = ThreadLocalRandom.current().nextInt(Y, Y + Constants.LAWN_WIDTH);
-        new Sun(randX, randY, root, myGame);
+        Sun newSun = new Sun(randX, randY, root, myGame);
+        myGame.addToSunList(newSun);
     }
     @Override
     public void assignCorrespondingListOfZombies(ArrayList<LinkedList<Zombie>> ListOfZombies){

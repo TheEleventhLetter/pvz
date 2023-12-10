@@ -13,6 +13,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+
 
 public class Game {
     private Lawn lawn;
@@ -30,16 +32,18 @@ public class Game {
     private Label victoryLabel;
     private boolean isPaused;
     private boolean isPlaying;
+    private ArrayList<Sun> sunArrayList;
 
-    public Game(Pane gamepane, HBox buttonPane, int level){
-        this.seedPackets = new SeedPacket[5];
-        this.totalSun = 500;
+    public Game(Pane gamepane, HBox buttonPane, int level, Menu myMenu){
+        this.sunArrayList = new ArrayList<>();
+        this.seedPackets = new SeedPacket[Constants.SEED_PACKET_NUMBER];
+        this.totalSun = Constants.INITIAL_SUN;
         this.somePacketSelected = false;
         this.readyToRemove = false;
         this.isPaused = false;
         this.isPlaying = true;
         this.createGamePane(gamepane, level);
-        this.createButtonPane(buttonPane);
+        this.createButtonPane(buttonPane, myMenu);
         this.setUpSunGenerationTimeline(gamepane);
         this.setUpGameOverTimeline(gamepane);
     }
@@ -59,13 +63,13 @@ public class Game {
         this.gameOverLabel.setFont(new Font(50));
         this.pausedLabel = new Label("Game Paused");
         this.pausedLabel.setTextFill(Color.WHITE);
-        this.pausedLabel.setFont(new Font(30));
+        this.pausedLabel.setFont(new Font(20));
         this.victoryLabel = new Label("YOU WON!!!");
-        this.pausedLabel.setTextFill(Color.WHITE);
-        this.pausedLabel.setFont(new Font(50));
+        this.victoryLabel.setTextFill(Color.WHITE);
+        this.victoryLabel.setFont(new Font(50));
     }
 
-    private void createButtonPane(HBox buttonPane){
+    private void createButtonPane(HBox buttonPane, Menu myMenu){
         buttonPane.setPrefSize(Constants.SCENE_WIDTH, Constants.LAWN_WIDTH);
         buttonPane.setStyle("-fx-background-color: #705301");
         Button quitButton = new Button("Quit");
@@ -74,6 +78,8 @@ public class Game {
         removeButton.setOnAction((ActionEvent e) -> this.removeTrueFalse());
         Button pauseButton = new Button("Pause");
         pauseButton.setOnAction((ActionEvent e) -> this.pauseGame(buttonPane));
+        Button menuButton = new Button("Menu");
+        //menuButton.setOnAction((ActionEvent e) -> );
         this.displayTotalSun = new Label("Total Sun: " + this.totalSun);
         this.displayTotalSun.setTextFill(Color.WHITE);
         this.displayTotalSun.setFont(new Font(20));
@@ -81,7 +87,7 @@ public class Game {
         this.zombieCountLabel.setTextFill(Color.WHITE);
         this.zombieCountLabel.setFont(new Font(20));
         this.setUpSeedPackets(buttonPane, this);
-        buttonPane.getChildren().addAll(this.displayTotalSun, removeButton, this.zombieCountLabel, pauseButton, quitButton);
+        buttonPane.getChildren().addAll(this.displayTotalSun, removeButton, this.zombieCountLabel, pauseButton, quitButton, menuButton);
 
         buttonPane.setFocusTraversable(false);
     }
@@ -117,19 +123,27 @@ public class Game {
     }
     private void generateSun(Pane root){
         int randX = (int)(Math.random() * Constants.SCENE_WIDTH);
-        new Sun(randX, 0, root, this);
+        Sun newSun = new Sun(randX, 0, root, this);
+        this.addToSunList(newSun);
     }
+    public void addToSunList(Sun currentSun){
+        this.sunArrayList.add(currentSun);
+    }
+    public void removeFromSunList(Sun currentSun){
+        this.sunArrayList.remove(currentSun);
+    }
+
     public void addToTotalSun(){
-        this.totalSun = this.totalSun + 25;
+        this.totalSun = this.totalSun + Constants.SUN_COST;
         this.displayTotalSun.setText("Total Sun: " + this.totalSun);
-        for (int i = 0; i < 5; i++){
+        for (int i = 0; i < Constants.SEED_PACKET_NUMBER; i++){
             this.seedPackets[i].updateSun();
         }
     }
 
     public boolean preventDoubleChoicePacket(){
         if (!this.readyToRemove) {
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < Constants.SEED_PACKET_NUMBER; i++) {
                 if (this.seedPackets[i].isSeedSelected()) {
                     this.somePacketSelected = true;
                 }
@@ -149,7 +163,7 @@ public class Game {
         }
     }
     private void findChosenSeedPacket(){
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < Constants.SEED_PACKET_NUMBER; i++) {
             if (this.seedPackets[i].isSeedSelected()) {
                 this.chosenPacket = this.seedPackets[i];
             }
@@ -191,6 +205,7 @@ public class Game {
         if (this.lawn.isGameOver()){
             this.stopTimelines();
             this.lawn.stopTimelines();
+            this.stopSuns();
             root.getChildren().add(this.gameOverLabel);
             this.isPlaying = false;
         }
@@ -200,11 +215,13 @@ public class Game {
             if (!this.isPaused) {
                 this.stopTimelines();
                 this.lawn.stopTimelines();
+                this.stopSuns();
                 root.getChildren().add(this.pausedLabel);
                 this.isPaused = true;
             } else {
                 this.startTimelines();
                 this.lawn.startTimelines();
+                this.startSuns();
                 root.getChildren().remove(this.pausedLabel);
                 this.isPaused = false;
             }
@@ -213,10 +230,21 @@ public class Game {
     public void gameWon(Pane root){
         this.stopTimelines();
         this.lawn.stopTimelines();
+        this.stopSuns();
         root.getChildren().add(this.victoryLabel);
         this.isPlaying = false;
     }
     public void updateZombieCountDisplay(){
         this.zombieCountLabel.setText("Zombies To Defeat: " + this.lawn.getZombieCount());
+    }
+    private void stopSuns(){
+        for (Sun currentSun : this.sunArrayList){
+            currentSun.stopTimeline();
+        }
+    }
+    private void startSuns(){
+        for (Sun currentSun : this.sunArrayList){
+            currentSun.playTimeline();
+        }
     }
 }

@@ -23,7 +23,7 @@ public class CherryBombSeedPacket implements SeedPacket{
             if (!this.myGame.getIsPaused()) {
                 if (!this.cherryBombSeedSelected) {
                     if (!this.myGame.preventDoubleChoicePacket()) {
-                        if (totalSun >= 150) {
+                        if (totalSun >= Constants.CHERRYBOMB_COST) {
                             this.cherryBombSeedSelected = true;
                         }
                     }
@@ -48,7 +48,7 @@ public class CherryBombSeedPacket implements SeedPacket{
     }
     @Override
     public int getPlantNumber(){
-        return 3;
+        return Constants.CHERRYBOMB_NUMBER;
     }
     @Override
     public int myCost(){

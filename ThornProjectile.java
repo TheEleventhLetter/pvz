@@ -22,13 +22,9 @@ public class ThornProjectile {
         root.getChildren().remove(this.thorn);
     }
 
-    public void home(int destinationX, int destinationY) {
-        this.homeProto3(destinationX, destinationY);
-    }
-
-    public void resetAngle(int destinationX, int destinationY){
+    public void resetAngle(){
         this.angle = this.findRelative(this.angle);
-        //this.lastAngle = this.findRelative(this.lastAngle);
+
     }
     private double findRelative(double angle){
         double newAngle = 0;
@@ -41,12 +37,12 @@ public class ThornProjectile {
         }
         return newAngle;
     }
-    public void homeProto3(int destinationX, int destinationY) {
+    public void home(int destinationX, int destinationY) {
         int maxMagnitude = 2;
         this.angleChange = Math.toRadians(2);
         double mustMoveX = 0;
         double mustMoveY = 0;
-        this.angle = this.findAngleProto3(destinationX, destinationY);
+        this.angle = this.findAngle(destinationX, destinationY);
         System.out.println(Math.toDegrees(this.angleDisplacement));
 
 
@@ -72,7 +68,7 @@ public class ThornProjectile {
         this.thorn.setCenterY(this.thorn.getCenterY() + mustMoveY);
         this.lastCalculatedAngle = this.angle;
     }
-    private double findAngleProto3(int destinationX, int destinationY){
+    private double findAngle(int destinationX, int destinationY){
         double angle = 0;
         double angle1 = this.calcNegativeAngle(destinationX, destinationY);
         double angle2 = this.calcPositiveAngle(destinationX, destinationY);

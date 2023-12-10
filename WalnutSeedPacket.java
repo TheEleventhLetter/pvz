@@ -23,7 +23,7 @@ public class WalnutSeedPacket implements SeedPacket{
             if (!this.myGame.getIsPaused()) {
                 if (!this.walnutSeedSelected) {
                     if (!this.myGame.preventDoubleChoicePacket()) {
-                        if (totalSun >= 50) {
+                        if (totalSun >= Constants.WALNUT_COST) {
                             this.walnutSeedSelected = true;
                         }
                     }
@@ -48,7 +48,7 @@ public class WalnutSeedPacket implements SeedPacket{
     }
     @Override
     public int getPlantNumber(){
-        return 4;
+        return Constants.WALNUT_NUMBER;
     }
     @Override
     public int myCost(){

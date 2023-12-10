@@ -38,6 +38,7 @@ public class Sun {
             if (!myGame.getIsPaused()) {
                 myGame.addToTotalSun();
                 root.getChildren().remove(this.sun);
+                myGame.removeFromSunList(this);
             }
         }
     }
@@ -45,6 +46,12 @@ public class Sun {
         if (this.sun.getCenterY() > randY){
             this.timeline.stop();
         }
+    }
+    public void stopTimeline(){
+        this.timeline.stop();
+    }
+    public void playTimeline(){
+        this.timeline.play();
     }
 
 }

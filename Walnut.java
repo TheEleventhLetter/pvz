@@ -18,10 +18,9 @@ public class Walnut implements Plant{
     private LinkedList<Zombie> myListOfZombies;
     private int walnutHealth;
     private Lawn myLawn;
-    private Timeline timeline1;
     public Walnut(int X, int Y, Lawn lawn, Pane root){
         this.myLawn = lawn;
-        this.walnutHealth = 10000;
+        this.walnutHealth = Constants.WALNUT_HEALTH;
         this.walnutHitbox = new Rectangle(X, Y, Constants.LAWN_WIDTH, Constants.LAWN_WIDTH);
         this.walnutHitbox.setStroke(Color.BLACK);
         this.walnutHitbox.setFill(Color.WHEAT);

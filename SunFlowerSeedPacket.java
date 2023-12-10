@@ -23,7 +23,7 @@ public class SunFlowerSeedPacket implements SeedPacket{
             if (!this.myGame.getIsPaused()) {
                 if (!this.sunFlowerSeedSelected) {
                     if (!this.myGame.preventDoubleChoicePacket()) {
-                        if (totalSun >= 100) {
+                        if (totalSun >= Constants.SUNFLOWER_COST) {
                             this.sunFlowerSeedSelected = true;
                         }
                     }
@@ -48,7 +48,7 @@ public class SunFlowerSeedPacket implements SeedPacket{
     }
     @Override
     public int getPlantNumber(){
-        return 2;
+        return Constants.SUNFLOWER_NUMBER;
     }
     @Override
     public int myCost(){

@@ -7,6 +7,6 @@ public class ConeheadZombie extends Zombie {
     public ConeheadZombie(int Y, Pane root, Lawn lawn){
         super(Y, root, lawn);
         super.setZombieColor(Color.ORANGE);
-        super.setZombieHealth(8);
+        super.setZombieHealth(Constants.CONE_HEAD_ZOMBIE_HEALTH);
     }
 }
