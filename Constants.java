@@ -4,6 +4,8 @@ public class Constants {
     public static final int LAWN_WIDTH = 100;
     public static final int SCENE_WIDTH = LAWN_WIDTH * 10;
     public static final int SCENE_HEIGHT = LAWN_WIDTH * 7;
+    public static final int DISPLAY_SCENE_WIDTH = Constants.SCENE_WIDTH + 20;
+    public static final int DISPLAY_SCENE_HEIGHT = Constants.SCENE_HEIGHT + 30;
     public static final int LAWN_ROWS = 5;
     public static final int LAWN_COLUMN = 9;
     public static final int SEED_PACKET_NUMBER = 5;
@@ -21,7 +23,7 @@ public class Constants {
     public static final int CHERRYBOMB_COST = 150;
     public static final int CHERRYBOMB_NUMBER = 3;
     public static final int WALNUT_COST = 50;
-    public static final int WALNUT_HEALTH = 12000;
+    public static final int WALNUT_HEALTH = 30000;
     public static final int WALNUT_NUMBER = 4;
     public static final int CATTAIL_COST = 200;
     public static final int CATTAIL_HEALTH = 4000;

@@ -7,7 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Lawn {
-    private LawnSquare[][] lawnGraphic;
     private Plant[][] plantBoard;
     private ArrayList<LinkedList<Zombie>> totalZombies;
     private ArrayList<LinkedList<Plant>> totalPlants;
@@ -28,7 +26,6 @@ public class Lawn {
         this.myGame = game;
         this.createZombieArrayList();
         this.createPlantArrayList();
-        this.lawnGraphic = new LawnSquare[Constants.LAWN_ROWS][Constants.LAWN_COLUMN];
         this.plantBoard = new Plant[Constants.LAWN_ROWS][Constants.LAWN_COLUMN];
         this.setUpLawn(gamepane);
         this.setUpZombieTimeline(gamepane, level);
