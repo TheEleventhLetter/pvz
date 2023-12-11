@@ -2,6 +2,9 @@ package indy;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 /**
  * SunFlower Seed Packet Class. Manages all graphical and logical components of the seedPacket.
@@ -26,7 +29,9 @@ public class SunFlowerSeedPacket implements SeedPacket{
         this.myGame = mygame;
         this.TotalSun = this.myGame.getTotalSun();
         this.sunFlowerSeedSelected = false;
-        this.sunFlowerSeedPacket = new Button("SunFlower");
+        this.sunFlowerSeedPacket = new Button("SunFlower \n 50", new ImageView(new Image("indy/Sunflower_Sprite.png",
+                25, 25, true, true)));
+        this.sunFlowerSeedPacket.setContentDisplay(ContentDisplay.TOP);
         this.sunFlowerSeedPacket.setStyle("-fx-background-color: #e3b44f");
         root.getChildren().add(this.sunFlowerSeedPacket);
         this.sunFlowerSeedPacket.setOnAction((ActionEvent e) -> this.sunFlowerSeedSelectChecker(this.TotalSun));

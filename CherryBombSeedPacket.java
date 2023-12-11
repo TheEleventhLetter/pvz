@@ -2,6 +2,9 @@ package indy;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 /**
@@ -28,7 +31,9 @@ public class CherryBombSeedPacket implements SeedPacket{
         this.myGame = mygame;
         this.TotalSun = this.myGame.getTotalSun();
         this.cherryBombSeedSelected = false;
-        this.cherryBombSeedPacket = new Button("CherryBomb");
+        this.cherryBombSeedPacket = new Button("CherryBomb \n 150", new ImageView(new Image("indy/Cherrybomb_Sprite.png",
+                25, 25, true, true)));
+        this.cherryBombSeedPacket.setContentDisplay(ContentDisplay.TOP);
         this.cherryBombSeedPacket.setStyle("-fx-background-color: #e3b44f");
         root.getChildren().add(this.cherryBombSeedPacket);
         this.cherryBombSeedPacket.setOnAction((ActionEvent e) -> this.cherryBombSeedSelectChecker(this.TotalSun));

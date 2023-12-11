@@ -2,6 +2,9 @@ package indy;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 /**
@@ -27,7 +30,9 @@ public class PeaShooterSeedPacket implements SeedPacket {
         this.myGame = mygame;
         this.TotalSun = this.myGame.getTotalSun();
         this.peaShooterSeedSelected = false;
-        this.peaShooterSeedPacket = new Button("PeaShooter");
+        this.peaShooterSeedPacket = new Button("PeaShooter \n 100", new ImageView(new Image("indy/Peashooter_Sprite.png",
+                25, 25, true, true)));
+        this.peaShooterSeedPacket.setContentDisplay(ContentDisplay.TOP);
         this.peaShooterSeedPacket.setStyle("-fx-background-color: #e3b44f");
         root.getChildren().add(this.peaShooterSeedPacket);
         this.peaShooterSeedPacket.setOnAction((ActionEvent e) -> this.peaShooterSeedSelectChecker(this.TotalSun));

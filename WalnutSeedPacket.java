@@ -2,6 +2,9 @@ package indy;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 /**
  * Walnut Seed Packet Class. Manages all graphical and logical components of the seedPacket.
@@ -26,7 +29,9 @@ public class WalnutSeedPacket implements SeedPacket{
         this.myGame = mygame;
         this.TotalSun = this.myGame.getTotalSun();
         this.walnutSeedSelected = false;
-        this.walnutSeedPacket = new Button("Walnut");
+        this.walnutSeedPacket = new Button("Walnut \n 50", new ImageView(new Image("indy/Walnut_Sprite.png",
+                25, 25, true, true)));
+        this.walnutSeedPacket.setContentDisplay(ContentDisplay.TOP);
         this.walnutSeedPacket.setStyle("-fx-background-color: #e3b44f");
         root.getChildren().add(this.walnutSeedPacket);
         this.walnutSeedPacket.setOnAction((ActionEvent e) -> this.WalnutSeedSelectChecker(this.TotalSun));

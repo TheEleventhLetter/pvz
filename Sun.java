@@ -84,7 +84,7 @@ public class Sun {
      * @param randY Y coordinate at which sun should stop
      */
     private void checkStop(int randY){
-        if (this.sun.getY() - (Constants.SUN_RADIUS * 3) > randY){
+        if (this.sun.getY() + (Constants.SUN_RADIUS * 4) > randY){
             this.timeline.stop();
         }
     }

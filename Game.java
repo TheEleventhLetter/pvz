@@ -70,7 +70,7 @@ public class Game {
         this.isPaused = false;
         this.isPlaying = true;
         this.createGamePane(gamepane, level);
-        this.createButtonPane(buttonPane);
+        this.createButtonPane(buttonPane, gamepane);
         this.setUpSunGenerationTimeline(gamepane);
         this.setUpGameOverTimeline(gamepane);
         Button menuButton = new Button("Menu");
@@ -106,6 +106,8 @@ public class Game {
         this.pausedLabel = new Label("Game Paused");
         this.pausedLabel.setTextFill(Color.WHITE);
         this.pausedLabel.setFont(new Font(20));
+        this.pausedLabel.setLayoutX(Constants.SCENE_WIDTH / 2.0);
+        this.pausedLabel.setLayoutY(Constants.LAWN_WIDTH);
         this.victoryLabel = new ImageView(new Image("indy/PVZ_WinScreen.png"));
         this.victoryLabel.setX(300);
         this.victoryLabel.setY(100);
@@ -117,15 +119,16 @@ public class Game {
      * Pane.
      * @param buttonPane passed to graphically add buttons and labels onto pane.
      */
-    private void createButtonPane(HBox buttonPane){
+    private void createButtonPane(HBox buttonPane, Pane gamePane){
         buttonPane.setPrefSize(Constants.SCENE_WIDTH, Constants.LAWN_WIDTH + 20);
         buttonPane.setStyle("-fx-background-color: #705301");
         Button quitButton = new Button("Quit");
         quitButton.setOnAction((ActionEvent e) -> System.exit(0));
         this.removeButton = new Button("Remove Plant");
         this.removeButton.setOnAction((ActionEvent e) -> this.removeTrueFalse());
+        this.checkRemoveColor();
         Button pauseButton = new Button("Pause");
-        pauseButton.setOnAction((ActionEvent e) -> this.pauseGame(buttonPane));
+        pauseButton.setOnAction((ActionEvent e) -> this.pauseGame(gamePane));
         this.displayTotalSun = new Label("Total Sun: " + this.totalSun);
         this.displayTotalSun.setTextFill(Color.WHITE);
         this.displayTotalSun.setFont(new Font(15));
@@ -378,7 +381,7 @@ public class Game {
      * removes the pausedLabel.
      * @param root passed to graphically add the pausedLabel.
      */
-    private void pauseGame(HBox root) {
+    private void pauseGame(Pane root) {
         if (this.isPlaying) {
             if (!this.isPaused) {
                 this.stopTimelines();

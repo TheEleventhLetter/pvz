@@ -2,6 +2,9 @@ package indy;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 /**
@@ -28,7 +31,9 @@ public class CatTailSeedPacket implements SeedPacket{
         this.myGame = mygame;
         this.TotalSun = this.myGame.getTotalSun();
         this.catTailSeedSelected = false;
-        this.catTailSeedPacket = new Button("CatTail");
+        this.catTailSeedPacket = new Button("CatTail \n 200", new ImageView(new Image("indy/andy.png",
+                25, 25, true, true)));
+        this.catTailSeedPacket.setContentDisplay(ContentDisplay.TOP);
         this.catTailSeedPacket.setStyle("-fx-background-color: #e3b44f");
         root.getChildren().add(this.catTailSeedPacket);
         this.catTailSeedPacket.setOnAction((ActionEvent e) -> this.catTailSeedSelectChecker(this.TotalSun));

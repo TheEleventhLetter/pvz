@@ -34,6 +34,15 @@ public class Menu {
         level3.setOnAction((ActionEvent e) -> this.startGame(gamepane, buttonPane, 3));
         Button level4 = new Button("Level 4");
         level4.setOnAction((ActionEvent e) -> this.startGame(gamepane, buttonPane, 4));
+        level1.setPrefSize(200, 100);
+        level2.setPrefSize(200, 100);
+        level3.setPrefSize(200, 100);
+        level4.setPrefSize(200, 100);
+        level1.setStyle("-fx-font-size: 2em; ");
+        level2.setStyle("-fx-font-size: 2em; ");
+        level3.setStyle("-fx-font-size: 2em; ");
+        level4.setStyle("-fx-font-size: 2em; ");
+
         menuPane.getChildren().addAll(level1, level2, level3, level4);
     }
 
