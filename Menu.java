@@ -24,8 +24,12 @@ public class Menu {
         level4.setOnAction((ActionEvent e) -> this.startGame(gamepane, buttonPane, 4));
         menuPane.getChildren().addAll(level1, level2, level3, level4);
     }
-    private void startGame(Pane gamepane, HBox buttonPane, int level){
+    public void startGame(Pane gamepane, HBox buttonPane, int level){
+        this.newGame = null;
         this.newGame = new Game(gamepane, buttonPane, level, this);
         this.organizer.removeMenu();
+    }
+    public void restartGame(){
+        this.organizer.restartMenu();
     }
 }

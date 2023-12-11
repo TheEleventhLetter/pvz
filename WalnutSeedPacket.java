@@ -30,6 +30,7 @@ public class WalnutSeedPacket implements SeedPacket{
                 } else {
                     this.walnutSeedSelected = false;
                 }
+                this.myGame.preventDoubleChoicePacket();
             }
         }
         this.seedColorChecker();

@@ -30,6 +30,7 @@ public class PeaShooterSeedPacket implements SeedPacket {
                 } else {
                     this.peaShooterSeedSelected = false;
                 }
+                this.myGame.preventDoubleChoicePacket();
             }
         }
         this.seedColorChecker();

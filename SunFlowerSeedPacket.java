@@ -30,6 +30,7 @@ public class SunFlowerSeedPacket implements SeedPacket{
                 } else {
                     this.sunFlowerSeedSelected = false;
                 }
+                this.myGame.preventDoubleChoicePacket();
             }
         }
         this.seedColorChecker();

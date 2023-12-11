@@ -30,6 +30,7 @@ public class CherryBombSeedPacket implements SeedPacket{
                 } else {
                     this.cherryBombSeedSelected = false;
                 }
+                this.myGame.preventDoubleChoicePacket();
             }
         }
         this.seedColorChecker();

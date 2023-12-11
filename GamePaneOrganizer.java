@@ -15,12 +15,7 @@ public class GamePaneOrganizer {
     public GamePaneOrganizer(){
         this.root = new BorderPane();
         this.root.setStyle("-fx-background-color: #705301");
-        this.gamePane = new Pane();
-        this.buttonPane = new HBox();
-        this.menuPane = new VBox();
-        this.root.setCenter(this.gamePane);
-        this.root.setTop(this.buttonPane);
-        this.addMenu();
+        this.restartMenu();
     }
 
     public Pane getRoot(){
@@ -32,5 +27,13 @@ public class GamePaneOrganizer {
     public void addMenu(){
         new Menu(this.gamePane, this.buttonPane, this.menuPane, this);
         this.root.setLeft(this.menuPane);
+    }
+    public void restartMenu(){
+        this.gamePane = new Pane();
+        this.buttonPane = new HBox();
+        this.menuPane = new VBox();
+        this.root.setCenter(this.gamePane);
+        this.root.setTop(this.buttonPane);
+        this.addMenu();
     }
 }

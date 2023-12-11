@@ -6,6 +6,8 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -26,13 +28,14 @@ public class Game {
     private SeedPacket[] seedPackets;
     private Timeline timeline1;
     private Timeline timeline2;
-    private Label gameOverLabel;
+    private ImageView gameOverLabel;
     private Label pausedLabel;
     private Label zombieCountLabel;
-    private Label victoryLabel;
+    private ImageView victoryLabel;
     private boolean isPaused;
     private boolean isPlaying;
     private ArrayList<Sun> sunArrayList;
+    private Button removeButton;
 
     public Game(Pane gamepane, HBox buttonPane, int level, Menu myMenu){
         this.sunArrayList = new ArrayList<>();
@@ -46,6 +49,9 @@ public class Game {
         this.createButtonPane(buttonPane, myMenu);
         this.setUpSunGenerationTimeline(gamepane);
         this.setUpGameOverTimeline(gamepane);
+        Button menuButton = new Button("Menu");
+        menuButton.setOnAction((ActionEvent e) -> myMenu.restartGame());
+        buttonPane.getChildren().add(menuButton);
     }
     private void setUpSeedPackets(Pane buttonPane, Game myGame){
         this.seedPackets[0] = new PeaShooterSeedPacket(buttonPane, myGame);
@@ -58,15 +64,15 @@ public class Game {
     private void createGamePane(Pane gamepane, int level){
         this.lawn = new Lawn(gamepane, level, this);
         gamepane.setOnMouseClicked((MouseEvent e) -> this.handleMouseClick(e, gamepane));
-        this.gameOverLabel = new Label("THE ZOMBIES ATE YOUR BRAINS!!");
-        this.gameOverLabel.setTextFill(Color.DARKSEAGREEN);
-        this.gameOverLabel.setFont(new Font(50));
+        this.gameOverLabel = new ImageView(new Image("indy/PVZ_GameOverScreen.png"));
+        this.gameOverLabel.setX(300);
+        this.gameOverLabel.setY(100);
         this.pausedLabel = new Label("Game Paused");
         this.pausedLabel.setTextFill(Color.WHITE);
         this.pausedLabel.setFont(new Font(20));
-        this.victoryLabel = new Label("YOU WON!!!");
-        this.victoryLabel.setTextFill(Color.WHITE);
-        this.victoryLabel.setFont(new Font(50));
+        this.victoryLabel = new ImageView(new Image("indy/PVZ_WinScreen.png"));
+        this.victoryLabel.setX(300);
+        this.victoryLabel.setY(100);
     }
 
     private void createButtonPane(HBox buttonPane, Menu myMenu){
@@ -74,20 +80,18 @@ public class Game {
         buttonPane.setStyle("-fx-background-color: #705301");
         Button quitButton = new Button("Quit");
         quitButton.setOnAction((ActionEvent e) -> System.exit(0));
-        Button removeButton = new Button("Remove Plant");
-        removeButton.setOnAction((ActionEvent e) -> this.removeTrueFalse());
+        this.removeButton = new Button("Remove Plant");
+        this.removeButton.setOnAction((ActionEvent e) -> this.removeTrueFalse());
         Button pauseButton = new Button("Pause");
         pauseButton.setOnAction((ActionEvent e) -> this.pauseGame(buttonPane));
-        Button menuButton = new Button("Menu");
-        //menuButton.setOnAction((ActionEvent e) -> );
         this.displayTotalSun = new Label("Total Sun: " + this.totalSun);
         this.displayTotalSun.setTextFill(Color.WHITE);
-        this.displayTotalSun.setFont(new Font(20));
+        this.displayTotalSun.setFont(new Font(15));
         this.zombieCountLabel = new Label("Zombies To Defeat: " + this.lawn.getZombieCount());
         this.zombieCountLabel.setTextFill(Color.WHITE);
-        this.zombieCountLabel.setFont(new Font(20));
+        this.zombieCountLabel.setFont(new Font(15));
         this.setUpSeedPackets(buttonPane, this);
-        buttonPane.getChildren().addAll(this.displayTotalSun, removeButton, this.zombieCountLabel, pauseButton, quitButton, menuButton);
+        buttonPane.getChildren().addAll(this.displayTotalSun, this.removeButton, this.zombieCountLabel, pauseButton, quitButton);
 
         buttonPane.setFocusTraversable(false);
     }
@@ -142,11 +146,16 @@ public class Game {
     }
 
     public boolean preventDoubleChoicePacket(){
+        int threshold = 0;
         if (!this.readyToRemove) {
             for (int i = 0; i < Constants.SEED_PACKET_NUMBER; i++) {
                 if (this.seedPackets[i].isSeedSelected()) {
                     this.somePacketSelected = true;
+                    threshold++;
                 }
+            }
+            if (threshold == 0){
+                this.somePacketSelected = false;
             }
         }
         return this.somePacketSelected;
@@ -154,12 +163,27 @@ public class Game {
     private void removeTrueFalse() {
         if (this.isPlaying) {
             if (!this.isPaused) {
-                if (!this.readyToRemove) {
-                    this.readyToRemove = true;
-                } else {
-                    this.readyToRemove = false;
+                if (!this.somePacketSelected) {
+                    if (!this.readyToRemove) {
+                        this.readyToRemove = true;
+                        this.somePacketSelected = true;
+                    }
+                } else if (this.somePacketSelected) {
+                    if (this.readyToRemove) {
+                        this.readyToRemove = false;
+                        this.somePacketSelected = false;
+                    }
                 }
             }
+        }
+        this.checkRemoveColor();
+
+    }
+    private void checkRemoveColor(){
+        if (this.readyToRemove){
+            this.removeButton.setStyle("-fx-background-color: #00ff00");
+        } else {
+            this.removeButton.setStyle("-fx-background-color: #e3b44f");
         }
     }
     private void findChosenSeedPacket(){
@@ -187,6 +211,9 @@ public class Game {
                                     this.chosenPacket.seedColorChecker();
                                     this.somePacketSelected = false;
                                     this.displayTotalSun.setText("Total Sun: " + this.totalSun);
+                                    for (int i = 0; i < Constants.SEED_PACKET_NUMBER; i++){
+                                        this.seedPackets[i].updateSun();
+                                    }
                                 }
                             }
                         }
@@ -194,6 +221,7 @@ public class Game {
                             if (this.lawn.checkDeletionValid(MouseX, MouseY)) {
                                 this.lawn.getPlant(MouseX, MouseY).removePlant(gamepane);
                                 this.readyToRemove = false;
+                                this.checkRemoveColor();
                             }
                         }
                     }

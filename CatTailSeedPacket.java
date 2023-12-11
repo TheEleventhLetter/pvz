@@ -30,6 +30,7 @@ public class CatTailSeedPacket implements SeedPacket{
                 } else {
                     this.catTailSeedSelected = false;
                 }
+                this.myGame.preventDoubleChoicePacket();
             }
         }
 

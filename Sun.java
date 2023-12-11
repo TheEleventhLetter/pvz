@@ -22,8 +22,8 @@ public class Sun {
         this.sun = new ImageView(new Image("indy/PVZ_Sun.png"));
         this.sun.setFitWidth(Constants.SUN_RADIUS * 3);
         this.sun.setFitHeight(Constants.SUN_RADIUS * 3);
-        this.sun.setX(X - Constants.SUN_RADIUS);
-        this.sun.setY(Y - Constants.SUN_RADIUS);
+        this.sun.setX(X - (Constants.SUN_RADIUS * 3));
+        this.sun.setY(Y - (Constants.SUN_RADIUS * 3));
         root.getChildren().add(this.sun);
         this.setUpDroppingTimeline();
         this.sun.setOnMouseClicked((MouseEvent e) -> this.addSunCost(root, myGame));
@@ -49,7 +49,7 @@ public class Sun {
         }
     }
     private void checkStop(int randY){
-        if (this.sun.getY() > randY){
+        if (this.sun.getY() - (Constants.SUN_RADIUS * 3) > randY){
             this.timeline.stop();
         }
     }
