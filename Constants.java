@@ -36,6 +36,10 @@ public class Constants {
     public static final int LEVEL_THREE_COUNT = 50;
     public static final int LEVEL_FOUR_RATIO = 2000;
     public static final int LEVEL_FOUR_COUNT = 60;
+    public static final int LEVEL_FIVE_RATIO = 1500;
+    public static final int LEVEL_FIVE_COUNT = 70;
+    public static final int LEVEL_SIX_RATIO = 1000;
+    public static final int LEVEL_SIX_COUNT = 80;
     public static final int NORMAL_ZOMBIE_HEALTH = 4;
     public static final int CONE_HEAD_ZOMBIE_HEALTH = 8;
     public static final int BUCKET_HEAD_ZOMBIE_HEALTH = 12;

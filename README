@@ -1,0 +1,77 @@
+Indy (Plants Vs Zombies) README
+
+Overview
+
+The overall function of this indy project, Plants Vs Zombies, is to create an interactive game of the popular game
+ "Plants vs Zombies" whose main objective is to defend your house from zombies using plants. There will be a lawn where
+ you can place your own plants. To place plants, you need a certain amount of sun and an open spot on the lawn. Each
+ plant has a different function. Some plants are attack oriented, others are defense oriented, others are sun-producers.
+ In this version of the game there are 5 plants you can use, PeaShooter, SunFlower, CherryBomb, Walnut, and Cattail.
+ Utilizing a combination of these plants, you must sustain your defense on the lawn against the zombies and prevent them
+ from reaching your house on the left side. Different zombies will approach you, each type with a different health. Plants
+ can inflict damage onto the zombies. After a certain amount of damage, zombies will be defeated. However, this does not
+ make plants invincible either. Zombies can eat plants too, and after a certain amount of damage is done, the plants will
+ be defeated too. Throughout the game, you should be able to collect sun from both planted sunFlowers and natural sun
+ generated in-game. You should be able to know exactly how much sun you have, and the game will validate selections based
+ on your sun if you're illiterate. Placing down plants is done via selecting seed packets. You have to select a seed
+ packet to place down a plant. However, you won't be able to select multiple seed packets, nor the remove button at the
+ same time. Select and Deselect as necessary. You should also be able to remove plants that you planted. To win the game,
+ you must defeat a set amount of zombies that varies based on the level difficulty. For higher levels, the amount of zombies
+ you must defeat, and the frequency of zombies will increase. When you defeat all zombies, you will win the game, but let
+ a single zombie reach your house and its game over! The game also has a pause function that will pause the game. There
+ is also a quit button that quits the game, and a menu button that returns you back to the menu or level selection screen.
+
+ Plants vs Zombies has 23 classes; App, GamePaneOrganizer, Menu, Game, PeaShooterSeedPacket, SunFlowerSeedPacket,
+  CherryBombSeedPacket, WalnutSeedPacket, CatTailSeedPacket, Sun, Lawn, PeaShooter, SunFlower, CherryBomb, Walnut,
+  CatTail, PeaProjectile, ThornProjectile, Zombie, NormalZombie, ConeHeadZombie, BucketHeadZombie, Constants; and
+  2 interfaces; Plant and SeedPacket.
+
+App is the highest level class of PVZ. It contains an instance of GamePaneOrganizer, which is responsible for instantiating
+all the Panes and root for graphically handling the game. GamePaneOrganizer has an instance of Menu, which represents
+the menu you see to choose difficulty levels. Menu is able to communicate to GamePaneOrganizer through association. Menu
+then has an instance of game, which encapsulates everything that is part of the main gameplay. Game is able to communicate
+to Menu through association as well.
+    In the Game class, there is an instance of PeaShooterSeedPacket, SunFlowerSeedPacket, CherryBombSeedPacket,
+    WalnutSeedPacket, and CatTailSeedPacket. Each seed packet class can communicate with the game class via association.
+    The Game class contains multiple instances of the sun class which also has association set up. Finally, the game
+    class contains an instance of the Lawn class. Again, this Lawn Class can also communicate to the Game class. The
+    game class is responsible for logically synthesizing user input with actual gameplay in order to complete the game.
+    Without this class, there would be a disconnection between the SeedPackets, Sun, and the Lawn, three key aspects
+    that make up the game. Simply put, this is what allows for the User to interact with the lawn. It handles user input.
+The Lawn class is arguably the biggest class in terms of size. It contains multiple instances of the PeaShooter class,
+SunFlower class, CherryBomb, Walnut, CatTail, NormalZombie, ConeHeadZombie, and BucketHeadZombie. This class is responsible
+for the logical and graphical handling of plant and zombie interaction with the lawn. The lawn class is responsible for
+logically keeping track of all zombies and plants and assigning, reassigning these lists to zombies or plants so interactions
+can occur. This class does everything regarding output. If Game class handles user input, Lawn is the class that creates
+output. It is important to note that all zombie and plant classes can communicate to the lawn class via association.
+    While most of the zombie classes and plant classes are the lowest level classes, some plant classes do contain instances
+    of even lower classes. The PeaShooter class contains multiple instances of the PeaProjectile class, and the CatTail
+    class contains multiple instances of the ThornProjectile class. These classes represent the projectiles these plants
+    shoot in order to attack. Additionally, the SunFlower class also contains instances of the Sun class. These elements
+    are the most basic in all of the game, and are the lowest level classes.
+
+Design Choices
+
+Polymorphism was an integral part of this project. For the zombies, I decided to use inheritance because all zombies are
+zombies. Pretty obvious. They eat the same, walk the same, get hit the same. The only thing that really changes is their
+health and appearance, but that can be easily overridden from inheritance. However, I decided to use interfaces for plants
+because although while they are all plants, they function differently. Some are attack-oriented, others are defense-oriented,
+others are sun-producing. Their functions are different despite all being plants. Thus, I decided interface would be
+better suited. For the seedPacket, I decided to use interface because it felt more comfortable rather than overriding
+every single method.
+    Some design choices worth mentioning is the use of a SunArrayList in the game method. While this list does not serve
+    a significant purpose, it was necessary in stopping the sun timelines all at once. Additionally, the thornProjectile
+    algorithm was written using angular calculations rather than cartesian comparisons to prevent sudden movements and
+    create a more fluid motion. Finally, the use of an ArrayList of LinkedList of Plants or Zombies prevents plants
+    and zombies from checking collisions with one another when they are clearly not going to collide. For example, it is
+    impossible for a PeaShooter on row5 to hit a zombie on row1. Thus, the use of an ArrayList of LinkedLists simplify
+    this step and reduces redundant checking.
+
+Known Bugs:
+
+As of now, there are no bugs present. That being said, it is hard to check graphically due to the sheer scope of the project.
+However, from the bug testing I have done, there are no bugs.
+
+Hours:
+
+Approximately 60 hours.

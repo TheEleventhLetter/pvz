@@ -118,6 +118,14 @@ public class Lawn {
                 duration = Constants.LEVEL_FOUR_RATIO;
                 this.zombieCount = Constants.LEVEL_FOUR_COUNT;
                 break;
+            case 5:
+                duration = Constants.LEVEL_FIVE_RATIO;
+                this.zombieCount = Constants.LEVEL_FIVE_COUNT;
+                break;
+            case 6:
+                duration = Constants.LEVEL_SIX_RATIO;
+                this.zombieCount = Constants.LEVEL_SIX_COUNT;
+                break;
             default:
                 duration = Constants.LEVEL_ONE_RATIO;
                 this.zombieCount = Constants.LEVEL_ONE_COUNT;
