@@ -30,7 +30,7 @@ public class WalnutSeedPacket implements SeedPacket{
         this.TotalSun = this.myGame.getTotalSun();
         this.walnutSeedSelected = false;
         this.walnutSeedPacket = new Button("Walnut \n 50", new ImageView(new Image("indy/Walnut_Sprite.png",
-                25, 25, true, true)));
+                Constants.SEED_PACKET_IMAGE_SIZE, Constants.SEED_PACKET_IMAGE_SIZE, true, true)));
         this.walnutSeedPacket.setContentDisplay(ContentDisplay.TOP);
         this.walnutSeedPacket.setStyle("-fx-background-color: #e3b44f");
         root.getChildren().add(this.walnutSeedPacket);

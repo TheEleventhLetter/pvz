@@ -53,7 +53,7 @@ public class Lawn {
      * @param root passed to graphically handle elements after intersection.
      */
     private void setUpIntersectionTimeLine(Pane root){
-        KeyFrame kf = new KeyFrame(Duration.millis(10), (ActionEvent e) -> this.checkZombiePlantIntersection(root));
+        KeyFrame kf = new KeyFrame(Duration.millis(Constants.INTERSECTION_DURATION), (ActionEvent e) -> this.checkZombiePlantIntersection(root));
         this.timeline1 = new Timeline(kf);
         this.timeline1.setCycleCount(Animation.INDEFINITE);
         this.timeline1.play();
@@ -85,11 +85,11 @@ public class Lawn {
     private void setUpLawn(Pane gamepane) {
         ImageView lawnImage = new ImageView(new Image("indy/PVZ_Lawn.png"));
         gamepane.getChildren().add(lawnImage);
-        lawnImage.setFitHeight(Constants.SCENE_HEIGHT - 115);
+        lawnImage.setFitHeight(Constants.LAWN_IMAGE_HEIGHT);
         lawnImage.setPreserveRatio(false);
-        lawnImage.setFitWidth(Constants.SCENE_WIDTH + 350);
-        lawnImage.setX(-205);
-        lawnImage.setY(20);
+        lawnImage.setFitWidth(Constants.LAWN_IMAGE_WIDTH);
+        lawnImage.setX(Constants.LAWN_IMAGE_X);
+        lawnImage.setY(Constants.LAWN_IMAGE_Y);
 
     }
 
@@ -222,19 +222,19 @@ public class Lawn {
         int Pnum = number;
         Plant newPlant = null;
         switch (Pnum){
-            case 1:
+            case Constants.PEASHOOTER_NUMBER:
                 newPlant = new PeaShooter(X, Y, this, root);
                 break;
-            case 2:
+            case Constants.SUNFLOWER_NUMBER:
                 newPlant = new SunFlower(X, Y, this, root, myGame);
                 break;
-            case 3:
+            case Constants.CHERRYBOMB_NUMBER:
                 newPlant = new CherryBomb(X, Y, this, root);
                 break;
-            case 4:
+            case Constants.WALNUT_NUMBER:
                 newPlant = new Walnut(X, Y, this, root);
                 break;
-            case 5:
+            case Constants.CATTAIL_NUMBER:
                 newPlant = new CatTail(X, Y, this, root);
                 break;
             default:

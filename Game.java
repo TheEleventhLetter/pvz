@@ -101,16 +101,16 @@ public class Game {
         this.lawn = new Lawn(gamepane, level, this);
         gamepane.setOnMouseClicked((MouseEvent e) -> this.handleMouseClick(e, gamepane));
         this.gameOverLabel = new ImageView(new Image("indy/PVZ_GameOverScreen.png"));
-        this.gameOverLabel.setX(300);
-        this.gameOverLabel.setY(100);
+        this.gameOverLabel.setX(Constants.WIN_LOSE_LABEL_X);
+        this.gameOverLabel.setY(Constants.WIN_LOSE_LABEL_Y);
         this.pausedLabel = new Label("Game Paused");
         this.pausedLabel.setTextFill(Color.WHITE);
-        this.pausedLabel.setFont(new Font(20));
+        this.pausedLabel.setFont(new Font(Constants.PAUSED_LABEL_FONT_SIZE));
         this.pausedLabel.setLayoutX(Constants.SCENE_WIDTH / 2.0);
         this.pausedLabel.setLayoutY(Constants.LAWN_WIDTH);
         this.victoryLabel = new ImageView(new Image("indy/PVZ_WinScreen.png"));
-        this.victoryLabel.setX(300);
-        this.victoryLabel.setY(100);
+        this.victoryLabel.setX(Constants.WIN_LOSE_LABEL_X);
+        this.victoryLabel.setY(Constants.WIN_LOSE_LABEL_Y);
     }
 
     /**
@@ -120,7 +120,7 @@ public class Game {
      * @param buttonPane passed to graphically add buttons and labels onto pane.
      */
     private void createButtonPane(HBox buttonPane, Pane gamePane){
-        buttonPane.setPrefSize(Constants.SCENE_WIDTH, Constants.LAWN_WIDTH + 20);
+        buttonPane.setPrefSize(Constants.SCENE_WIDTH, Constants.BUTTON_PANE_HEIGHT);
         buttonPane.setStyle("-fx-background-color: #705301");
         Button quitButton = new Button("Quit");
         quitButton.setOnAction((ActionEvent e) -> System.exit(0));
@@ -131,10 +131,10 @@ public class Game {
         pauseButton.setOnAction((ActionEvent e) -> this.pauseGame(gamePane));
         this.displayTotalSun = new Label("Total Sun: " + this.totalSun);
         this.displayTotalSun.setTextFill(Color.WHITE);
-        this.displayTotalSun.setFont(new Font(15));
+        this.displayTotalSun.setFont(new Font(Constants.BUTTON_PANE_LABELS_FONT_SIZE));
         this.zombieCountLabel = new Label("Zombies To Defeat: " + this.lawn.getZombieCount());
         this.zombieCountLabel.setTextFill(Color.WHITE);
-        this.zombieCountLabel.setFont(new Font(15));
+        this.zombieCountLabel.setFont(new Font(Constants.BUTTON_PANE_LABELS_FONT_SIZE));
         this.setUpSeedPackets(buttonPane, this);
         buttonPane.getChildren().addAll(this.displayTotalSun, this.removeButton, this.zombieCountLabel, pauseButton, quitButton);
 
@@ -154,7 +154,7 @@ public class Game {
      * @param root passed to graphically handle new sun that is generated.
      */
     private void setUpSunGenerationTimeline(Pane root){
-        KeyFrame kf = new KeyFrame(Duration.seconds(5), (ActionEvent e) -> this.generateSun(root));
+        KeyFrame kf = new KeyFrame(Duration.seconds(Constants.SUN_GENERATION_DURATION), (ActionEvent e) -> this.generateSun(root));
         this.timeline1 = new Timeline(kf);
         this.timeline1.setCycleCount(Animation.INDEFINITE);
         this.timeline1.play();
@@ -165,7 +165,7 @@ public class Game {
      * @param root passed to graphically handle gameOver screen.
      */
     private void setUpGameOverTimeline(Pane root){
-        KeyFrame kf = new KeyFrame(Duration.millis(10), (ActionEvent e) -> this.checkGameOver(root));
+        KeyFrame kf = new KeyFrame(Duration.millis(Constants.GAME_OVER_DURATION), (ActionEvent e) -> this.checkGameOver(root));
         this.timeline2 = new Timeline(kf);
         this.timeline2.setCycleCount(Animation.INDEFINITE);
         this.timeline2.play();

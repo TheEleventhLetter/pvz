@@ -32,7 +32,7 @@ public class CherryBombSeedPacket implements SeedPacket{
         this.TotalSun = this.myGame.getTotalSun();
         this.cherryBombSeedSelected = false;
         this.cherryBombSeedPacket = new Button("CherryBomb \n 150", new ImageView(new Image("indy/Cherrybomb_Sprite.png",
-                25, 25, true, true)));
+                Constants.SEED_PACKET_IMAGE_SIZE, Constants.SEED_PACKET_IMAGE_SIZE, true, true)));
         this.cherryBombSeedPacket.setContentDisplay(ContentDisplay.TOP);
         this.cherryBombSeedPacket.setStyle("-fx-background-color: #e3b44f");
         root.getChildren().add(this.cherryBombSeedPacket);

@@ -82,7 +82,7 @@ public class Walnut implements Plant{
      */
     @Override
     public void checkHealth(Pane root){
-        this.walnutHealth = this.walnutHealth - 10;
+        this.walnutHealth = this.walnutHealth - Constants.ZOMBIE_DAMAGE;
         if (this.walnutHealth == 0) {
             this.removePlant(root);
         }

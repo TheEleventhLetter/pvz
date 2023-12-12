@@ -40,7 +40,7 @@ public class CherryBomb implements Plant{
      */
     public CherryBomb(int X, int Y, Lawn lawn, Pane root){
         this.myLawn = lawn;
-        this.explodingCountDown = 2;
+        this.explodingCountDown = Constants.CHERRY_BOMB_TIMER;
         this.cherryBombHitbox = new ImageView(new Image("indy/Cherrybomb_Sprite.png"));
         this.cherryBombHitbox.setFitWidth(Constants.LAWN_WIDTH);
         this.cherryBombHitbox.setFitHeight(Constants.LAWN_WIDTH);
@@ -73,7 +73,7 @@ public class CherryBomb implements Plant{
      * @param root passed to handle graphics of cherryBomb.
      */
     private void setUpExplodingTimeline(Pane root){
-        KeyFrame kf1 = new KeyFrame(Duration.seconds(1), (ActionEvent e) -> this.checkTimer(root));
+        KeyFrame kf1 = new KeyFrame(Duration.seconds(Constants.COUNT_DOWN_DURATION), (ActionEvent e) -> this.checkTimer(root));
         this.timeline1 = new Timeline(kf1);
         this.timeline1.setCycleCount(Animation.INDEFINITE);
         this.playTimeline();
@@ -160,7 +160,7 @@ public class CherryBomb implements Plant{
                     Zombie currentZombie = this.myListsOfZombies.get(j).get(k);
                     if (currentZombie.didCollide((int) this.cherryBombHitbox.getX() - Constants.LAWN_WIDTH,
                             (int) this.cherryBombHitbox.getY() - Constants.LAWN_WIDTH, Constants.LAWN_WIDTH*3, Constants.LAWN_WIDTH*3)){
-                        currentZombie.checkHealth(root, this.myListsOfZombies.get(j), 20);
+                        currentZombie.checkHealth(root, this.myListsOfZombies.get(j), Constants.CHERRY_BOMB_DAMAGE);
                     }
 
                 }

@@ -32,7 +32,7 @@ public class CatTailSeedPacket implements SeedPacket{
         this.TotalSun = this.myGame.getTotalSun();
         this.catTailSeedSelected = false;
         this.catTailSeedPacket = new Button("CatTail \n 200", new ImageView(new Image("indy/andy.png",
-                25, 25, true, true)));
+                Constants.SEED_PACKET_IMAGE_SIZE, Constants.SEED_PACKET_IMAGE_SIZE, true, true)));
         this.catTailSeedPacket.setContentDisplay(ContentDisplay.TOP);
         this.catTailSeedPacket.setStyle("-fx-background-color: #e3b44f");
         root.getChildren().add(this.catTailSeedPacket);

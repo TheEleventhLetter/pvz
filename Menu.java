@@ -29,35 +29,35 @@ public class Menu {
         this.organizer = myOrganizer;
 
         Button level1 = new Button("Level 1", new ImageView(new Image("indy/SHRIMP_FRIED_RICE.png",
-                100, 100, true, true)));
+                Constants.MENU_BUTTON_IMAGE_SIZE, Constants.MENU_BUTTON_IMAGE_SIZE, true, true)));
         level1.setOnAction((ActionEvent e) -> this.startGame(gamepane, buttonPane, 1));
         Button level2 = new Button("Level 2", new ImageView(new Image("indy/Hampter.png",
-                100, 100, true, true)));
+                Constants.MENU_BUTTON_IMAGE_SIZE, Constants.MENU_BUTTON_IMAGE_SIZE, true, true)));
         level2.setOnAction((ActionEvent e) -> this.startGame(gamepane, buttonPane, 2));
         Button level3 = new Button("Level 3", new ImageView(new Image("indy/Josh_Whistle.png",
-                100, 100, true, true)));
+                Constants.MENU_BUTTON_IMAGE_SIZE, Constants.MENU_BUTTON_IMAGE_SIZE, true, true)));
         level3.setOnAction((ActionEvent e) -> this.startGame(gamepane, buttonPane, 3));
         Button level4 = new Button("Level 4", new ImageView(new Image("indy/Not_like_the_others.png",
-                100, 100, true, true)));
+                Constants.MENU_BUTTON_IMAGE_SIZE, Constants.MENU_BUTTON_IMAGE_SIZE, true, true)));
         level4.setOnAction((ActionEvent e) -> this.startGame(gamepane, buttonPane, 4));
         Button level5 = new Button("Level 5", new ImageView(new Image("indy/Nah_Id_Win.png",
-                100, 100, true, true)));
+                Constants.MENU_BUTTON_IMAGE_SIZE, Constants.MENU_BUTTON_IMAGE_SIZE, true, true)));
         level5.setOnAction((ActionEvent e) -> this.startGame(gamepane, buttonPane, 5));
         Button level6 = new Button("Level 6", new ImageView(new Image("indy/Chica_Rizz.png",
-                100, 100, true, true)));
+                Constants.MENU_BUTTON_IMAGE_SIZE, Constants.MENU_BUTTON_IMAGE_SIZE, true, true)));
         level6.setOnAction((ActionEvent e) -> this.startGame(gamepane, buttonPane, 6));
-        level1.setPrefSize(300, 100);
-        level2.setPrefSize(300, 100);
-        level3.setPrefSize(300, 100);
-        level4.setPrefSize(300, 100);
-        level5.setPrefSize(300, 100);
-        level6.setPrefSize(300, 100);
-        level1.setStyle("-fx-font-size: 2em; ");
-        level2.setStyle("-fx-font-size: 2em; ");
-        level3.setStyle("-fx-font-size: 2em; ");
-        level4.setStyle("-fx-font-size: 2em; ");
-        level5.setStyle("-fx-font-size: 2em; ");
-        level6.setStyle("-fx-font-size: 2em; ");
+        level1.setPrefSize(Constants.MENU_BUTTON_WIDTH, Constants.MENU_BUTTON_HEIGHT);
+        level2.setPrefSize(Constants.MENU_BUTTON_WIDTH, Constants.MENU_BUTTON_HEIGHT);
+        level3.setPrefSize(Constants.MENU_BUTTON_WIDTH, Constants.MENU_BUTTON_HEIGHT);
+        level4.setPrefSize(Constants.MENU_BUTTON_WIDTH, Constants.MENU_BUTTON_HEIGHT);
+        level5.setPrefSize(Constants.MENU_BUTTON_WIDTH, Constants.MENU_BUTTON_HEIGHT);
+        level6.setPrefSize(Constants.MENU_BUTTON_WIDTH, Constants.MENU_BUTTON_HEIGHT);
+        level1.setStyle(Constants.MENU_BUTTON_FONT_SIZE);
+        level2.setStyle(Constants.MENU_BUTTON_FONT_SIZE);
+        level3.setStyle(Constants.MENU_BUTTON_FONT_SIZE);
+        level4.setStyle(Constants.MENU_BUTTON_FONT_SIZE);
+        level5.setStyle(Constants.MENU_BUTTON_FONT_SIZE);
+        level6.setStyle(Constants.MENU_BUTTON_FONT_SIZE);
 
         menuPane.getChildren().addAll(level1, level2, level3, level4, level5, level6);
     }

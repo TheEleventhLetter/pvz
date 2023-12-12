@@ -33,10 +33,10 @@ public class Sun {
      */
     public Sun(int X, int Y, Pane root, Game myGame){
         this.sun = new ImageView(new Image("indy/PVZ_Sun.png"));
-        this.sun.setFitWidth(Constants.SUN_RADIUS * 3);
-        this.sun.setFitHeight(Constants.SUN_RADIUS * 3);
-        this.sun.setX(X - (Constants.SUN_RADIUS * 3));
-        this.sun.setY(Y - (Constants.SUN_RADIUS * 3));
+        this.sun.setFitWidth(Constants.SUN_RADIUS);
+        this.sun.setFitHeight(Constants.SUN_RADIUS);
+        this.sun.setX(X - (Constants.SUN_RADIUS));
+        this.sun.setY(Y - (Constants.SUN_RADIUS));
         root.getChildren().add(this.sun);
         this.setUpDroppingTimeline();
         this.sun.setOnMouseClicked((MouseEvent e) -> this.addSunCost(root, myGame));
@@ -48,7 +48,7 @@ public class Sun {
      */
     private void setUpDroppingTimeline(){
         int randY = ThreadLocalRandom.current().nextInt(Constants.LAWN_WIDTH * 2, Constants.SCENE_HEIGHT - Constants.SUN_RADIUS);
-        KeyFrame kf = new KeyFrame(Duration.millis(100), (ActionEvent e) -> this.drop(randY));
+        KeyFrame kf = new KeyFrame(Duration.millis(Constants.SUN_DROPPING_DURATION), (ActionEvent e) -> this.drop(randY));
         this.timeline = new Timeline(kf);
         this.timeline.setCycleCount(Animation.INDEFINITE);
         this.timeline.play();
@@ -84,7 +84,7 @@ public class Sun {
      * @param randY Y coordinate at which sun should stop
      */
     private void checkStop(int randY){
-        if (this.sun.getY() + (Constants.SUN_RADIUS * 4) > randY){
+        if (this.sun.getY() + (Constants.SUN_RADIUS) > randY){
             this.timeline.stop();
         }
     }

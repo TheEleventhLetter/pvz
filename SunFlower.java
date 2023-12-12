@@ -56,7 +56,7 @@ public class SunFlower implements Plant{
      * @param myGame passed for association into sun class
      */
     private void setUpSunFlowerTimeline(int X, int Y, Pane root, Game myGame){
-        KeyFrame kf1 = new KeyFrame(Duration.seconds(7), (ActionEvent e) -> this.generateSun(X, Y, root, myGame));
+        KeyFrame kf1 = new KeyFrame(Duration.seconds(Constants.SUNFLOWER_GENERATION_DURATION), (ActionEvent e) -> this.generateSun(X, Y, root, myGame));
 
         this.timeline1 = new Timeline(kf1);
         this.timeline1.setCycleCount(Animation.INDEFINITE);
@@ -124,7 +124,7 @@ public class SunFlower implements Plant{
      */
     @Override
     public void checkHealth(Pane root){
-        this.sunFlowerHealth = this.sunFlowerHealth - 10;
+        this.sunFlowerHealth = this.sunFlowerHealth - Constants.ZOMBIE_DAMAGE;
         if (this.sunFlowerHealth == 0) {
             this.removePlant(root);
         }

@@ -65,9 +65,9 @@ public class CatTail implements Plant{
      * @param root passed for graphical representation.
      */
     private void setUpThornShootingTimeline(int X, int Y, Pane root){
-        KeyFrame kf1 = new KeyFrame(Duration.millis(1000), (ActionEvent e) -> this.generateThorn(X, Y, root));
-        KeyFrame kf2 = new KeyFrame(Duration.millis(20), (ActionEvent e) -> this.deleteThornsOutOfBounds(root));
-        KeyFrame kf3 = new KeyFrame(Duration.millis(10), (ActionEvent e) -> this.moveThorns(root));
+        KeyFrame kf1 = new KeyFrame(Duration.millis(Constants.GENERATE_PROJECTILE_DURATION), (ActionEvent e) -> this.generateThorn(X, Y, root));
+        KeyFrame kf2 = new KeyFrame(Duration.millis(Constants.OUT_OF_BOUNDS_DURATION), (ActionEvent e) -> this.deleteThornsOutOfBounds(root));
+        KeyFrame kf3 = new KeyFrame(Duration.millis(Constants.MOVE_PROJECTILE_DURATION), (ActionEvent e) -> this.moveThorns(root));
 
         this.timeline1 = new Timeline(kf1);
         this.timeline2 = new Timeline(kf2);
@@ -218,7 +218,7 @@ public class CatTail implements Plant{
      */
     @Override
     public void checkHealth(Pane root){
-        this.catTailHealth = this.catTailHealth - 10;
+        this.catTailHealth = this.catTailHealth - Constants.ZOMBIE_DAMAGE;
         if (this.catTailHealth == 0) {
             this.removePlant(root);
         }
@@ -253,7 +253,7 @@ public class CatTail implements Plant{
                             if (currentThorn.didCollide(currentZombie.getX(), currentZombie.getY())) {
                                 currentThorn.removeGraphic(root);
                                 this.listOfThorns.remove(currentThorn);
-                                currentZombie.checkHealth(root, this.totalZombies.get(y), 1);
+                                currentZombie.checkHealth(root, this.totalZombies.get(y), Constants.CATTAIL_DAMAGE);
                                 if (this.listOfThorns.isEmpty()) {
                                     break;
                                 }

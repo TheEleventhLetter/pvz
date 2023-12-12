@@ -63,9 +63,9 @@ public class PeaShooter implements Plant {
      * @param root passed to graphically add or remove pea.
      */
     private void setUpPeaShootingTimeline(int X, int Y, Pane root){
-        KeyFrame kf1 = new KeyFrame(Duration.millis(1000), (ActionEvent e) -> this.generatePea(X, Y, root));
-        KeyFrame kf2 = new KeyFrame(Duration.millis(20), (ActionEvent e) -> this.deletePeasOutOfBounds(root));
-        KeyFrame kf3 = new KeyFrame(Duration.millis(10), (ActionEvent e) -> this.movePeas(root));
+        KeyFrame kf1 = new KeyFrame(Duration.millis(Constants.GENERATE_PROJECTILE_DURATION), (ActionEvent e) -> this.generatePea(X, Y, root));
+        KeyFrame kf2 = new KeyFrame(Duration.millis(Constants.OUT_OF_BOUNDS_DURATION), (ActionEvent e) -> this.deletePeasOutOfBounds(root));
+        KeyFrame kf3 = new KeyFrame(Duration.millis(Constants.MOVE_PROJECTILE_DURATION), (ActionEvent e) -> this.movePeas(root));
 
         this.timeline1 = new Timeline(kf1);
         this.timeline2 = new Timeline(kf2);
@@ -168,7 +168,7 @@ public class PeaShooter implements Plant {
      */
     @Override
     public void checkHealth(Pane root){
-        this.peaShooterHealth = this.peaShooterHealth - 10;
+        this.peaShooterHealth = this.peaShooterHealth - Constants.ZOMBIE_DAMAGE;
         if (this.peaShooterHealth == 0) {
             this.removePlant(root);
         }
@@ -206,7 +206,7 @@ public class PeaShooter implements Plant {
                         if (currentPea.didCollide(currentZombie.getX(), currentZombie.getY())) {
                             currentPea.removeGraphic(root);
                             this.listOfPeas.remove(currentPea);
-                            currentZombie.checkHealth(root, this.myListOfZombies, 1);
+                            currentZombie.checkHealth(root, this.myListOfZombies, Constants.PEASHOOTER_DAMAGE);
                             if (this.listOfPeas.isEmpty()) {
                                 break;
                             }

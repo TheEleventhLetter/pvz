@@ -30,7 +30,7 @@ public class SunFlowerSeedPacket implements SeedPacket{
         this.TotalSun = this.myGame.getTotalSun();
         this.sunFlowerSeedSelected = false;
         this.sunFlowerSeedPacket = new Button("SunFlower \n 50", new ImageView(new Image("indy/Sunflower_Sprite.png",
-                25, 25, true, true)));
+                Constants.SEED_PACKET_IMAGE_SIZE, Constants.SEED_PACKET_IMAGE_SIZE, true, true)));
         this.sunFlowerSeedPacket.setContentDisplay(ContentDisplay.TOP);
         this.sunFlowerSeedPacket.setStyle("-fx-background-color: #e3b44f");
         root.getChildren().add(this.sunFlowerSeedPacket);
