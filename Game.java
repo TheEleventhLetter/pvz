@@ -351,6 +351,7 @@ public class Game {
                             if (this.lawn.checkDeletionValid(MouseX, MouseY)) {
                                 this.lawn.getPlant(MouseX, MouseY).removePlant(gamepane);
                                 this.readyToRemove = false;
+                                this.somePacketSelected = false;
                                 this.checkRemoveColor();
                             }
                         }
